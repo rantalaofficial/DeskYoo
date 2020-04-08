@@ -2,9 +2,9 @@ const express = require('express');
 const socket = require('socket.io');
 
 //APP SETUP
-let serverPort = 8080;
-let app = express();
-let server = app.listen(serverPort, () => {
+const serverPort = 8080;
+const app = express();
+const server = app.listen(serverPort, () => {
 	console.log("Server started on port " + serverPort)
 });
 app.use((req, res, next) => {
@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.static('public'));
-let io = socket(server);
+const io = socket(server);
 
 
 io.on('connection', (socket) => {

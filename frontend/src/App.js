@@ -3,13 +3,13 @@ import './App.css'
 import {getChannelDisplayInfo} from './services/api'
 
 const Header = () => (
-  <div class="greenBox" id="Header">
-    <img src="https://raw.githubusercontent.com/UisDangerouz/DeskYoo/master/logo.png" alt="DeskYoo" width="400px" height="auto"></img>
+  <div className='greenBox' id='Header'>
+    <img src='https://raw.githubusercontent.com/UisDangerouz/DeskYoo/master/logo.png' alt='DeskYoo' width='400px' height='auto'></img>
   </div>
 )
 
 const UserInfo = ({user}) => (
-  <div class="yellowBox">
+  <div className='yellowBox'>
     <p>{user.points} Yoo Points</p>
     <p>UserID: {user.id}</p>
   </div>

@@ -52,9 +52,12 @@ const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
     border: br,
     textAlign: 'left',
     padding: '2%',
-    width: '100%',
+    width: '90%',
     borderRadius: '10px',
-    margin: '1%'
+    marginTop: '0%',
+    marginLeft: '0%',
+    marginRight: '0%',
+    marginBottom: '3%'
   }
 
   return (
@@ -69,7 +72,8 @@ const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
         <button className="likeButton">▼</button>
       </div>
     </div>
-)}
+  )
+}
 
 const handleThreadClick = (event, channelId, threadId, sm) => {
   event.preventDefault()
@@ -162,17 +166,25 @@ const OpenedThreadBox = ({text, likes, location, cm}) => {
     border: br,
     textAlign: 'left',
     padding: '2%',
-    width: '100%',
+    width: '90%',
     borderRadius: '10px',
-    margin: '1%'
+    margin: '0%'
   }
 
   return (
-  <button onClick={e => handleOpenedThreadClick(e, cm)}  style={styles} className='message'>
-    <span> {text} 👤</span><br></br>
-    <span>📍{location}</span>
-  </button>
-)}
+    <div>
+      <button onClick={e => handleOpenedThreadClick(e, cm)}  style={styles} className='message'>
+        <span> {text} 👤</span><br></br>
+        <span>📍{location}</span>
+      </button>
+      <div className="messageLikeContainer">
+        <button className="likeButton">▲</button>
+        <p id="likeText">{likes}</p>
+        <button className="likeButton">▼</button>
+      </div>
+    </div>
+  )
+}
 
 const handleOpenedThreadClick = (event, cm) => {
   event.preventDefault()

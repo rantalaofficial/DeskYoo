@@ -117,7 +117,7 @@ class MessageData {
     }
 }
 
-const msgData = new MessageData(["Main", "Kerttuli", "tunnustukset"])
+const msgData = new MessageData(["Main", "Kerttuli", "tunnustukset", "seksi", "äiät"])
 
 
 module.exports = msgData;

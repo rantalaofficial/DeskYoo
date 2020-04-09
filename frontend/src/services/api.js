@@ -17,9 +17,18 @@ const getThreadDisplayInfo = (id, cb) => {
   })
 }
 
+const getAnswersDisplayInfo = (channelId, threadId, cb) => {
+  socket.emit('GETANSWERSDISPLAYINFO', [channelId, threadId])
+  socket.on('ANSWERSDISPLAYINFO', data => {
+    console.log(data)
+    cb(data)
+  })
+}
+
 const apiHelper = {
   getChannelDisplayInfo,
-  getThreadDisplayInfo
+  getThreadDisplayInfo,
+  getAnswersDisplayInfo
 }
 
 export default apiHelper

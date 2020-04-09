@@ -15,8 +15,10 @@ const UserInfo = ({user}) => (
   </div>
 )
 
-const MessageBox = ({text, author, location}) => (
-    <p className='greenBox message'>{text} @{author} {location}</p>
+const MessageBox = ({text, likes, location}) => (
+    <div className='greenBox message'>
+      <p>{text} @{likes} {location}</p>
+    </div>
 )
 
 const Messages = ({messages}) => (
@@ -24,27 +26,67 @@ const Messages = ({messages}) => (
     {messages.map((message, i) =>
       <MessageBox key={i} 
       text={message.text} 
-      author={message.author}
+      likes={message.likes}
       location={message.location}
       />
     )}
   </div>
 )
 
-const ThreadBox = ({text, likes, location}) => (
-  <div className='redBox message'>
-    <span>{text} 👤</span><br></br>
-    <span>📍{location}</span>
-  </div>
-)
+const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
+  const colorPicker = Math.floor(Math.random()*5)
 
-const Threads = ({threads}) => (
+  const colors=[
+    ['#e75656', ' #e70b0b'],
+    ['#d62f2f', ' #d67a7a'],
+    ['#bf1d66', ' #bf68b0'],
+    ['#c92e55', ' #c979a0'],
+    ['#de2a54', ' #de75aa']]
+
+  const bc=colors[colorPicker][0]
+  const br=('2px solid').concat(colors[colorPicker][1])
+
+
+  const styles = {
+    backgroundColor: bc,
+    border: br,
+    textAlign: 'left',
+    padding: '2%',
+    width: '100%',
+    borderRadius: '10px',
+    margin: '1%'
+  }
+
+  return (
+  <button onClick={e => handleThreadClick(e, channelId, threadId, sm)}  style={styles} className='message'>
+    <span> {text} 👤</span><br></br>
+    <span>📍{location}</span>
+  </button>
+)}
+
+const handleThreadClick = (event, channelId, threadId, sm) => {
+  event.preventDefault()
+  console.log(channelId)
+  apiHelper.getAnswersDisplayInfo(channelId, threadId, (data) => {
+    console.log(data)
+    data.map(message => {
+      message.threadId=threadId
+      message.channelId=channelId
+    })
+    sm(data)
+  })
+}
+
+const Threads = ({threads, sm}) => (
 <div>
   {threads.map((thread, i) =>
-    <ThreadBox key={i} 
+    <ThreadBox key={i}
+    channelId={thread.channelId}
+    threadId={i} 
     text={thread.text} 
     likes={thread.likes}
     location={thread.location}
+    sm={sm}
     />
   )}
 </div>
@@ -61,6 +103,10 @@ const handleChannelClick = (event, id, st) => {
   event.preventDefault()
   console.log(id)
   apiHelper.getThreadDisplayInfo(id, (data) => {
+    console.log(data)
+    data.map(thread => {
+      thread.channelId=id
+    })
     console.log(data)
     st(data)
   })
@@ -88,6 +134,42 @@ const Channels = ({channels, st}) => {
       </div>
     )
   }
+}
+
+const OpenedThreadBox = ({text, likes, location, cm}) => {
+  const colorPicker = Math.floor(Math.random()*5)
+
+  const colors=[
+    ['#e75656', ' #e70b0b'],
+    ['#d62f2f', ' #d67a7a'],
+    ['#bf1d66', ' #bf68b0'],
+    ['#c92e55', ' #c979a0'],
+    ['#de2a54', ' #de75aa']]
+
+  const bc=colors[colorPicker][0]
+  const br=('2px solid').concat(colors[colorPicker][1])
+
+
+  const styles = {
+    backgroundColor: bc,
+    border: br,
+    textAlign: 'left',
+    padding: '2%',
+    width: '100%',
+    borderRadius: '10px',
+    margin: '1%'
+  }
+
+  return (
+  <button onClick={e => handleOpenedThreadClick(e, cm)}  style={styles} className='message'>
+    <span> {text} 👤</span><br></br>
+    <span>📍{location}</span>
+  </button>
+)}
+
+const handleOpenedThreadClick = (event, cm) => {
+  event.preventDefault()
+  cm()
 }
 
 const testMessages = [{
@@ -134,8 +216,17 @@ const App = () => {
   const [user, setUser] = useState(testUser)
 
   const setToThreads = (data) => {
-    setThreads(data)
     console.log('here')
+    setThreads(data)
+  }
+
+  const setToMessages = (data) => {
+    console.log('here 2')
+    setMessages(data)
+  }
+
+  const closeMessages = () => {
+    setMessages([])
   }
 
   useEffect(() => {
@@ -148,14 +239,23 @@ const App = () => {
       <div className='row'>
         <div id='channelColumn'>
           <UserInfo user={user} />
-          <Channels channels={channels} st={setToThreads} />
+          <Channels channels={channels}
+          st={setToThreads} />
         </div>
         <div id='messageColumn'>
           {messages.length!==0 
           ? 
-          <Messages messages={messages} />
+          <div>
+            <OpenedThreadBox 
+            text={threads[messages[0].threadId].text} 
+            likes={threads[messages[0].threadId].likes} 
+            location={threads[messages[0].threadId].location}
+            cm={closeMessages}
+            />
+            <Messages messages={messages} />
+          </div>
           : 
-          <Threads threads={threads} />}
+          <Threads threads={threads} sm={setToMessages} />}
         </div>
       </div>
     </div>

@@ -47,8 +47,8 @@ const Threads = ({threads}) => (
 </div>
 )
 
-const ChannelBox = ({id, name, followers}) => (
-  <button onClick={e => handleChannelClick(e, id)} className='greenBox channelInfo'>
+const ChannelBox = ({id, name, followers, st}) => (
+  <button onClick={e => handleChannelClick(e, id, st)} className='greenBox channelInfo'>
      #<b>{name}</b><br></br>
      <span>{followers} 👤</span> 
   </button>

@@ -3,20 +3,20 @@ import './App.css'
 import apiHelper from './services/api'
 
 const Header = () => (
-  <div className='greenBox' id='Header'>
-    <img src='https://raw.githubusercontent.com/UisDangerouz/DeskYoo/master/logo.png' alt='DeskYoo' width='400px' height='auto'></img>
+  <div className="greenBox" id="Header">
+    <img src="https://raw.githubusercontent.com/UisDangerouz/DeskYoo/master/logo.png" alt="DeskYoo" width="400px" height="auto"></img>
   </div>
 )
 
 const UserInfo = ({user}) => (
-  <div className='yellowBox'>
+  <div className="yellowBox" id="UserInfo">
     <p>{user.points} Yoo Points</p>
     <p>UserID: {user.id}</p>
   </div>
 )
 
 const MessageBox = ({text, author, location}) => (
-    <p className='message'>{text} @{author} {location}</p>
+    <p className='greenBox message'>{text} @{author} {location}</p>
 )
 
 const Messages = ({messages}) => (
@@ -47,11 +47,10 @@ const Threads = ({threads}) => (
 </div>
 )
 
-const ChannelBox = ({id, name, followers, st}) => (
-  <button onClick={e => handleChannelClick(e, id, st)} className='channelInfo'>
-    <div>
-     <p><b>{name}</b> {followers} </p>
-    </div>
+const ChannelBox = ({id, name, followers}) => (
+  <button onClick={e => handleChannelClick(e, id)} className='greenBox channelInfo'>
+     #<b>{name}</b><br></br>
+     <span>{followers} 👤</span> 
   </button>
 )
 

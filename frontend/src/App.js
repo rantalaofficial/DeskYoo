@@ -16,7 +16,7 @@ const UserInfo = ({user}) => (
 )
 
 const MessageBox = ({text, author, location}) => (
-    <p className='message'>{text} @{author} {location}</p>
+    <p className='greenBox message'>{text} @{author} {location}</p>
 )
 
 const Messages = ({messages}) => (
@@ -122,7 +122,7 @@ const App = () => {
           <Channels channels={channels} />
         </div>
         <div id='messageColumn'>
-          <Messages messages={messages} />
+          <Messages messages={testMessages} />
         
           {/*{messages 
           ? 

@@ -32,20 +32,17 @@
 #channelColumn {
   float: left;
   text-align: left;
-  padding: 2%;
-  padding-left: 8%;
-  width: 40%;
-  background-color: blue;
+  padding: 3%;
+  width: 25%;
 }
 
 #messageColumn {
   float: right;
   text-align: left;
-  padding: 2%;
-  padding-left: 8%;
-  width: 40%;
+  padding: 3%;
+  padding-left: 0%;
+  width: 66%;
   height: 500px;
-  background-color: red;
 }
 
 .channelInfo {
@@ -56,9 +53,9 @@
 }
 
 .message {
-  background-color: #77dd77;
-  border-style: double;
-  border-width: 3px;
+  text-align: left;
+  padding: 2%;
+  margin: 1%;
 }
 
 .row:after {

@@ -6,7 +6,9 @@ const msgData = require('./serverModules/messageData');
 
 msgData.addThread(0, "Mitä sait matikan alustavista", "Turku")
 
-console.log(msgData.channels[0].msgThreads)
+msgData.addAnswer(0, 0, "Sain täydet!!", "Turku")
+
+console.log(msgData.getAnswersDisplayInfo(0, 0))
 
 //APP SETUP
 const serverPort = 8080;
@@ -31,10 +33,29 @@ io.on('connection', (socket) => {
         console.log("User disconnected!")
     });
 
-    socket.on('EXAMPLE', (data) => {
-        //EXAMPLE HANDLER
-        console.log("Example!")
+    socket.on("GETCHANNELSDISPLAYINFO", () => {
+        socket.emit("CHANNELDISPLAYINFO", msgData.getChannelsDisplayInfo());
     });
+
+    socket.on("GETTHREADSDISPLAYINFO", (channelID) => {
+        let threadsDisplayInfo = msgData.getThreadsDisplayInfo(channelID);
+        if(!threadsDisplayInfo) {
+            console.log("ThreadDisplayInfo Request is invalid!")
+            return;
+        }
+
+        socket.emit("THREADSDISPLAYINFO", threadsDisplayInfo);
+    });
+
+    socket.on("GETANSWERSDISPLAYINFO", (IDs) => {
+        if(!Array.isArray(IDs) || IDs.length != 2 || !msgData.threadExists(IDs[0], IDs[1])) {
+            console.log("AnswersDisplayInfo Request is invalid!")
+            return;
+        }
+
+        socket.emit("ANSWERSDISPLAYINFO", msgData.getAnswersDisplayInfo(IDs[0], IDs[1]))
+    });
+
 });
 
 

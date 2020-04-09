@@ -15,7 +15,14 @@ class MessageData {
     }
 
     threadExists(channelID, threadID) {
-        if(channelExists(channelID) == false || threadID < 0 || threadID > this.channels[channelID].msgThreads.length) {
+        if(this.channelExists(channelID) == false || threadID < 0 || threadID > this.channels[channelID].msgThreads.length) {
+            return false;
+        }
+        return true;
+    }
+
+    answerExists(channelID, threadID, answerID) {
+        if(this.threadExists(channelID, threadID) == false || answerID < 0 || answerID > this.channels[channelID].msgThreads[threadID].answers.length) {
             return false;
         }
         return true;
@@ -47,10 +54,75 @@ class MessageData {
 
         this.channels[channelID].msgThreads[threadID].answers.push({text: text, likes: 0, location: location})
     }
+
+    likeThread(channelID, threadID, likes = true) {
+        if(!this.threadExists(channelID, threadID)) {
+            return false;
+        }
+
+        if(likes) {
+            this.channels[channelID].msgThreads[threadID].likes++;
+        } else {
+            this.channels[channelID].msgThreads[threadID].likes--;
+        }
+        
+    }
+
+    likeAnswer(channelID, threadID, answerID, likes = true) {
+        if(!this.answerExists(channelID, threadID, answerID)) {
+            return false;
+        }
+
+        if(likes) {
+            this.channels[channelID].msgThreads[threadID].answers[answerID].likes++;
+        } else {
+            this.channels[channelID].msgThreads[threadID].answers[answerID].likes--;
+        }
+        
+    }
+
+    //GETTERS
+    getChannelsDisplayInfo() {
+        let channelsDisplayInfo = [];
+
+        for(let i = 0; i < this.channels.length; i++) {
+            channelsDisplayInfo.push({name: this.channels[i].name, followers: this.channels[i].followers})
+        }
+        return channelsDisplayInfo;
+    }
+
+    getThreadsDisplayInfo(channelID) {
+        if(!this.channelExists(channelID)) {
+            return false;
+        }
+
+        let threadsDisplayInfo = []
+
+        let channel = this.channels[channelID]
+
+        for(let i = 0; i < channel.msgThreads.length; i++) {
+            threadsDisplayInfo.push({text: channel.msgThreads[i].text, likes: channel.msgThreads[i].likes, location: channel.msgThreads[i].location})
+        }
+        return threadsDisplayInfo;
+    }
+
+    getAnswersDisplayInfo(channelID, threadID) {
+        if(!this.threadExists(channelID, threadID)) {
+            return false;
+        }
+
+        let answersDisplayInfo = []
+
+        let thread = this.channels[channelID].msgThreads[threadID]
+
+        for(let i = 0; i < thread.answers.length; i++) {
+            answersDisplayInfo.push({text: thread.answers[i], likes: thread.answers[i].likes, location: thread.answers[i].location})
+        }
+        return answersDisplayInfo;
+    }
 }
 
 const msgData = new MessageData(["Main", "Kerttuli", "tunnustukset"])
-
 
 
 module.exports = msgData;

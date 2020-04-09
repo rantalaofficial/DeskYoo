@@ -32,18 +32,10 @@ const Messages = ({messages}) => (
 )
 
 const ChannelBox = ({id, name, followers}) => (
-<<<<<<< HEAD
   <button onClick={e => handleChannelClick(e, id)} className='channelInfo'>
     <div>
      <p><b>{name}</b> {followers} </p>
     </div>
-=======
-  <button onClick={handleChannelChange} id={id} class="greenBox">
-    <div>
-     <p><b>{name}</b> {followers} </p>
-    </div>
-    <img id={id} className='channelButton'></img>
->>>>>>> fab9b89463bb76fae09b8a9a3b9b2dbfc961cedc
   </button>
 )
 

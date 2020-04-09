@@ -1,24 +1,31 @@
-#bar {
-  background-color: rgb(218, 14, 150);
-  font-family:'Impact';
-  font-size: 30px;
+.greenBox {
+  background-color: #b3ffb9;
   text-align: center;
-  padding: 1%;
+  padding: 0;
+  border-radius: 10px;
+  border: 2px solid green;
+  margin: 4px;
 }
 
-#bar2 {
-  background-color: rgb(128, 20, 92);
-  font-family:'Impact';
-  font-size: 20px;
+.yellowBox {
+  background-color: #e6d302;
   text-align: center;
+  padding: 0;
+  border-radius: 10px;
+  border: 2px solid yellow;
+  margin: 4px;
 }
 
-#userInfo {
-  text-align: center;
-  background-color: yellow;
-  border-style: double;
-  border-width: 3px;
-  margin-bottom: 50px;
+#Header {
+  margin: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  width: 80%;
+}
+
+#UserInfo {
+  width: 20%;
 }
 
 #channelColumn {
@@ -36,9 +43,6 @@
 }
 
 .channelInfo {
-  background-color: #77dd77;
-  border-style: double;
-  border-width: 3px;
   text-align: left;
   font-size: medium;
   margin-bottom: 10px;
@@ -48,7 +52,7 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50px;
+  width: 20%;
 }
 
 .message {
@@ -66,3 +70,4 @@
 body {
   background-color: #dedede;
 }
+

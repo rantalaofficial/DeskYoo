@@ -2,15 +2,14 @@ import React, {useState, useEffect} from 'react'
 import './App.css'
 import {getChannelDisplayInfo} from './services/api'
 
-const Bar = () => (
-  <div>
-    <h2 id='bar'>DeskYoo</h2>
-    <h2 id='bar2'>Better than Jodel</h2>
+const Header = () => (
+  <div class="greenBox" id="Header">
+    <img src="https://raw.githubusercontent.com/UisDangerouz/DeskYoo/master/logo.png" alt="DeskYoo" width="400px" height="auto"></img>
   </div>
 )
 
 const UserInfo = ({user}) => (
-  <div id='userInfo'>
+  <div class="yellowBox">
     <p>{user.points} Yoo Points</p>
     <p>UserID: {user.id}</p>
   </div>
@@ -33,10 +32,18 @@ const Messages = ({messages}) => (
 )
 
 const ChannelBox = ({id, name, followers}) => (
+<<<<<<< HEAD
   <button onClick={e => handleChannelClick(e, id)} className='channelInfo'>
     <div>
      <p><b>{name}</b> {followers} </p>
     </div>
+=======
+  <button onClick={handleChannelChange} id={id} class="greenBox">
+    <div>
+     <p><b>{name}</b> {followers} </p>
+    </div>
+    <img id={id} className='channelButton'></img>
+>>>>>>> fab9b89463bb76fae09b8a9a3b9b2dbfc961cedc
   </button>
 )
 
@@ -117,7 +124,7 @@ const App = () => {
 
   return (
     <div>
-      <Bar />
+      <Header/>
       <div className='row'>
         <div id='channelColumn'>
           <UserInfo user={user} />

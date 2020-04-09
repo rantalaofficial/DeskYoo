@@ -16,6 +16,15 @@
   margin: 4px;
 }
 
+.redBox {
+  background-color: rgb(231, 86, 86);
+  text-align: center;
+  padding: 0px;
+  border-radius: 10px;
+  border: 2px solid rgb(231, 11, 11);
+  margin: 4px;
+}
+
 #Header {
   margin: 0px;
   margin-left: auto;
@@ -53,6 +62,12 @@
 }
 
 .message {
+  text-align: left;
+  padding: 2%;
+  margin: 1%;
+}
+
+.like {
   text-align: left;
   padding: 2%;
   margin: 1%;

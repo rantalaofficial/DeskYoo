@@ -32,7 +32,10 @@ const Messages = ({messages}) => (
 )
 
 const ThreadBox = ({text, likes, location}) => (
-  <p className='message'>{likes }{text} {location}</p>
+  <div className='redBox message'>
+    <span>{text} 👤</span><br></br>
+    <span>📍{location}</span>
+  </div>
 )
 
 const Threads = ({threads}) => (

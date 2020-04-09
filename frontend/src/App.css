@@ -51,7 +51,6 @@
   padding: 3%;
   padding-left: 0%;
   width: 66%;
-  height: 500px;
 }
 
 .channelInfo {
@@ -67,11 +66,29 @@
   margin: 1%;
 }
 
-.like {
-  text-align: left;
-  padding: 2%;
-  margin: 1%;
+.messageLikeContainer {
+  float: right;
+  margin: 0;
+  padding: 0;
+  margin-top: -2%;
+  margin-right: -2%;
 }
+.likeButton {
+  float: right;
+  margin-top: -10%;
+  margin-bottom: -10%;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+}
+#likeText {
+  text-align: center;
+  margin: 0;
+}
+
+
 
 .row:after {
   content: "";

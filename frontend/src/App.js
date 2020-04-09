@@ -33,7 +33,15 @@ const Messages = ({messages}) => (
 
 const ThreadBox = ({text, likes, location}) => (
   <div className='redBox message'>
-    <span>{text} 👤</span><br></br>
+    
+    
+    <div className="messageLikeContainer">
+        <button className="likeButton">▲</button>
+        <p id="likeText">{likes}</p>
+        <button className="likeButton">▼</button>
+    </div>
+
+    <span>{text}</span><br></br>
     <span>📍{location}</span>
   </div>
 )

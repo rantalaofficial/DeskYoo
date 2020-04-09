@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './App.css'
-import socketIOClient from "socket.io-client"
+import {getChannelDisplayInfo} from './services/api'
 
 const Bar = () => (
   <div>
@@ -33,24 +33,36 @@ const Messages = ({messages}) => (
 )
 
 const ChannelBox = ({id, name, followers}) => (
-  <div className='channelInfo'>
-    <b>{name}</b><br></br>
-    {followers}
-    <input id={id} onClick={handleChannelChange} className='channelButton' type="image" src="arrow.png" />
-  </div>
+  <button onClick={handleChannelChange} id={id} className='channelInfo'>
+    <div>
+     <p><b>{name}</b> {followers} </p>
+    </div>
+    <img id={id} className='channelButton' src='arrow.png'></img>
+  </button>
 )
 
-const Channels = ({channels}) => (
-  <div>
-    {channels.map((channel, i) =>
-      <ChannelBox key={i}
-      id={channel.id} 
-      name={channel.name} 
-      followers={channel.followers}
-      />
-    )}
-  </div>
-)
+const Channels = ({channels}) => {
+  if(channels){
+    return(
+      <div>
+        {channels.map((channel, i) =>
+          <ChannelBox key={i}
+          id={i} 
+          name={channel.name} 
+          followers={channel.followers}
+          />
+        )}
+      </div>
+    )
+  }
+  else{
+    return(
+      <div>
+
+      </div>
+    )
+  }
+}
 
 const handleChannelChange = (event) => {
   console.log(event.target.id)
@@ -96,8 +108,10 @@ const testUser = {
 const App = () => {
   const [messages, setMessages] = useState([])
   const [threads, setThreads] = useState([])
-  const [channels, setChannels] = useState(testChannels)
+  const [channels, setChannels] = useState([])
   const [user, setUser] = useState(testUser)
+
+  getChannelDisplayInfo((data) => setChannels(data))
 
   return (
     <div>

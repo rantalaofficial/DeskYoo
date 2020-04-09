@@ -58,10 +58,17 @@ const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
   }
 
   return (
-  <button onClick={e => handleThreadClick(e, channelId, threadId, sm)}  style={styles} className='message'>
-    <span> {text} 👤</span><br></br>
-    <span>📍{location}</span>
-  </button>
+    <div>
+      <button onClick={e => handleThreadClick(e, channelId, threadId, sm)}  style={styles} className='message'>  
+        <span> {text} 👤</span><br></br>
+        <span>📍{location}</span>
+      </button>
+      <div className="messageLikeContainer">
+        <button className="likeButton">▲</button>
+        <p id="likeText">{likes}</p>
+        <button className="likeButton">▼</button>
+      </div>
+    </div>
 )}
 
 const handleThreadClick = (event, channelId, threadId, sm) => {

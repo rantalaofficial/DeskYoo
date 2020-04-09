@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './App.css'
-import {getChannelDisplayInfo} from './services/api'
+import apiHelper from './services/api'
 
 const Header = () => (
   <div className='greenBox' id='Header'>
@@ -31,20 +31,40 @@ const Messages = ({messages}) => (
   </div>
 )
 
-const ChannelBox = ({id, name, followers}) => (
-  <button onClick={e => handleChannelClick(e, id)} className='channelInfo'>
+const ThreadBox = ({text, likes, location}) => (
+  <p className='message'>{likes }{text} {location}</p>
+)
+
+const Threads = ({threads}) => (
+<div>
+  {threads.map((thread, i) =>
+    <ThreadBox key={i} 
+    text={thread.text} 
+    likes={thread.likes}
+    location={thread.location}
+    />
+  )}
+</div>
+)
+
+const ChannelBox = ({id, name, followers, st}) => (
+  <button onClick={e => handleChannelClick(e, id, st)} className='channelInfo'>
     <div>
      <p><b>{name}</b> {followers} </p>
     </div>
   </button>
 )
 
-const handleChannelClick = (event, id) => {
+const handleChannelClick = (event, id, st) => {
   event.preventDefault()
   console.log(id)
+  apiHelper.getThreadDisplayInfo(id, (data) => {
+    console.log(data)
+    st(data)
+  })
 }
 
-const Channels = ({channels}) => {
+const Channels = ({channels, st}) => {
   if(channels){
     return(
       <div>
@@ -53,6 +73,7 @@ const Channels = ({channels}) => {
           id={i} 
           name={channel.name} 
           followers={channel.followers}
+          st={st}
           />
         )}
       </div>
@@ -110,8 +131,13 @@ const App = () => {
   const [channels, setChannels] = useState([])
   const [user, setUser] = useState(testUser)
 
+  const setToThreads = (data) => {
+    setThreads(data)
+    console.log('here')
+  }
+
   useEffect(() => {
-    getChannelDisplayInfo((data) => setChannels(data))
+    apiHelper.getChannelDisplayInfo((data) => setChannels(data))
   },[])
 
   return (
@@ -120,16 +146,14 @@ const App = () => {
       <div className='row'>
         <div id='channelColumn'>
           <UserInfo user={user} />
-          <Channels channels={channels} />
+          <Channels channels={channels} st={setToThreads} />
         </div>
         <div id='messageColumn'>
-          <Messages messages={messages} />
-        
-          {/*{messages 
+          {messages.length!==0 
           ? 
           <Messages messages={messages} />
           : 
-          <Threads threads={threads} />}*/}
+          <Threads threads={threads} />}
         </div>
       </div>
     </div>

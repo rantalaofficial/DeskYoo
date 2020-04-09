@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelID) => {
+        console.log(`Channel id ${channelID} ${typeof channelID}`)
         let threadsDisplayInfo = msgData.getThreadsDisplayInfo(channelID);
         if(!threadsDisplayInfo) {
             console.log("ThreadDisplayInfo Request is invalid!")

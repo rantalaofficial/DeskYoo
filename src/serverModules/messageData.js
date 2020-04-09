@@ -83,12 +83,7 @@ class MessageData {
 
     //GETTERS
     getChannelsDisplayInfo() {
-        let channelsDisplayInfo = [];
-
-        for(let i = 0; i < this.channels.length; i++) {
-            channelsDisplayInfo.push({name: this.channels[i].name, followers: this.channels[i].followers})
-        }
-        return channelsDisplayInfo;
+        return this.channels.map((channel, i) => ({name: this.channels[i].name, followers: this.channels[i].followers}))
     }
 
     getThreadsDisplayInfo(channelID) {
@@ -96,14 +91,13 @@ class MessageData {
             return false;
         }
 
-        let threadsDisplayInfo = []
-
         let channel = this.channels[channelID]
 
-        for(let i = 0; i < channel.msgThreads.length; i++) {
-            threadsDisplayInfo.push({text: channel.msgThreads[i].text, likes: channel.msgThreads[i].likes, location: channel.msgThreads[i].location})
+        if(!channel){
+            return false;
         }
-        return threadsDisplayInfo;
+
+        return channel.msgThreads.map(thread => ({text: thread.text, likes: thread.likes, location: thread.location}))
     }
 
     getAnswersDisplayInfo(channelID, threadID) {
@@ -118,6 +112,7 @@ class MessageData {
         for(let i = 0; i < thread.answers.length; i++) {
             answersDisplayInfo.push({text: thread.answers[i], likes: thread.answers[i].likes, location: thread.answers[i].location})
         }
+
         return answersDisplayInfo;
     }
 }

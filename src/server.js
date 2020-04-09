@@ -1,6 +1,13 @@
 const express = require('express');
 const socket = require('socket.io');
 
+//SERVER MODULES
+const msgData = require('./serverModules/messageData');
+
+msgData.addThread(0, "Mitä sait matikan alustavista", "Turku")
+
+console.log(msgData.channels[0].msgThreads)
+
 //APP SETUP
 const serverPort = 8080;
 const app = express();
@@ -29,3 +36,10 @@ io.on('connection', (socket) => {
         console.log("Example!")
     });
 });
+
+
+
+
+
+
+

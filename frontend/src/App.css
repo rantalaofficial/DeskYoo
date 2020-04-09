@@ -1,0 +1,66 @@
+#bar {
+  background-color: rgb(218, 14, 150);
+  font-family:'Impact';
+  font-size: 30px;
+  text-align: center;
+  padding: 1%;
+}
+
+#bar2 {
+  background-color: rgb(128, 20, 92);
+  font-family:'Impact';
+  font-size: 20px;
+  text-align: center;
+}
+
+#userInfo {
+  text-align: center;
+  background-color: yellow;
+  border-style: double;
+  border-width: 3px;
+  margin-bottom: 50px;
+}
+
+#channelColumn {
+  float: left;
+  width: 30%;
+  text-align: left;
+  padding: 5%;
+}
+
+#messageColumn {
+  float: left;
+  width: 50%;
+  text-align: left;
+  padding: 5%;
+}
+
+.channelInfo {
+  background-color: #77dd77;
+  border-style: double;
+  border-width: 3px;
+  text-align: left;
+  font-size: medium;
+  margin-bottom: 10px;
+}
+
+.channelInfo .channelButton {
+  position: relative;
+  width: 50px;
+}
+
+.message {
+  background-color: #77dd77;
+  border-style: double;
+  border-width: 3px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body {
+  background-color: #dedede;
+}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './App.css'
 import {getChannelDisplayInfo} from './services/api'
 
@@ -33,13 +33,17 @@ const Messages = ({messages}) => (
 )
 
 const ChannelBox = ({id, name, followers}) => (
-  <button onClick={handleChannelChange} id={id} className='channelInfo'>
+  <button onClick={e => handleChannelClick(e, id)} className='channelInfo'>
     <div>
      <p><b>{name}</b> {followers} </p>
     </div>
-    <img id={id} className='channelButton' src='arrow.png'></img>
   </button>
 )
+
+const handleChannelClick = (event, id) => {
+  event.preventDefault()
+  console.log(id)
+}
 
 const Channels = ({channels}) => {
   if(channels){
@@ -62,10 +66,6 @@ const Channels = ({channels}) => {
       </div>
     )
   }
-}
-
-const handleChannelChange = (event) => {
-  console.log(event.target.id)
 }
 
 const testMessages = [{
@@ -111,7 +111,9 @@ const App = () => {
   const [channels, setChannels] = useState([])
   const [user, setUser] = useState(testUser)
 
-  getChannelDisplayInfo((data) => setChannels(data))
+  useEffect(() => {
+    getChannelDisplayInfo((data) => setChannels(data))
+  },[])
 
   return (
     <div>

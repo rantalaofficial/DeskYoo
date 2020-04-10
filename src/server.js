@@ -19,6 +19,25 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 const io = socket(server);
 
+/*
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://DeskYooBackend:VeryGoodPassWord54352@cluster0-n1ait.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+client.connect((err, db) => {
+    if (err) throw err;
+
+    let usersCollection = db.db("DeskYooDB1").collection("users").insertOne({test: "123"}, (err, res) => {
+        if (err) throw err;
+        console.log("onnistui")
+        client.close();
+    });
+    // perform actions on the collection object
+    
+
+});
+*/
+
+
 io.on('connection', (socket) => {
     //CONNECTION
     console.log(socket.id + " connected!")

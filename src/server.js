@@ -3,6 +3,7 @@ const socket = require('socket.io');
 
 //SERVER MODULES
 const msgData = require('./serverModules/messageData');
+const userData = require('./serverModules/userData');
 
 //APP SETUP
 const serverPort = 8080;
@@ -18,20 +19,35 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 const io = socket(server);
 
-
 io.on('connection', (socket) => {
+    //CONNECTION
     console.log(socket.id + " connected!")
 
+    //DISCONNECTION
     socket.on('disconnect', () => {
-        //DISCONNECT
-        console.log("User disconnected!")
+        //WHEN DISCONNECTING, LOGOUT
+        console.log("Logout: " + userData.logout(socket.id))
+        console.log(userData.users)
     });
 
+    //LOGIN / REGISTER API
+    socket.on("LOGIN", (data) => {
+        let userID = userData.login(data[0], data[1], socket.id)
+        //FALSE MEANS LOGIN FAILED, ID MEANS LOGIN SUCCESS
+        socket.emit("LOGINSTATUS", userID)
+    });
+
+    //GET DATA API
+
     socket.on("GETCHANNELSDISPLAYINFO", () => {
+        if(!userData.isLogged(socket.id)) return;
+
         socket.emit("CHANNELDISPLAYINFO", msgData.getChannelsDisplayInfo());
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelID) => {
+        if(!userData.isLogged(socket.id)) return;
+
         console.log(`Channel id ${channelID} ${typeof channelID}`)
         let threadsDisplayInfo = msgData.getThreadsDisplayInfo(channelID);
         if(!threadsDisplayInfo) {
@@ -43,6 +59,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on("GETANSWERSDISPLAYINFO", (IDs) => {
+        if(!userData.isLogged(socket.id)) return;
+
         if(!Array.isArray(IDs) || IDs.length != 2 || !msgData.threadExists(IDs[0], IDs[1])) {
             console.log("AnswersDisplayInfo Request is invalid!")
             return;

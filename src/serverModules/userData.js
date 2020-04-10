@@ -86,6 +86,16 @@ class UserData {
         }
         return false;  
     }
+
+    getUserDisplayInfo(socketID) {
+        let userID = this.getUserIDWithSocketID(socketID)
+        if(!userID) {
+            return false;
+        }
+        let user = this.users[userID]
+
+        return {username: user.username, score: user.score}
+    }
 }
 
 const userData = new UserData();

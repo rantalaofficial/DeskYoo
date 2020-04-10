@@ -51,7 +51,17 @@ io.on('connection', (socket) => {
         socket.emit("REGISTERSUCCESS", userID)
     })
 
-    //GET DATA API
+    //USER GETTER API
+    socket.on("GETUSERDISPLAYINFO", () => {
+        if(!userData.isLogged(socket.id)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
+
+        socket.emit("USERDISPLAYINFO", userData.getUserDisplayInfo(socket.id))
+    });
+
+    //MESSAGE GETTER API
     socket.on("GETCHANNELSDISPLAYINFO", () => {
         if(!userData.isLogged(socket.id)) {
             socket.emit("USERERROR", "Not logged in");

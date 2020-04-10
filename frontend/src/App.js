@@ -84,6 +84,7 @@ const handleThreadClick = (event, channelId, threadId, sm) => {
       message.threadId=threadId
       message.channelId=channelId
     })
+    console.log(data)
     sm(data)
   })
 }
@@ -147,7 +148,7 @@ const Channels = ({channels, st}) => {
   }
 }
 
-const OpenedThreadBox = ({text, likes, location, cm}) => {
+const OpenedThreadBox = ({openedThread, cm}) => {
   const colorPicker = Math.floor(Math.random()*5)
 
   const colors=[
@@ -174,12 +175,12 @@ const OpenedThreadBox = ({text, likes, location, cm}) => {
   return (
     <div>
       <button onClick={e => handleOpenedThreadClick(e, cm)}  style={styles} className='message'>
-        <span> {text} 👤</span><br></br>
-        <span>📍{location}</span>
+        <span> {openedThread.text} 👤</span><br></br>
+        <span>📍{openedThread.location}</span>
       </button>
       <div className="messageLikeContainer">
         <button className="likeButton">▲</button>
-        <p id="likeText">{likes}</p>
+        <p id="likeText">{openedThread.likes}</p>
         <button className="likeButton">▼</button>
       </div>
     </div>
@@ -230,6 +231,7 @@ const testUser = {
 
 const App = () => {
   const [messages, setMessages] = useState([])
+  const [openedThread, setOpenedThread] = useState({})
   const [threads, setThreads] = useState([])
   const [channels, setChannels] = useState([])
   const [user, setUser] = useState(testUser)
@@ -242,6 +244,8 @@ const App = () => {
   const setToMessages = (data) => {
     console.log('here 2')
     setMessages(data)
+
+    setOpenedThread(threads[data[0].threadId])
   }
 
   const closeMessages = () => {
@@ -266,15 +270,14 @@ const App = () => {
           ? 
           <div>
             <OpenedThreadBox 
-            text={threads[messages[0].threadId].text} 
-            likes={threads[messages[0].threadId].likes} 
-            location={threads[messages[0].threadId].location}
+            openedThread={openedThread}
             cm={closeMessages}
             />
             <Messages messages={messages} />
           </div>
           : 
-          <Threads threads={threads} sm={setToMessages} />}
+          <Threads threads={threads}
+          sm={setToMessages} />}
         </div>
       </div>
     </div>

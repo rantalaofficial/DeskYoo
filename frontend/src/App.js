@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './App.css'
-import apiHelper from './services/api'
+import dataHelper from './services/dataApi'
+import userHelper from './services/userApi'
 import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
 import OpenedThreadBox from './components/boxes/OpenedThreadBox'
@@ -9,18 +10,13 @@ import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
 import OpenedChannels from './components/holders/OpenedChannels'
 
-const testUser = {
-  points: 2000,
-  id: 69
-}
-
 const App = () => {
   const [messages, setMessages] = useState([])
   const [openedThread, setOpenedThread] = useState({})
   const [threads, setThreads] = useState([])
   const [openedChannel, setOpenedChannel] = useState(null)
   const [channels, setChannels] = useState([])
-  const [user, setUser] = useState(testUser)
+  const [user, setUser] = useState([])
 
   const setToThreads = (data) => {
     setThreads([])
@@ -54,7 +50,11 @@ const App = () => {
   }
 
   useEffect(() => {
-    apiHelper.getChannelDisplayInfo((data) => setChannels(data))
+    userHelper.login(['Aapooo', '22222222', ], (data) => setUser(data))
+  },[])
+
+  useEffect(() => {
+    dataHelper.getChannelDisplayInfo((data) => setChannels(data))
   },[])
 
   return (

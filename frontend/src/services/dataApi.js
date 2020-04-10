@@ -1,6 +1,6 @@
-import openSocket from "socket.io-client"
+import socket from './connect'
 
-const socket = openSocket(`${window.location.hostname}:8080`);
+//DATA GETTERS
 
 const getChannelDisplayInfo = (cb) => {
   socket.emit('GETCHANNELSDISPLAYINFO')
@@ -25,10 +25,10 @@ const getAnswersDisplayInfo = (channelId, threadId, cb) => {
   })
 }
 
-const apiHelper = {
+const dataHelper = {
   getChannelDisplayInfo,
   getThreadDisplayInfo,
   getAnswersDisplayInfo
 }
 
-export default apiHelper
+export default dataHelper

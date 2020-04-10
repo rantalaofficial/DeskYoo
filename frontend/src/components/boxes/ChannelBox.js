@@ -1,5 +1,5 @@
 import React from 'react'
-import apiHelper from '../../services/api'
+import apiHelper from '../../services/dataApi'
 
 const ChannelBox = ({id, name, followers, st}) => (
     <button onClick={e => handleChannelClick(e, id, st)} className='greenBox channelInfo'>

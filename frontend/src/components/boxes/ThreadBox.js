@@ -1,5 +1,5 @@
 import React from 'react'
-import apiHelper from '../../services/api'
+import apiHelper from '../../services/dataApi'
 
 const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
     const colorPicker = Math.floor(Math.random()*5)

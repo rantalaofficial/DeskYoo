@@ -53,8 +53,6 @@ io.on('connection', (socket) => {
 
     socket.on("GETCHANNELSDISPLAYINFO", () => {
         socket.emit("CHANNELDISPLAYINFO", msgData.getChannelsDisplayInfo());
-
-        console.log("AAPO STOP THIS SHITT")
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelID) => {

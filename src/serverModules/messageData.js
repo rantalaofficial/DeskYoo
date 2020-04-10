@@ -105,15 +105,9 @@ class MessageData {
             return false;
         }
 
-        let answersDisplayInfo = []
-
         let thread = this.channels[channelID].msgThreads[threadID]
 
-        for(let i = 0; i < thread.answers.length; i++) {
-            answersDisplayInfo.push({text: thread.answers[i].text, likes: thread.answers[i].likes, location: thread.answers[i].location})
-        }
-
-        return answersDisplayInfo;
+        return thread.answers.map(answer => ({text: answer.text, likes: answer.likes, location: answer.location}))
     }
 }
 

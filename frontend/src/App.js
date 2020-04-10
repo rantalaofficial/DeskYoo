@@ -16,7 +16,7 @@ const App = () => {
   const [threads, setThreads] = useState([])
   const [openedChannel, setOpenedChannel] = useState(null)
   const [channels, setChannels] = useState([])
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState({})
 
   const setToThreads = (data) => {
     setThreads([])
@@ -50,12 +50,18 @@ const App = () => {
   }
 
   useEffect(() => {
-    userHelper.login(['Aapooo', '22222222', ], (data) => setUser(data))
+    userHelper.login(['Aapooo', '22222222', ], user => setUser(user))
   },[])
 
   useEffect(() => {
-    dataHelper.getChannelDisplayInfo((data) => setChannels(data))
-  },[])
+    if(user){
+      userHelper.getUserDisplayInfo(user => setUser(user))
+
+      dataHelper.getChannelDisplayInfo((data) => setChannels(data))
+    }
+  }, [])
+
+  console.log(user)
 
   return (
     <div>

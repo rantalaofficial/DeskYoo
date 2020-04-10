@@ -101,7 +101,7 @@ class MessageData {
     }
 
     getAnswersDisplayInfo(channelID, threadID) {
-        if(!this.threadExists(channelID, threadID)) {
+        if(!this.threadExists(channelID, threadID) || this.channels[channelID].msgThreads[threadID].answers == undefined) {
             return false;
         }
 

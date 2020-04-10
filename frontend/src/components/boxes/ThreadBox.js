@@ -47,13 +47,16 @@ const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
     event.preventDefault()
     console.log(channelId)
     apiHelper.getAnswersDisplayInfo(channelId, threadId, (data) => {
-      console.log(data)
-      data.map(message => {
-        message.threadId=threadId
-        message.channelId=channelId
-      })
-      console.log(data)
-      sm(data)
+      if(data.length!==0){
+        console.log(data)
+        data.map(message => {
+          message.threadId=threadId
+          message.channelId=channelId
+        })
+        console.log(data)
+        return sm(data)
+      }
+      sm([{threadId, channelId}])
     })
   }
 

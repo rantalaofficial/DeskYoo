@@ -7,6 +7,7 @@ import OpenedThreadBox from './components/boxes/OpenedThreadBox'
 import Messages from './components/holders/Messages'
 import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
+import OpenedChannels from './components/holders/OpenedChannels'
 
 const testUser = {
   points: 2000,
@@ -17,19 +18,35 @@ const App = () => {
   const [messages, setMessages] = useState([])
   const [openedThread, setOpenedThread] = useState({})
   const [threads, setThreads] = useState([])
+  const [openedChannel, setOpenedChannel] = useState(null)
   const [channels, setChannels] = useState([])
   const [user, setUser] = useState(testUser)
 
   const setToThreads = (data) => {
+    setThreads([])
+    setMessages([])
     console.log('here')
-    setThreads(data)
+    if(data[0].text){
+      setThreads(data)
+    }
+
+    setOpenedChannel(data[0].channelId)
   }
 
   const setToMessages = (data) => {
+    setMessages([])
     console.log('here 2')
-    setMessages(data)
+    if(data[0].text){
+      setMessages(data)
+    }
 
     setOpenedThread(threads[data[0].threadId])
+  }
+
+  const closeThreads = () => {
+    setThreads([])
+    setOpenedChannel(null)
+    setMessages([])
   }
 
   const closeMessages = () => {
@@ -45,9 +62,24 @@ const App = () => {
       <Header/>
       <div className='row'>
         <div id='channelColumn'>
-          <UserInfo user={user} />
-          <Channels channels={channels}
-          st={setToThreads} />
+          {openedChannel!==null
+          ?
+          <div>
+            <UserInfo user={user} />
+            <OpenedChannels 
+            channels={channels}
+            st={setToThreads}
+            ct={closeThreads}
+            openedChannel={openedChannel} />
+          </div>
+          :
+          <div>
+            <UserInfo user={user} />
+            <Channels 
+            channels={channels}
+            st={setToThreads} />
+          </div>
+          }
         </div>
         <div id='messageColumn'>
           {messages.length!==0 

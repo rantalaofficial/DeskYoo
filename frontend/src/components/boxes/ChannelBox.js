@@ -12,12 +12,16 @@ const ChannelBox = ({id, name, followers, st}) => (
     event.preventDefault()
     console.log(id)
     apiHelper.getThreadDisplayInfo(id, (data) => {
-      console.log(data)
-      data.map(thread => {
-        thread.channelId=id
-      })
-      console.log(data)
-      st(data)
+      if(data.length!==0){
+        console.log(data)
+        data.map(thread => {
+          thread.channelId=id
+        })
+        console.log(data)
+        return st(data)
+      }
+
+      st([{channelId: id}])
     })
   }
 

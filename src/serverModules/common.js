@@ -8,4 +8,9 @@ function makeID(length) {
    return result;
 }
 
+function getRndInteger(min, max) {
+   return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
 module.exports.makeID = makeID;
+module.exports.getRndInteger = getRndInteger;

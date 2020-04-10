@@ -1,3 +1,5 @@
+const common = require('./common');
+
 class MessageData {
     constructor(channelNames) {
         this.channels = [];
@@ -44,7 +46,7 @@ class MessageData {
             return false;
         }
 
-        this.channels[channelID].msgThreads.push({text: text, likes: 0, location: location, answers: []})
+        this.channels[channelID].msgThreads.push({text: text, likes: 0, location: location, color: common.getRndInteger(0, 4), answers: []})
     }
 
     addAnswer(channelID, threadID, text, location) {

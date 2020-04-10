@@ -37,6 +37,12 @@ io.on('connection', (socket) => {
         socket.emit("LOGINSTATUS", userID)
     });
 
+    socket.on("REGISTER", (data) => {
+        let userID = userData.register(data[0], data[1])
+        //FALSE MEANS REGISTER FAILED, ID MEANS REGISTER SUCCESS BUT YOU STILL NEED TO LOGIN!
+        socket.emit("REGISTERSTATUS", userID)
+    })
+
     //GET DATA API
 
     socket.on("GETCHANNELSDISPLAYINFO", () => {

@@ -30,23 +30,42 @@ io.on('connection', (socket) => {
         console.log(userData.users)
     });
 
-    //LOGIN / REGISTER API
+    //LOGIN API
     socket.on("LOGIN", (data) => {
         let userID = userData.login(data[0], data[1], socket.id)
-        //FALSE MEANS LOGIN FAILED, ID MEANS LOGIN SUCCESS
-        socket.emit("LOGINSTATUS", userID)
+        if(!userID) {
+            socket.emit("USERERROR", "Incorrect username or password.");
+            return;
+        }
+
+        socket.emit("LOGINSUCCESS", userID)
     });
+    //REGISTER API
+    socket.on("REGISTER", (data) => {
+        let userID = userData.register(data[0], data[1])
+        if(!userID) {
+            socket.emit("USERERROR", "Register failed. Username might be already in use");
+            return;
+        }
+
+        socket.emit("REGISTERSUCCESS", userID)
+    })
 
     //GET DATA API
-
     socket.on("GETCHANNELSDISPLAYINFO", () => {
-        if(!userData.isLogged(socket.id)) return;
-
+        if(!userData.isLogged(socket.id)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
+        
         socket.emit("CHANNELDISPLAYINFO", msgData.getChannelsDisplayInfo());
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelID) => {
-        if(!userData.isLogged(socket.id)) return;
+        if(!userData.isLogged(socket.id)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
 
         console.log(`Channel id ${channelID} ${typeof channelID}`)
         let threadsDisplayInfo = msgData.getThreadsDisplayInfo(channelID);
@@ -59,7 +78,10 @@ io.on('connection', (socket) => {
     });
 
     socket.on("GETANSWERSDISPLAYINFO", (IDs) => {
-        if(!userData.isLogged(socket.id)) return;
+        if(!userData.isLogged(socket.id)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
 
         if(!Array.isArray(IDs) || IDs.length != 2 || !msgData.threadExists(IDs[0], IDs[1])) {
             console.log("AnswersDisplayInfo Request is invalid!")

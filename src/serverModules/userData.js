@@ -24,6 +24,13 @@ class UserData {
             return false;
         }
 
+        //CHECKS THAT USERNAME ALREADY NOT IN USE
+        for(let id of Object.keys(this.users)) {
+            if(this.users[id].username == username) {
+                return false;
+            }
+        }
+
         let userID;
         do {
             //CHECK THAT ID DOESNT ALREADY EXIST AND MAKES NEW ONE IF EXISTS

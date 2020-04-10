@@ -10,6 +10,7 @@ const Threads = ({threads, sm}) => (
         text={thread.text} 
         likes={thread.likes}
         location={thread.location}
+        color={thread.color}
         sm={sm}
         />
       )}

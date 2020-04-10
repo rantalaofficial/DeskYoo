@@ -1,32 +1,33 @@
 import React from 'react'
 import apiHelper from '../../services/dataApi'
 
-const ThreadBox = ({channelId, threadId, text, likes, location, sm}) => {
-    const colorPicker = Math.floor(Math.random()*5)
-  
-    const colors=[
-      ['#e75656', ' #e70b0b'],
-      ['#d62f2f', ' #d67a7a'],
-      ['#bf1d66', ' #bf68b0'],
-      ['#c92e55', ' #c979a0'],
-      ['#de2a54', ' #de75aa']]
-  
-    const bc=colors[colorPicker][0]
-    const br=('2px solid').concat(colors[colorPicker][1])
-  
-  
-    const styles = {
-      backgroundColor: bc,
-      border: br,
-      textAlign: 'left',
-      padding: '2%',
-      width: '90%',
-      borderRadius: '10px',
-      marginTop: '0%',
-      marginLeft: '0%',
-      marginRight: '0%',
-      marginBottom: '3%'
-    }
+const ThreadBox = ({channelId, threadId, text, likes, location, color, sm}) => {
+  //console.log(`Color${color}`)
+
+
+  const colors=[
+    ['#e75656', ' #e70b0b'],
+    ['#d62f2f', ' #d67a7a'],
+    ['#bf1d66', ' #bf68b0'],
+    ['#c92e55', ' #c979a0'],
+    ['#de2a54', ' #de75aa']]
+
+  const bc=colors[color][0]
+  const br=('2px solid').concat(colors[color][1])
+
+
+  const styles = {
+    backgroundColor: bc,
+    border: br,
+    textAlign: 'left',
+    padding: '2%',
+    width: '90%',
+    borderRadius: '10px',
+    marginTop: '0%',
+    marginLeft: '0%',
+    marginRight: '0%',
+    marginBottom: '3%'
+  }
   
     return (
       <div>

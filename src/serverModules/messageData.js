@@ -99,7 +99,7 @@ class MessageData {
             return false;
         }
 
-        return channel.msgThreads.map(thread => ({text: thread.text, likes: thread.likes, location: thread.location}))
+        return channel.msgThreads.map(thread => ({text: thread.text, likes: thread.likes, color: thread.color, location: thread.location}))
     }
 
     getAnswersDisplayInfo(channelID, threadID) {

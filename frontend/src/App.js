@@ -26,32 +26,32 @@ const App = () => {
   const setToThreads = (data) => {
     setThreads([])
     setMessages([])
+    setOpenedChannel(data[0].channelId)
     console.log('here')
     if(data[0].text){
       setThreads(data)
     }
-
-    setOpenedChannel(data[0].channelId)
   }
 
   const setToMessages = (data) => {
     setMessages([])
+    setOpenedThread(threads[data[0].threadId])
     console.log('here 2')
     if(data[0].text){
       setMessages(data)
     }
-
-    setOpenedThread(threads[data[0].threadId])
   }
 
   const closeThreads = () => {
     setThreads([])
     setOpenedChannel(null)
+    setOpenedThread(null)
     setMessages([])
   }
 
   const closeMessages = () => {
     setMessages([])
+    setOpenedThread(null)
   }
 
   const showNotification = (message, color) =>{
@@ -112,7 +112,9 @@ const App = () => {
             openedThread={openedThread}
             cm={closeMessages}
             />
-            <Messages messages={messages} />
+            <Messages
+            messages={messages}
+            color={openedThread.color} />
           </div>
           : 
           <Threads threads={threads}

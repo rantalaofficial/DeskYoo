@@ -101,7 +101,7 @@ class MessageData {
     }
 
     getAnswersDisplayInfo(channelID, threadID) {
-        if(!this.threadExists(channelID, threadID)) {
+        if(!this.threadExists(channelID, threadID) || this.channels[channelID].msgThreads[threadID].answers == undefined) {
             return false;
         }
 
@@ -119,5 +119,26 @@ class MessageData {
 
 const msgData = new MessageData(["Main", "Kerttuli", "tunnustukset", "seksi", "äiät"])
 
+msgData.addThread(0, "Mitä sait matikan alustavista", "Turku")
+msgData.addAnswer(0, 0, "Sain täydet!!", "Turku")
+msgData.addAnswer(0, 0, "Vittu meni päin persettä", "Turku")
+msgData.addAnswer(0, 0, "Toivottavasti rajat laskee #huonostimeni", "Turku")
+
+msgData.addThread(0, "Kuka on mielestäsi kuumin opettaja", "Turku")
+msgData.addAnswer(0, 1, "JPI", "Salo")
+msgData.addAnswer(0, 1, "JPI", "Salo")
+msgData.addAnswer(0, 1, "JPI", "Salo")
+msgData.addAnswer(0, 1, "JPI", "Salo")
+
+msgData.addThread(1, "Mitä sait matikan alustavista", "Turku")
+msgData.addAnswer(1, 0, "Sain täydet!!", "Turku")
+msgData.addAnswer(1, 0, "Vittu meni päin persettä", "Turku")
+msgData.addAnswer(1, 0, "Toivottavasti rajat laskee #huonostimeni", "Turku")
+
+msgData.addThread(1, "Kuka on mielestäsi kuumin opettaja", "Turku")
+msgData.addAnswer(1, 1, "JPI", "Salo")
+msgData.addAnswer(1, 1, "JPI", "Salo")
+msgData.addAnswer(1, 1, "JPI", "Salo")
+msgData.addAnswer(1, 1, "JPI", "Salo")
 
 module.exports = msgData;

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import './App.css'
 import dataHelper from './services/dataApi'
 import userHelper from './services/userApi'
+import errorHelper from './services/errorApi'
 import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
 import OpenedThreadBox from './components/boxes/OpenedThreadBox'
@@ -9,6 +10,7 @@ import Messages from './components/holders/Messages'
 import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
 import OpenedChannels from './components/holders/OpenedChannels'
+import Notification from './components/util/Notification'
 
 const App = () => {
   const [messages, setMessages] = useState([])
@@ -16,7 +18,10 @@ const App = () => {
   const [threads, setThreads] = useState([])
   const [openedChannel, setOpenedChannel] = useState(null)
   const [channels, setChannels] = useState([])
-  const [user, setUser] = useState({})
+
+  const [user, setUser] = useState(null)
+
+  const [notification, setNotification] = useState({message: null, color: 'green'})
 
   const setToThreads = (data) => {
     setThreads([])
@@ -49,23 +54,35 @@ const App = () => {
     setMessages([])
   }
 
-  useEffect(() => {
+  const showNotification = (message, color) =>{
+    setNotification({message, color})
+    setTimeout(() => {
+      setNotification({message: null, color})
+    }, 3000)
+  }
+
+  useEffect( () => {
     userHelper.login(['Aapooo', '22222222', ], user => setUser(user))
   },[])
 
   useEffect(() => {
-    if(user){
+    if(user && !user.username){
+      console.log(user)
       userHelper.getUserDisplayInfo(user => setUser(user))
 
       dataHelper.getChannelDisplayInfo((data) => setChannels(data))
     }
-  }, [])
+  }, [user])
 
-  console.log(user)
+  useEffect(() => {
+    errorHelper.listenError(errorText => showNotification(errorText, 'red'))
+  })
 
   return (
     <div>
-      <Header/>
+      <Header />
+      <br></br>
+      <Notification message={notification.message} color={notification.color}/>
       <div className='row'>
         <div id='channelColumn'>
           {openedChannel!==null

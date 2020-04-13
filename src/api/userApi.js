@@ -21,31 +21,36 @@ function addSocketHandles(socket) {
         });
     });
 
-    //LOGIN API
     socket.on("LOGIN", (data) => {
-        if(!Array.isArray(data) || data.length != 2 || data[0] == undefined || data[1] == undefined) {
+        if(!Array.isArray(data) || data.length != 2 || data[0] === undefined || data[1] === undefined) {
             socket.emit("USERERROR", "Login failed.");
             return;
         }
 
-        User.findOne({username: data[0], passwordHash: data[1]}, (err, user) => {
-            if(err || user === null) {
-                socket.emit("USERERROR", "Login failed.");
+        isLogged(socket).then((user) => {
+            if(user) {
+                socket.emit("USERERROR", "Already logged in.");
                 return;
             }
-            user.loggedSocketID = socket.id;
-            user.save((err) => {
-                if(err) {
+            User.findOne({username: data[0], passwordHash: data[1]}, (err, user) => {
+                if(err || user === null) {
                     socket.emit("USERERROR", "Login failed.");
                     return;
                 }
-                socket.emit("LOGINSUCCESS")
+                user.loggedSocketID = socket.id;
+                user.save((err) => {
+                    if(err) {
+                        socket.emit("USERERROR", "Login failed.");
+                        return;
+                    }
+                    socket.emit("LOGINSUCCESS")
+                });
             });
         });
     });
-    //REGISTER API
+
     socket.on("REGISTER", (data) => {
-        if(!Array.isArray(data) || data.length != 2 || data[0].length < 5 || data[1] == undefined) {
+        if(!Array.isArray(data) || data.length != 2 || data[0].length < 5 || data[1] === undefined) {
             socket.emit("USERERROR", "Register failed.");
             return;
         }

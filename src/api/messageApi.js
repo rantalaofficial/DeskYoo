@@ -7,21 +7,23 @@ const Channel = require('./models/channel');
 const Thread = require('./models/thread');
 const Answer = require('./models/answer');
 
-//POPULATE CHANNELS IF NOT FOUND
+//POPULATE DATA IF NOT FOUND
 Channel.countDocuments({}, (err, count) => {
     if(err) throw err; else if(count == 0) {
-        const main = new Channel({text: "Main", followers: 0});
+        const main = new Channel({text: "Main", followers: 2000});
         const kerttuli = new Channel({text: "Kerttuli", followers: 69});
         main.save()
         kerttuli.save()
 
-        const kysely = new Thread({text: "Mitä saitte matikan alustavista?", likes: 0, channelId: kerttuli._id})
+        const kysely = new Thread({text: "Mitä saitte matikan alustavista?", likes: 3, channelId: kerttuli._id})
         kysely.save()
+
+        const vastaus = new Answer({text: "105 pistettä, koska olen hikke xd", likes: 50, threadId: kysely._id})
+        vastaus.save()
     }
 });
 
 function addSocketHandles(socket) {
-    //MESSAGE GETTER API
     socket.on("GETCHANNELSDISPLAYINFO", () => {
         userApi.isLogged(socket).then((user) => {
             if(!user) {
@@ -49,25 +51,26 @@ function addSocketHandles(socket) {
                 socket.emit("CHANNELSDISPLAYINFO", threads);
             });
         });
-
-        /*
-        if(!userData.isLogged(socket.id)) {
-            socket.emit("USERERROR", "Not logged in");
-            return;
-        }
-
-        console.log(`Channel id ${channelID} ${typeof channelID}`)
-        let threadsDisplayInfo = msgData.getThreadsDisplayInfo(channelID);
-        if(!threadsDisplayInfo) {
-            console.log("ThreadDisplayInfo Request is invalid!")
-            return;
-        }
-
-        socket.emit("THREADSDISPLAYINFO", threadsDisplayInfo);
-        */
     });
 
     socket.on("GETANSWERSDISPLAYINFO", (data) => {
+        if(data == undefined || data.length != 2 || data[0] === undefined || data[1] === undefined) {
+            return;
+        }
+        userApi.isLogged(socket).then((user) => {
+            if(!user) {
+                socket.emit("USERERROR", "Not logged in");
+                return;
+            }
+            
+            let channelId = data[0];
+            let threadId = data[1];
+
+            
+
+        });
+
+        
         /*
         if(!userData.isLogged(socket.id)) {
             socket.emit("USERERROR", "Not logged in");

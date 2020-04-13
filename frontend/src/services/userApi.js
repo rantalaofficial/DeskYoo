@@ -9,6 +9,14 @@ const login = (user, cb) => {
   })
 }
 
+const register = async (user) => {
+  socket.emit('REGISTER', user)
+  await socket.on('REGISTERSUCCESS', userId => {
+    return userId
+  })
+  return false
+}
+
 const getUserDisplayInfo = (cb) => {
   socket.emit('GETUSERDISPLAYINFO')
   socket.on('USERDISPLAYINFO', data => {
@@ -19,6 +27,7 @@ const getUserDisplayInfo = (cb) => {
 
 const userHelper = {
     login,
+    register,
     getUserDisplayInfo
 }
 

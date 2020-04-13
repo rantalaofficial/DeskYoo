@@ -5,6 +5,7 @@ import userHelper from './services/userApi'
 import errorHelper from './services/errorApi'
 import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
+import LogInBox from './components/boxes/LogInBox'
 import OpenedThreadBox from './components/boxes/OpenedThreadBox'
 import Messages from './components/holders/Messages'
 import Threads from './components/holders/Threads'
@@ -54,16 +55,24 @@ const App = () => {
     setOpenedThread(null)
   }
 
+  const setToUser = (user) => {
+    setUser(user)
+  }
+
   const showNotification = (message, color) =>{
     setNotification({message, color})
     setTimeout(() => {
       setNotification({message: null, color})
     }, 3000)
   }
+  
+  /*
 
   useEffect( () => {
     userHelper.login(['Aapooo', '22222222', ], user => setUser(user))
   },[])
+
+  */
 
   useEffect(() => {
     if(user && !user.username){
@@ -87,12 +96,13 @@ const App = () => {
       <Header />
       <br></br>
       <Notification message={notification.message} color={notification.color}/>
+      {!user ? <LogInBox su={setToUser} /> : null}
       <div className='row'>
         <div id='channelColumn'>
+          {user ? <UserInfo user={user} /> : null}
           {openedChannel!==null
           ?
           <div>
-            <UserInfo user={user} />
             <OpenedChannels 
             channels={channels}
             st={setToThreads}
@@ -101,7 +111,6 @@ const App = () => {
           </div>
           :
           <div>
-            <UserInfo user={user} />
             <Channels 
             channels={channels}
             st={setToThreads} />

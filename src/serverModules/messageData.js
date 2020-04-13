@@ -1,4 +1,16 @@
-const common = require('./common');
+function makeID(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+ 
+ function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+ }
 
 class MessageData {
     constructor(channelNames) {
@@ -46,7 +58,7 @@ class MessageData {
             return false;
         }
 
-        this.channels[channelID].msgThreads.push({text: text, likes: 0, location: location, color: common.getRndInteger(0, 4), answers: []})
+        this.channels[channelID].msgThreads.push({text: text, likes: 0, location: location, color: getRndInteger(0, 4), answers: []})
     }
 
     addAnswer(channelID, threadID, text, location) {

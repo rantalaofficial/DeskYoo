@@ -9,13 +9,14 @@ const Answer = require('./models/answer');
 
 //POPULATE CHANNELS IF NOT FOUND
 Channel.countDocuments({}, (err, count) => {
-    if(err) throw err;
-
-    if(count == 0) {
+    if(err) throw err; else if(count == 0) {
         const main = new Channel({text: "Main", followers: 0});
         const kerttuli = new Channel({text: "Kerttuli", followers: 69});
         main.save()
         kerttuli.save()
+
+        const kysely = new Thread({text: "Mitä saitte matikan alustavista?", likes: 0, channelId: kerttuli._id})
+        kysely.save()
     }
 });
 
@@ -34,7 +35,21 @@ function addSocketHandles(socket) {
         });
     });
 
-    socket.on("GETTHREADSDISPLAYINFO", (channelID) => {
+    socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
+        if(channelId === undefined || channelId.length === 0) {
+            return;
+        }
+        userApi.isLogged(socket).then((user) => {
+            if(!user) {
+                socket.emit("USERERROR", "Not logged in");
+                return;
+            }
+            Thread.find({channelId: channelId}, (err, threads) => {
+                if(err) throw err;
+                socket.emit("CHANNELSDISPLAYINFO", threads);
+            });
+        });
+
         /*
         if(!userData.isLogged(socket.id)) {
             socket.emit("USERERROR", "Not logged in");
@@ -52,7 +67,7 @@ function addSocketHandles(socket) {
         */
     });
 
-    socket.on("GETANSWERSDISPLAYINFO", (IDs) => {
+    socket.on("GETANSWERSDISPLAYINFO", (data) => {
         /*
         if(!userData.isLogged(socket.id)) {
             socket.emit("USERERROR", "Not logged in");

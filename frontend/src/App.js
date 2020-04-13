@@ -78,6 +78,10 @@ const App = () => {
     errorHelper.listenError(errorText => showNotification(errorText, 'red'))
   })
 
+  useEffect(() => {
+    errorHelper.apiTest()
+  })
+
   return (
     <div>
       <Header />

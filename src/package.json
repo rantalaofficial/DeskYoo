@@ -23,6 +23,7 @@
   "homepage": "https://github.com/UisDangerouz/DeskYoo#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mongodb": "^3.5.5",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {

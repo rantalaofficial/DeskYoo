@@ -53,8 +53,8 @@ function addSocketHandles(socket) {
         });
     });
 
-    socket.on("GETANSWERSDISPLAYINFO", (data) => {
-        if(data == undefined || data.length != 2 || data[0] === undefined || data[1] === undefined) {
+    socket.on("GETANSWERSDISPLAYINFO", (threadId) => {
+        if(threadId === undefined || threadId.length === 0) {
             return;
         }
         userApi.isLogged(socket).then((user) => {
@@ -62,30 +62,14 @@ function addSocketHandles(socket) {
                 socket.emit("USERERROR", "Not logged in");
                 return;
             }
-            
-            let channelId = data[0];
-            let threadId = data[1];
 
-            
+            Answer.find({threadId: threadId}, (err, threads) => {
+                if(err) throw err;
+                socket.emit("ANSWERSDISPLAYINFO", threads)
+            });
 
         });
-
-        
-        /*
-        if(!userData.isLogged(socket.id)) {
-            socket.emit("USERERROR", "Not logged in");
-            return;
-        }
-
-        if(!Array.isArray(IDs) || IDs.length != 2 || !msgData.threadExists(IDs[0], IDs[1])) {
-            console.log("AnswersDisplayInfo Request is invalid!")
-            return;
-        }
-
-        socket.emit("ANSWERSDISPLAYINFO", msgData.getAnswersDisplayInfo(IDs[0], IDs[1]))
-        */
     });
-
 }
 
 module.exports.addSocketHandles = addSocketHandles;

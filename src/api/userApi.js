@@ -50,3 +50,5 @@ function addSocketHandles(socket) {
         
     });
 }
+
+module.exports.addSocketHandles = addSocketHandles;

@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 const io = socket(server);
 
-const userApi = require('./api/messageApi');
+const userApi = require('./api/userApi');
 const messageApi = require('./api/messageApi');
 
 

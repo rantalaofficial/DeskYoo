@@ -21,7 +21,7 @@ const messageApi = require('./api/messageApi');
 
 io.on('connection', (socket) => {
     userApi.addSocketHandles(socket)
-    //messageApi.addSocketHandles(socket)
+    messageApi.addSocketHandles(socket)
 });
 
 

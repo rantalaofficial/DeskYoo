@@ -1,23 +1,41 @@
 const mongoose = require('mongoose')
-const User = require('./models/user');
 
-mongoose.connect('mongodb+srv://DeskYooBackend:VeryGoodPassWord54352@cluster0-n1ait.mongodb.net/MessageDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).
-    catch(error => handleError(error));
+const userApi = require('./userApi');
+
+//MESSAGE DATA STRUCTURE
+const Channel = require('./models/channel');
+const Thread = require('./models/thread');
+const Answer = require('./models/answer');
+
+//POPULATE CHANNELS IF NOT FOUND
+Channel.countDocuments({}, (err, count) => {
+    if(err) throw err;
+
+    if(count == 0) {
+        const main = new Channel({text: "Main", followers: 0});
+        const kerttuli = new Channel({text: "Kerttuli", followers: 69});
+        main.save()
+        kerttuli.save()
+    }
+});
 
 function addSocketHandles(socket) {
-
-
     //MESSAGE GETTER API
     socket.on("GETCHANNELSDISPLAYINFO", () => {
-        if(!userData.isLogged(socket.id)) {
-            socket.emit("USERERROR", "Not logged in");
-            return;
-        }
-        
-        socket.emit("CHANNELDISPLAYINFO", msgData.getChannelsDisplayInfo());
+        userApi.isLogged(socket).then((user) => {
+            if(!user) {
+                socket.emit("USERERROR", "Not logged in");
+                return;
+            }
+            Channel.find({}, (err, channels) => {
+                if(err) throw err;
+                socket.emit("CHANNELSDISPLAYINFO", channels);
+            });
+        });
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelID) => {
+        /*
         if(!userData.isLogged(socket.id)) {
             socket.emit("USERERROR", "Not logged in");
             return;
@@ -31,9 +49,11 @@ function addSocketHandles(socket) {
         }
 
         socket.emit("THREADSDISPLAYINFO", threadsDisplayInfo);
+        */
     });
 
     socket.on("GETANSWERSDISPLAYINFO", (IDs) => {
+        /*
         if(!userData.isLogged(socket.id)) {
             socket.emit("USERERROR", "Not logged in");
             return;
@@ -45,6 +65,7 @@ function addSocketHandles(socket) {
         }
 
         socket.emit("ANSWERSDISPLAYINFO", msgData.getAnswersDisplayInfo(IDs[0], IDs[1]))
+        */
     });
 
 }

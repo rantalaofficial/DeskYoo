@@ -21,7 +21,8 @@ const MessageBox = ({text, likes, location, openedThread}) => {
   
   return(
     <div style={styles} className='yellowBox message'>
-        <span> {text} 👤</span><br></br>
+        <div class="multilineText">{text}</div>
+        <br></br>
         <span>📍{location}</span>
       <div className="messageLikeContainer2">
         <button className="likeButton">▲</button>

@@ -34,7 +34,8 @@ const ThreadBox = ({id, text, likes, location, color, sm}) => {
     return (
       <div>
         <button onClick={e => handleThreadClick(e, id, sm)}  style={styles} className='message'>  
-          <span> {text} 👤</span><br></br>
+          <div class="multilineText">{text}</div>
+          <br></br>
           <span>📍{location}</span>
         </button>
         <div className="messageLikeContainer">

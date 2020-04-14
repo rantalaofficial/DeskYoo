@@ -41,7 +41,6 @@ function addSocketHandles(socket) {
         }
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
             if(err) throw err;
-            console.log(threads)
             socket.emit("THREADSDISPLAYINFO", 
             threads ? threads.map(thread => thread.toJSON()) : []);
         });

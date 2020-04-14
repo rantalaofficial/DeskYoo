@@ -25,6 +25,11 @@
   margin: 4px;
 }
 
+.multilineText {
+  white-space: pre-wrap;
+  word-wrap: break-word
+}
+
 .messageInputTextBox {
   resize: none;
   width: 90%;

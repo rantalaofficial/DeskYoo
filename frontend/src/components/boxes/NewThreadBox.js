@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const NewThreadBox = ({st, openedChannel}) => {
   const [yoo, setYoo] = useState('')
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState(null)
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -28,7 +28,7 @@ const NewThreadBox = ({st, openedChannel}) => {
     console.log(yoo)
 
     console.log(location)
-    if(location.length!==0){
+    if(location && location.length!==0){
       await apiHelper.addThread([yoo, location, openedChannel])
     }
     else{

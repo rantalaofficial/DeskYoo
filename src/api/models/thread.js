@@ -7,7 +7,7 @@ const threadSchema = mongoose.Schema({
     color: Number,
     time: { 
         type : Date, 
-        default: Date.now 
+        default: new Date().getTime()
     },
     author: {
         type:mongoose.Schema.Types.ObjectId,

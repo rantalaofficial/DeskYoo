@@ -6,7 +6,7 @@ const answerSchema = mongoose.Schema({
     location: String,
     time: { 
         type : Date, 
-        default: Date.now 
+        default: new Date().getTime()
     },
     author: {
         type:mongoose.Schema.Types.ObjectId,

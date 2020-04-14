@@ -6,6 +6,9 @@ if(mongoose.connection.readyState == 0) {
     catch(error => handleError(error));
 }
 
+//KEEPS TRACK OF LOGGED USERS {key: socket.id, value user_id}: 
+let loggedUsers = {};
+
 function addSocketHandles(socket) {
     //CONNECTION
     console.log(socket.id + " connected!")
@@ -13,12 +16,9 @@ function addSocketHandles(socket) {
     //DISCONNECTION
     socket.on('disconnect', () => {
         //WHEN DISCONNECTING, LOGOUT
-        User.findOne({loggedSocketID: socket.id}, (err, user) => {
-            if(err || user === null) return;
-
-            user.loggedSocketID = null;
-            user.save()
-        });
+        if(loggedUsers[socket.id] != undefined) {
+            delete loggedUsers[socket.id]
+        }
     });
 
     socket.on("LOGIN", (data) => {
@@ -27,25 +27,18 @@ function addSocketHandles(socket) {
             return;
         }
 
-        isLogged(socket).then((user) => {
-            if(user) {
-                socket.emit("USERERROR", "Already logged in.");
+        if(isLogged(socket)) {
+            socket.emit("USERERROR", "Already logged in.");
+            return;
+        }
+
+        User.findOne({username: data[0], passwordHash: data[1]}, (err, user) => {
+            if(err || user === null) {
+                socket.emit("USERERROR", "Login failed.");
                 return;
             }
-            User.findOne({username: data[0], passwordHash: data[1]}, (err, user) => {
-                if(err || user === null) {
-                    socket.emit("USERERROR", "Login failed.");
-                    return;
-                }
-                user.loggedSocketID = socket.id;
-                user.save((err) => {
-                    if(err) {
-                        socket.emit("USERERROR", "Login failed.");
-                        return;
-                    }
-                    socket.emit("LOGINSUCCESS")
-                });
-            });
+            loggedUsers[socket.id] = user._id;
+            socket.emit("LOGINSUCCESS")
         });
     });
 
@@ -68,7 +61,6 @@ function addSocketHandles(socket) {
                 username: data[0],
                 passwordHash: data[1],
                 score: 0,
-                loggedSocketID: null,
             })
     
             user.save((err) => {
@@ -83,23 +75,28 @@ function addSocketHandles(socket) {
 
     //USER GETTER API
     socket.on("GETUSERDISPLAYINFO", () => {
-        isLogged(socket).then((user) => {
-            if(user) {
-                socket.emit("USERDISPLAYINFO", {username: user.username, score: user.score})
-                return;
-            }
+        let userId = isLogged(socket)
+        if(!userId) {
             socket.emit("USERERROR", "Not logged in.");
-        });
+            return;
+        }
+        User.findOne({_id: userId}, (err, user) => {
+            socket.emit("USERDISPLAYINFO", {username: user.username, score: user.score})
+        })
     });
 }
 
-async function isLogged(socket) {
-    let err, user = await User.findOne({loggedSocketID: socket.id})
-    if(err || user === null) {
-        return false;
+function isLogged(socket) {
+    if(socket.id in loggedUsers) {
+        return loggedUsers[socket.id];
     }
-    return user;
+    return false;
+}
+
+function getLoggedUsers() {
+    return loggedUsers;
 }
 
 module.exports.addSocketHandles = addSocketHandles;
 module.exports.isLogged = isLogged;
+module.exports.getLoggedUsers = getLoggedUsers;

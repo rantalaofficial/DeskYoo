@@ -24,6 +24,16 @@ io.on('connection', (socket) => {
     messageApi.addSocketHandles(socket)
 });
 
+//SERVER CONSOLE COMMANDS
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+
+process.stdin.on('data', function (text) {
+    let command = text.trim();
+    if(command === 'users') {
+        console.log(userApi.getLoggedUsers())
+    }
+});
 
 
 

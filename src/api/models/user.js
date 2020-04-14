@@ -4,7 +4,6 @@ const userSchema = mongoose.Schema({
     username: String,
     passwordHash: Number,
     score: Number,
-    loggedSocketID: String,
 })
 
 userSchema.set('toJSON', {

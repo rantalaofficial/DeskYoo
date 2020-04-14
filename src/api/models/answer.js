@@ -3,7 +3,12 @@ const mongoose = require('mongoose');
 const answerSchema = mongoose.Schema({
     text: String,
     likes: Number,
-    threadId: {
+    location: String,
+    author: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    parentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Thread'
     }

@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 const threadSchema = mongoose.Schema({
     text: String,
     likes: Number,
-    channelId: {
+    location: String,
+    color: Number,
+    author: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    parentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Channel'
     }

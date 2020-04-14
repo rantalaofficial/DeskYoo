@@ -8,6 +8,7 @@ import UserInfo from './components/boxes/UserInfo'
 import LogInBox from './components/boxes/LogInBox'
 import OpenedThreadBox from './components/boxes/OpenedThreadBox'
 import Messages from './components/holders/Messages'
+import NewThreadBox from './components/boxes/NewThreadBox'
 import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
 import OpenedChannels from './components/holders/OpenedChannels'
@@ -96,7 +97,9 @@ const App = () => {
       <Header />
       <br></br>
       <Notification message={notification.message} color={notification.color}/>
-      {!user ? <LogInBox su={setToUser} /> : null}
+      {!user ? 
+      <LogInBox su={setToUser} />
+      :
       <div className='row'>
         <div id='channelColumn'>
           {user ? <UserInfo user={user} /> : null}
@@ -107,13 +110,15 @@ const App = () => {
             channels={channels}
             st={setToThreads}
             ct={closeThreads}
-            openedChannel={openedChannel} />
+            openedChannel={openedChannel} 
+            />
           </div>
           :
           <div>
             <Channels 
             channels={channels}
-            st={setToThreads} />
+            st={setToThreads} 
+            />
           </div>
           }
         </div>
@@ -127,13 +132,25 @@ const App = () => {
             />
             <Messages
             messages={messages}
-            openedThread={openedThread} />
+            openedThread={openedThread} 
+            />
+            {/*<NewMessageBox />*/}
           </div>
           : 
-          <Threads threads={threads}
-          sm={setToMessages} />}
+          openedChannel 
+          ?
+          <div>
+            <NewThreadBox openedChannel={openedChannel} st={setToThreads}/>
+            <Threads threads={threads}
+            sm={setToMessages} 
+            />
+          </div>
+          :
+          null
+          }
         </div>
       </div>
+      }
     </div>
   )
 }

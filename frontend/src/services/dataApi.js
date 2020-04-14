@@ -25,10 +25,18 @@ const getAnswersDisplayInfo = (id, cb) => {
   })
 }
 
+//DATA ADDERS
+
+const addThread = (message) => {
+  socket.emit('ADDTHREAD', message)
+  socket.on('ADDTHREADSUCCESS', () => true)
+}
+
 const dataHelper = {
   getChannelDisplayInfo,
   getThreadDisplayInfo,
-  getAnswersDisplayInfo
+  getAnswersDisplayInfo,
+  addThread
 }
 
 export default dataHelper

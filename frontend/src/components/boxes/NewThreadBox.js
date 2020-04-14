@@ -28,7 +28,7 @@ const NewThreadBox = ({st, openedChannel}) => {
     console.log(yoo)
 
     console.log(location)
-    if(location.length!==0){
+    if(location !== undefined && location.length!==0){
       apiHelper.addThread([yoo, location, openedChannel])
     }
     else{

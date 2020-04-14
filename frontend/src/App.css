@@ -25,6 +25,23 @@
   margin: 4px;
 }
 
+.messageInputTextBox {
+  resize: none;
+  width: 90%;
+  height: 60px;
+  background-color: transparent;
+  border: none;
+}
+
+.sendMessageBtn {
+  margin: 0px;
+  height: 60px;
+  width: 6%;
+  min-width: 60px;
+  background-color: transparent;
+  border: none;
+}
+
 #Header {
   margin: 0px;
   margin-left: auto;
@@ -35,7 +52,8 @@
 
 #UserInfo {
   width: 98%;
-  margin-bottom: 30px;
+  margin-bottom: 3%;
+  margin-top: 0%;
 }
 
 .LogIn {
@@ -85,14 +103,16 @@
 
 .message {
   text-align: left;
-  padding-left: 2%;
-  margin-right: -5%;
-  margin-left: 0%;
-  width: 87%;
-  margin-top: 3%;
+  
+  margin: 0%;
+  margin-bottom: 3%;
+
   padding-left: 2%;
   padding-top: 2%;
+  padding-left: 2%;
   padding-bottom: 2.5%;
+
+  width: 87%;
   font-size: 90%;
 }
 
@@ -137,4 +157,3 @@
 body {
   background-color: #dedede;
 }
-

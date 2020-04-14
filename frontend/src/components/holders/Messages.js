@@ -1,14 +1,14 @@
 import React from 'react'
 import MessageBox from '../boxes/MessageBox'
 
-const Messages = ({messages, color}) => (
+const Messages = ({messages, openedThread}) => (
     <div>
       {messages.map((message, i) =>
         <MessageBox key={i} 
         text={message.text} 
         likes={message.likes}
         location={message.location}
-        color={color}
+        openedThread={openedThread}
         />
       )}
     </div>

@@ -5,10 +5,10 @@ const Channels = ({channels, st}) => {
     if(channels){
       return(
         <div>
-          {channels.map((channel, i) =>
-            <ChannelBox key={i}
-            id={i} 
-            name={channel.name} 
+          {channels.map((channel) =>
+            <ChannelBox key={channel.id}
+            id={channel.id} 
+            name={channel.text} 
             followers={channel.followers}
             st={st}
             />

@@ -32,13 +32,14 @@ function addSocketHandles(socket) {
             }
             Channel.find({}, (err, channels) => {
                 if(err) throw err;
-                socket.emit("CHANNELSDISPLAYINFO", channels);
+                socket.emit("CHANNELSDISPLAYINFO", 
+                channels ? channels.map(channel => channel.toJSON()) : []);
             });
         });
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
-        if(channelId === undefined || channelId.length === 0) {
+        if(!channelId || channelId.length === 0) {
             return;
         }
         userApi.isLogged(socket).then((user) => {
@@ -46,9 +47,10 @@ function addSocketHandles(socket) {
                 socket.emit("USERERROR", "Not logged in");
                 return;
             }
-            Thread.find({channelId: channelId}, (err, threads) => {
+            Thread.find({parentId: mongoose.Types.ObjectId(channelId)}, (err, threads) => {
                 if(err) throw err;
-                socket.emit("CHANNELSDISPLAYINFO", threads);
+                socket.emit("THREADSDISPLAYINFO", 
+                threads ? threads.map(thread => thread.toJSON()) : []);
             });
         });
     });
@@ -63,9 +65,10 @@ function addSocketHandles(socket) {
                 return;
             }
 
-            Answer.find({threadId: threadId}, (err, threads) => {
+            Answer.find({parentId: mongoose.Types.ObjectId(threadId)}, (err, answers) => {
                 if(err) throw err;
-                socket.emit("ANSWERSDISPLAYINFO", threads)
+                socket.emit("ANSWERSDISPLAYINFO", 
+                answers ? answers.map(answer => answer.toJSON()) : [])
             });
 
         });

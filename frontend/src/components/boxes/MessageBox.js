@@ -1,6 +1,8 @@
 import React from 'react'
 
-const MessageBox = ({text, likes, location, color}) => {
+const MessageBox = ({text, likes, location, openedThread}) => {
+  const colorIndex = openedThread.color ? openedThread.color : 0
+
   const colors=[
     ['#e75656', ' #e70b0b'],
     ['#d62f2f', ' #d67a7a'],
@@ -8,8 +10,8 @@ const MessageBox = ({text, likes, location, color}) => {
     ['#c92e55', ' #c979a0'],
     ['#de2a54', ' #de75aa']]
   
-  const bc=colors[color][0]
-  const br=('2px solid').concat(colors[color][1])
+  const bc=colors[colorIndex][0]
+  const br=('2px solid').concat(colors[colorIndex][1])
   
   
   const styles = {

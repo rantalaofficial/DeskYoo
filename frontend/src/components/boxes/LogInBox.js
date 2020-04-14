@@ -22,11 +22,11 @@ const LogInBox = ({su}) => {
     
     userHelper.register([username, password, confPassword]).then(userId =>{
         if(userId){
-          console.log(`Login success, ID ${userId}`)
+          console.log(`Register success, ID ${userId}`)
           this.setLogIn(true)
         }
         else{
-          console.log('Login failed')
+          console.log('Register failed')
         }
     })
   }
@@ -34,7 +34,7 @@ const LogInBox = ({su}) => {
   return(logIn ?
     <div id="loginContainer">
       <form id='loginForm' className='yellowBox LogIn' onSubmit={(event) => handleLoginSubmit(event, su)}>
-        <p><input input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
+        <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
         <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
         <input className='LogInElement' type='submit' value='Login' />
       </form>

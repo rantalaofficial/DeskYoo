@@ -18,21 +18,21 @@ const NewThreadBox = ({st, openedChannel}) => {
           console.log('Location not allowed'))}
     ,[])
 
-  const getLocation = (position) => {
-    return axios
+  const getLocation = async (position) => {
+    return await axios
     .get(`https://api.opencagedata.com/geocode/v1/json?key=1ed54d9bab024ae5a6caea8eb9b76d67&q=${position[0]}+${position[1]}&pretty=1&no_annotations=1`)
   }
 
-  const handleYooSend = (event) => {
+  const handleYooSend = async (event) => {
     event.preventDefault()
     console.log(yoo)
 
     console.log(location)
     if(location.length!==0){
-      apiHelper.addThread([yoo, location, openedChannel])
+      await apiHelper.addThread([yoo, location, openedChannel])
     }
     else{
-      apiHelper.addThread([yoo, 'Unknown', openedChannel])
+      await apiHelper.addThread([yoo, 'Unknown', openedChannel])
     }
 
     apiHelper.getThreadDisplayInfo(openedChannel, data => {

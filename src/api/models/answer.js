@@ -4,6 +4,10 @@ const answerSchema = mongoose.Schema({
     text: String,
     likes: Number,
     location: String,
+    time: { 
+        type : Date, 
+        default: Date.now 
+    },
     author: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User'

@@ -44,12 +44,15 @@ const NewThreadBox = ({st, openedChannel}) => {
   }
 
   return (
-    <form className='greenBox message' onSubmit={handleYooSend}>
-        New Yoo
-        <br></br>
-        <input id='texti' placeholder='Yoo' type='text' onChange={(event) => setYoo(event.target.value)}></input>
-        <input type='submit' value='Send Yoo'></input>
+    <div className="greenBox message">
+      <form className='' onSubmit={handleYooSend}>
+      <textarea className="messageInputTextBox" id='texti' maxLength="300" placeholder='Write your Yoo here and press 🤟 to send!' type='text' onChange={(event) => setYoo(event.target.value)}></textarea>
+      <button className="sendMessageBtn" type='submit' value=''>
+        <img src="/logo192.png" width='58px;' height='58px'></img>
+      </button>
     </form>
+    </div>
+    
   )
 }
 

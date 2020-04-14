@@ -60,7 +60,7 @@ function addSocketHandles(socket) {
             const user = new User({
                 username: data[0],
                 passwordHash: data[1],
-                score: 0,
+                score: 100,
             })
     
             user.save((err) => {
@@ -86,6 +86,16 @@ function addSocketHandles(socket) {
     });
 }
 
+function changeScore(userId, ammount) {
+    User.findOne({_id: userId}, (err, user) => {
+        if(err || user === undefined || user === null) {
+            return;
+        }
+        user.score += ammount;
+        user.save()
+    });   
+}
+
 function isLogged(socket) {
     if(socket.id in loggedUsers) {
         return loggedUsers[socket.id];
@@ -100,3 +110,4 @@ function getLoggedUsers() {
 module.exports.addSocketHandles = addSocketHandles;
 module.exports.isLogged = isLogged;
 module.exports.getLoggedUsers = getLoggedUsers;
+module.exports.changeScore = changeScore;

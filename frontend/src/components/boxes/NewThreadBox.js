@@ -23,21 +23,18 @@ const NewThreadBox = ({st, openedChannel}) => {
     .get(`https://api.opencagedata.com/geocode/v1/json?key=1ed54d9bab024ae5a6caea8eb9b76d67&q=${position[0]}+${position[1]}&pretty=1&no_annotations=1`)
   }
 
-  const handleYooSend = async (event) => {
+  const handleYooSend = (event) => {
     event.preventDefault()
     console.log(yoo)
 
     console.log(location)
     if(location && location.length!==0){
-      await apiHelper.addThread([yoo, location, openedChannel])
+      apiHelper.addThread([yoo, location, openedChannel], openedChannel, st)
     }
     else{
-      await apiHelper.addThread([yoo, 'Unknown', openedChannel])
+      apiHelper.addThread([yoo, 'Unknown', openedChannel], openedChannel, st)
     }
 
-    apiHelper.getThreadDisplayInfo(openedChannel, data => {
-        st(data)
-      })
     setYoo('')
     document.getElementById('texti').value=''
 

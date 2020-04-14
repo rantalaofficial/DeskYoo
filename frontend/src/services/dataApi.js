@@ -27,9 +27,12 @@ const getAnswersDisplayInfo = (id, cb) => {
 
 //DATA ADDERS
 
-const addThread = (message) => {
+const addThread = (message, openedChannel, st) => {
   socket.emit('ADDTHREAD', message)
-  socket.on('ADDTHREADSUCCESS', () => true)
+  socket.on('ADDTHREADSUCCESS', () => 
+  getThreadDisplayInfo(openedChannel, data => {
+    st(data)
+  }))
 }
 
 const dataHelper = {

@@ -82,16 +82,19 @@
 #channelColumn {
   float: left;
   text-align: left;
-  padding: 3%;
+  margin: 3%;
   width: 25%;
 }
 
 #messageColumn {
   float: right;
   text-align: left;
-  padding: 3%;
-  padding-left: 0%;
+  margin: 3%;
+  margin-left: 0%;
   width: 66%;
+  max-height: 70vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .channelInfo {

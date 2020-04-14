@@ -96,6 +96,7 @@ function addSocketHandles(socket) {
                 socket.emit("USERERROR", "Add thread failed to save.");
                 return;
             }
+            userApi.changeScore(userId, 10)
             socket.emit("ADDTHREADSUCCESS")
         });
     });
@@ -129,6 +130,8 @@ function addSocketHandles(socket) {
                 socket.emit("USERERROR", "Add answer failed to save.");
                 return;
             }
+
+            userApi.changeScore(userId, 10)
             socket.emit("ADDANSWERSUCCESS")
         });
     });

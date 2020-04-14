@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
 
-process.stdin.on('data', function (text) {
+process.stdin.on('data', (text) => {
     let command = text.trim();
     if(command === 'users') {
         console.log(userApi.getLoggedUsers())

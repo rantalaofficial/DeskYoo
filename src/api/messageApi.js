@@ -24,6 +24,7 @@ Channel.countDocuments({}, (err, count) => {
 });
 
 function addSocketHandles(socket) {
+    //GETTERS
     socket.on("GETCHANNELSDISPLAYINFO", () => {
         if(!userApi.isLogged(socket)) {
             socket.emit("USERERROR", "Not logged in");
@@ -37,14 +38,15 @@ function addSocketHandles(socket) {
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
-        if(channelId === undefined || channelId.length === 0) {
-            return;
-        }
         if(!userApi.isLogged(socket)) {
             socket.emit("USERERROR", "Not logged in");
             return;
         }
 
+        if(channelId === undefined || channelId.length === 0) {
+            return;
+        }
+        
         Thread.find({parentId: channelId}, (err, threads) => {
             if(err) throw err;
             socket.emit("THREADSDISPLAYINFO", threads);
@@ -52,19 +54,60 @@ function addSocketHandles(socket) {
     });
 
     socket.on("GETANSWERSDISPLAYINFO", (threadId) => {
-        if(threadId === undefined || threadId.length === 0) {
-            return;
-        }
         if(!userApi.isLogged(socket)) {
             socket.emit("USERERROR", "Not logged in");
             return;
         }
+
+        if(threadId === undefined || threadId.length === 0) {
+            return;
+        }
+        
 
         Answer.find({parentId: threadId}, (err, answers) => {
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", answers)
         });
     });
+
+    //ADDERS
+    socket.on("ADDTHREAD", (data) => {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
+
+        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[1].length === 0 || data[2].length === 0) {
+            socket.emit("USERERROR", "Invalid thread data.");
+            return;
+        }
+        
+        let text = data[0];
+        let location = data[1]
+        let parentId = data[2];
+
+        const thread = Thread({
+            text: text,
+            likes: 0,
+            location: location,
+            color: randomIntFromInterval(0, 4),
+            author: userId,
+            parentId: parentId,
+        });
+
+        thread.save((err) => {
+            if(err) {
+                socket.emit("USERERROR", "Add thread failed to save.");
+                return;
+            }
+            socket.emit("ADDTHREADSUCCESS")
+        });
+    });
+}
+
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 module.exports.addSocketHandles = addSocketHandles;

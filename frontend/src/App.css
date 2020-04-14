@@ -56,7 +56,9 @@
 #loginContainer {
   margin: auto;
   text-align: center;
-  width: 20%;
+  width: 30%;
+  min-width: 200px;
+  max-width: 300px;
 }
 
 #channelColumn {

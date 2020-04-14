@@ -15,25 +15,24 @@ Channel.countDocuments({}, (err, count) => {
         main.save()
         kerttuli.save()
 
-        const kysely = new Thread({text: "Mitä saitte matikan alustavista?", likes: 3, channelId: kerttuli._id})
+        const kysely = new Thread({text: "Mitä saitte matikan alustavista?", likes: 3, parentId: kerttuli._id, author: null, location: "Turku", color: 1})
         kysely.save()
 
-        const vastaus = new Answer({text: "105 pistettä, koska olen hikke xd", likes: 50, threadId: kysely._id})
+        const vastaus = new Answer({text: "105 pistettä, koska olen hikke xd", likes: 50, parentId: kysely._id, author: null, location: "Salo"})
         vastaus.save()
     }
 });
 
 function addSocketHandles(socket) {
     socket.on("GETCHANNELSDISPLAYINFO", () => {
-        userApi.isLogged(socket).then((user) => {
-            if(!user) {
-                socket.emit("USERERROR", "Not logged in");
-                return;
-            }
-            Channel.find({}, (err, channels) => {
-                if(err) throw err;
-                socket.emit("CHANNELSDISPLAYINFO", channels);
-            });
+        if(!userApi.isLogged(socket)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
+
+        Channel.find({}, (err, channels) => {
+            if(err) throw err;
+            socket.emit("CHANNELSDISPLAYINFO", channels);
         });
     });
 
@@ -41,15 +40,14 @@ function addSocketHandles(socket) {
         if(channelId === undefined || channelId.length === 0) {
             return;
         }
-        userApi.isLogged(socket).then((user) => {
-            if(!user) {
-                socket.emit("USERERROR", "Not logged in");
-                return;
-            }
-            Thread.find({channelId: channelId}, (err, threads) => {
-                if(err) throw err;
-                socket.emit("CHANNELSDISPLAYINFO", threads);
-            });
+        if(!userApi.isLogged(socket)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
+
+        Thread.find({parentId: channelId}, (err, threads) => {
+            if(err) throw err;
+            socket.emit("THREADSDISPLAYINFO", threads);
         });
     });
 
@@ -57,17 +55,14 @@ function addSocketHandles(socket) {
         if(threadId === undefined || threadId.length === 0) {
             return;
         }
-        userApi.isLogged(socket).then((user) => {
-            if(!user) {
-                socket.emit("USERERROR", "Not logged in");
-                return;
-            }
+        if(!userApi.isLogged(socket)) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
 
-            Answer.find({threadId: threadId}, (err, threads) => {
-                if(err) throw err;
-                socket.emit("ANSWERSDISPLAYINFO", threads)
-            });
-
+        Answer.find({parentId: threadId}, (err, answers) => {
+            if(err) throw err;
+            socket.emit("ANSWERSDISPLAYINFO", answers)
         });
     });
 }

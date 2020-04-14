@@ -99,6 +99,39 @@ function addSocketHandles(socket) {
             socket.emit("ADDTHREADSUCCESS")
         });
     });
+
+    socket.on("ADDANSWER", (data) => {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
+            socket.emit("USERERROR", "Not logged in");
+            return;
+        }
+
+        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[1].length === 0 || data[2].length === 0) {
+            socket.emit("USERERROR", "Invalid answer data.");
+            return;
+        }
+        
+        let text = data[0];
+        let location = data[1]
+        let parentId = data[2];
+
+        const answer = Answer({
+            text: text,
+            likes: 0,
+            location: location,
+            author: userId,
+            parentId: parentId,
+        });
+
+        answer.save((err) => {
+            if(err) {
+                socket.emit("USERERROR", "Add answer failed to save.");
+                return;
+            }
+            socket.emit("ADDANSWERSUCCESS")
+        });
+    });
 }
 
 function randomIntFromInterval(min, max) { // min and max included 

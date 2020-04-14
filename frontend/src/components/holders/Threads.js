@@ -3,10 +3,9 @@ import ThreadBox from '../boxes/ThreadBox'
 
 const Threads = ({threads, sm}) => (
     <div>
-      {threads.map((thread, i) =>
-        <ThreadBox key={i}
-        channelId={thread.channelId}
-        threadId={i} 
+      {threads.map(thread =>
+        <ThreadBox key={thread.id}
+        id={thread.id} 
         text={thread.text} 
         likes={thread.likes}
         location={thread.location}

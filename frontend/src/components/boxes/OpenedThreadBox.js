@@ -1,6 +1,9 @@
 import React from 'react'
 
-const OpenedThreadBox = ({openedThread, cm}) => {  
+const OpenedThreadBox = ({openedThread, cm}) => {
+  const colorIndex = openedThread.color ? openedThread.color : 0
+
+
   const colors=[
     ['#e75656', ' #e70b0b'],
     ['#d62f2f', ' #d67a7a'],

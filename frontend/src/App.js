@@ -15,7 +15,7 @@ import Notification from './components/util/Notification'
 
 const App = () => {
   const [messages, setMessages] = useState([])
-  const [openedThread, setOpenedThread] = useState({})
+  const [openedThread, setOpenedThread] = useState(null)
   const [threads, setThreads] = useState([])
   const [openedChannel, setOpenedChannel] = useState(null)
   const [channels, setChannels] = useState([])
@@ -27,7 +27,7 @@ const App = () => {
   const setToThreads = (data) => {
     setThreads([])
     setMessages([])
-    setOpenedChannel(data[0].channelId)
+    setOpenedChannel(data[0].parentId)
     console.log('here')
     if(data[0].text){
       setThreads(data)
@@ -36,7 +36,11 @@ const App = () => {
 
   const setToMessages = (data) => {
     setMessages([])
-    setOpenedThread(threads[data[0].threadId])
+    console.log(data)
+    const openedThread = threads.find(
+      (thread) => thread.id===data[0].parentId)
+    setOpenedThread(openedThread)
+    console.log(openedThread)
     console.log('here 2')
     if(data[0].text){
       setMessages(data)
@@ -83,13 +87,9 @@ const App = () => {
     }
   }, [user])
 
-  useEffect(() => {
-    errorHelper.listenError(errorText => showNotification(errorText, 'red'))
-  })
+  errorHelper.listenError(errorText => showNotification(errorText, 'red'))
 
-  useEffect(() => {
-    errorHelper.apiTest()
-  })
+  errorHelper.apiTest()
 
   return (
     <div>
@@ -100,7 +100,7 @@ const App = () => {
       <div className='row'>
         <div id='channelColumn'>
           {user ? <UserInfo user={user} /> : null}
-          {openedChannel!==null
+          {openedChannel
           ?
           <div>
             <OpenedChannels 
@@ -118,7 +118,7 @@ const App = () => {
           }
         </div>
         <div id='messageColumn'>
-          {messages.length!==0 
+          {openedThread 
           ? 
           <div>
             <OpenedThreadBox 
@@ -127,7 +127,7 @@ const App = () => {
             />
             <Messages
             messages={messages}
-            color={openedThread.color} />
+            openedThread={openedThread} />
           </div>
           : 
           <Threads threads={threads}

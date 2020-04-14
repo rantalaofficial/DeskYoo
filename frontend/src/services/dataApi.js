@@ -4,7 +4,7 @@ import socket from './connect'
 
 const getChannelDisplayInfo = (cb) => {
   socket.emit('GETCHANNELSDISPLAYINFO')
-  socket.on('CHANNELDISPLAYINFO', data => {
+  socket.on('CHANNELSDISPLAYINFO', data => {
     cb(data)
   })
 }
@@ -17,8 +17,8 @@ const getThreadDisplayInfo = (id, cb) => {
   })
 }
 
-const getAnswersDisplayInfo = (channelId, threadId, cb) => {
-  socket.emit('GETANSWERSDISPLAYINFO', [channelId, threadId])
+const getAnswersDisplayInfo = (id, cb) => {
+  socket.emit('GETANSWERSDISPLAYINFO', id)
   socket.on('ANSWERSDISPLAYINFO', data => {
     console.log(data)
     cb(data)

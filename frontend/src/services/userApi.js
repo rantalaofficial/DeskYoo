@@ -2,17 +2,17 @@ import socket from './connect'
 
 //LOGIN
 
-const login = (user, cb) => {
+const login = async (user, cb) => {
   socket.emit('LOGIN', user)
-  socket.on('LOGINSUCCESS', userId => {
-    cb(userId)
+  await socket.on('LOGINSUCCESS', async () => {
+    cb(true)
   })
 }
 
 const register = async (user) => {
   socket.emit('REGISTER', user)
-  await socket.on('REGISTERSUCCESS', userId => {
-    return userId
+  await socket.on('REGISTERSUCCESS', () => {
+    return true
   })
   return false
 }

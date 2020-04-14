@@ -6,17 +6,17 @@ const OpenedChannels = ({channels, st, ct, openedChannel}) => {
     if(channels){
       return(
         <div>
-          {channels.map((channel, i) => i!==openedChannel ?
-            <ChannelBox key={i}
-            id={i} 
-            name={channel.name} 
+          {channels.map((channel) => channel.id!==openedChannel ?
+            <ChannelBox key={channel.id}
+            id={channel.id} 
+            name={channel.text} 
             followers={channel.followers}
             st={st}
             />
             :
-            <OpenedChannelBox key={i}
-            id={i} 
-            name={channel.name} 
+            <OpenedChannelBox key={channel.id}
+            id={channel.id} 
+            name={channel.text} 
             followers={channel.followers}
             ct={ct}
             />

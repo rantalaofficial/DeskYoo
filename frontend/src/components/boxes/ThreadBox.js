@@ -1,8 +1,10 @@
 import React from 'react'
 import apiHelper from '../../services/dataApi'
 
-const ThreadBox = ({channelId, threadId, text, likes, location, color, sm}) => {
+const ThreadBox = ({id, text, likes, location, color, sm}) => {
   //console.log(`Color${color}`)
+
+  const colorIndex = color ? color : 0
 
 
   const colors=[
@@ -12,8 +14,8 @@ const ThreadBox = ({channelId, threadId, text, likes, location, color, sm}) => {
     ['#c92e55', ' #c979a0'],
     ['#de2a54', ' #de75aa']]
 
-  const bc=colors[color][0]
-  const br=('2px solid').concat(colors[color][1])
+  const bc=colors[colorIndex][0]
+  const br=('2px solid').concat(colors[colorIndex][1])
 
 
   const styles = {
@@ -31,7 +33,7 @@ const ThreadBox = ({channelId, threadId, text, likes, location, color, sm}) => {
   
     return (
       <div>
-        <button onClick={e => handleThreadClick(e, channelId, threadId, sm)}  style={styles} className='message'>  
+        <button onClick={e => handleThreadClick(e, id, sm)}  style={styles} className='message'>  
           <span> {text} 👤</span><br></br>
           <span>📍{location}</span>
         </button>
@@ -44,20 +46,15 @@ const ThreadBox = ({channelId, threadId, text, likes, location, color, sm}) => {
     )
   }
   
-  const handleThreadClick = (event, channelId, threadId, sm) => {
+  const handleThreadClick = (event, id, sm) => {
     event.preventDefault()
-    console.log(channelId)
-    apiHelper.getAnswersDisplayInfo(channelId, threadId, (data) => {
+    console.log(`Thread id ${id}`)
+    apiHelper.getAnswersDisplayInfo(id, (data) => {
       if(data.length!==0){
-        console.log(data)
-        data.map(message => {
-          message.threadId=threadId
-          message.channelId=channelId
-        })
         console.log(data)
         return sm(data)
       }
-      sm([{threadId, channelId}])
+      sm([{parentId: id}])
     })
   }
 

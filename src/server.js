@@ -33,9 +33,3 @@ process.stdin.on('data', (text) => {
         console.log(userApi.getLoggedUsers())
     }
 });
-
-
-
-
-
-

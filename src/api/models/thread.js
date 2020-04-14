@@ -5,10 +5,7 @@ const threadSchema = mongoose.Schema({
     likes: Number,
     location: String,
     color: Number,
-    time: { 
-        type : Date, 
-        default: new Date().getTime()
-    },
+    time: Number,
     author: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User'

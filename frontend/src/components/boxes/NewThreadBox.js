@@ -13,18 +13,20 @@ const NewThreadBox = ({st, openedChannel}) => {
           let position = [data.coords.latitude.toString(), data.coords.longitude.toString()]
           const response = await getLocation(position)
 
-          if(response.data.results[0].components.village){
-            setLocation(response.data.results[0].components.village)
+          const result = response.data.results[0] ? response.data.results[0].components : {}
+
+          if(result.village){
+            setLocation(result.village)
           }
-          else if(response.data.results[0].components.town){
-            setLocation(response.data.results[0].components.town)
+          else if(result.town){
+            setLocation(result.town)
           }
-          else if(response.data.results[0].components.city){
-            setLocation(response.data.results[0].components.city)
+          else if(result.city){
+            setLocation(result.city)
           }
 
-          else if(response.data.results[0].components.country){
-            setLocation(response.data.results[0].components.country)
+          else if(result.country){
+            setLocation(result.country)
           }
         },
         (error) => 

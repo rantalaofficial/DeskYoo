@@ -14,12 +14,6 @@ Channel.countDocuments({}, (err, count) => {
         const kerttuli = new Channel({text: "Kerttuli", followers: 69});
         main.save()
         kerttuli.save()
-
-        const kysely = new Thread({text: "Mitä saitte matikan alustavista?", likes: 3, parentId: kerttuli._id, author: null, location: "Turku", color: 1})
-        kysely.save()
-
-        const vastaus = new Answer({text: "105 pistettä, koska olen hikke xd", likes: 50, parentId: kysely._id, author: null, location: "Salo"})
-        vastaus.save()
     }
 });
 
@@ -45,8 +39,9 @@ function addSocketHandles(socket) {
             socket.emit("USERERROR", "Not logged in");
             return;
         }
-        Thread.find({parentId: mongoose.Types.ObjectId(channelId)}, (err, threads) => {
+        Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
             if(err) throw err;
+            console.log(threads)
             socket.emit("THREADSDISPLAYINFO", 
             threads ? threads.map(thread => thread.toJSON()) : []);
         });
@@ -58,7 +53,7 @@ function addSocketHandles(socket) {
             return;
         }
 
-        Answer.find({parentId: mongoose.Types.ObjectId(threadId)}, (err, answers) => {
+        Thread.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('-time').exec((err, answers) => {
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", 
             answers ? answers.map(answer => answer.toJSON()) : [])
@@ -87,6 +82,7 @@ function addSocketHandles(socket) {
             likes: 0,
             location: location,
             color: randomIntFromInterval(0, 4),
+            time: new Date().getTime(),
             author: userId,
             parentId: parentId,
         });
@@ -121,6 +117,7 @@ function addSocketHandles(socket) {
             text: text,
             likes: 0,
             location: location,
+            time: new Date().getTime(),
             author: userId,
             parentId: parentId,
         });

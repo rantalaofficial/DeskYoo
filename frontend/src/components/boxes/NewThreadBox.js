@@ -11,7 +11,21 @@ const NewThreadBox = ({st, openedChannel}) => {
         async (data) => {
           console.log(data.coords.latitude, data.coords.longitude)
           let position = [data.coords.latitude.toString(), data.coords.longitude.toString()]
-          getLocation(position).then(response => setLocation(response.data.results[0].components.town))
+          const response = await getLocation(position)
+
+          if(response.data.results[0].components.village){
+            setLocation(response.data.results[0].components.village)
+          }
+          else if(response.data.results[0].components.town){
+            setLocation(response.data.results[0].components.town)
+          }
+          else if(response.data.results[0].components.city){
+            setLocation(response.data.results[0].components.city)
+          }
+
+          else if(response.data.results[0].components.country){
+            setLocation(response.data.results[0].components.country)
+          }
         },
         (error) => 
           console.log('Location not allowed'))}

@@ -38,26 +38,14 @@ function addSocketHandles(socket) {
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
-<<<<<<< HEAD
-=======
         if(!channelId || channelId.length === 0) {
             return;
         }
->>>>>>> f3fe82e8596d9c8df6814df0037131c5cbc21f60
         if(!userApi.isLogged(socket)) {
             socket.emit("USERERROR", "Not logged in");
             return;
         }
-<<<<<<< HEAD
-
-        if(channelId === undefined || channelId.length === 0) {
-            return;
-        }
-        
-        Thread.find({parentId: channelId}, (err, threads) => {
-=======
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}, (err, threads) => {
->>>>>>> f3fe82e8596d9c8df6814df0037131c5cbc21f60
             if(err) throw err;
             socket.emit("THREADSDISPLAYINFO", 
             threads ? threads.map(thread => thread.toJSON()) : []);
@@ -70,16 +58,7 @@ function addSocketHandles(socket) {
             return;
         }
 
-<<<<<<< HEAD
-        if(threadId === undefined || threadId.length === 0) {
-            return;
-        }
-        
-
-        Answer.find({parentId: threadId}, (err, answers) => {
-=======
         Answer.find({parentId: mongoose.Types.ObjectId(threadId)}, (err, answers) => {
->>>>>>> f3fe82e8596d9c8df6814df0037131c5cbc21f60
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", 
             answers ? answers.map(answer => answer.toJSON()) : [])

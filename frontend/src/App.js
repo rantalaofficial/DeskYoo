@@ -110,6 +110,8 @@ const App = () => {
 
     //ERROR HANDLING
     socket.on('USERERROR', errorText => {
+      document.getElementById('root').style.pointerEvents = 'auto'
+      
       showNotification(errorText, 'red')
     })
 

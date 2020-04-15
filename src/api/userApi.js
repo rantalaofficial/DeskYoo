@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const User = require('./models/user');
 
 if(mongoose.connection.readyState == 0) {
-    mongoose.connect('mongodb+srv://DeskYooBackend:Sjr8kY8vJbIjCsQU@maincluster-n1ait.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).then(
+    mongoose.connect('mongodb+srv://DeskYooBackend:Sjr8kY8vJbIjCsQU@maincluster-n1ait.mongodb.net/MainDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).then(
         () => {
             console.log("Database connection state: " + mongoose.connection.readyState);
         },

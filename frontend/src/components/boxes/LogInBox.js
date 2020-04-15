@@ -57,7 +57,7 @@ const LogInBox = ({su}) => {
       <form id='loginForm' className='yellowBox LogIn' onSubmit={handleLoginSubmit}>
         <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
         <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
-        <input className='LogInElement' type='submit' value='Login' />
+        <input className='greenBox LogInElement' type='submit' value='Login' />
       </form>
       <input className='LogInElement' type='button' onClick={() => {
           setLogIn(false)
@@ -70,7 +70,7 @@ const LogInBox = ({su}) => {
         <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
         <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
         <p><input placeholder='Password confirm' className='LogInElement' type='password' onChange={(event) => setConfpassword(event.target.value)}></input></p>
-        <input className='LogInElement' type='submit' value='Register' />
+        <input className='greenBox LogInElement' type='submit' value='Register' />
       </form>
       <input className='LogInElement' type='button' onClick={() => {
           setLogIn(true)

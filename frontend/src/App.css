@@ -17,20 +17,11 @@
 }
 
 .yellowBox {
-  background-color: #e6d302;
+  background-color: #fff8a7;
   text-align: center;
   padding: 0px;
   border-radius: 10px;
-  border: 2px solid yellow;
-  margin: 1%;
-}
-
-.redBox {
-  background-color: rgb(231, 86, 86);
-  text-align: center;
-  padding: 0px;
-  border-radius: 10px;
-  border: 2px solid rgb(231, 11, 11);
+  border: 2px solid gray;
   margin: 1%;
 }
 
@@ -81,9 +72,11 @@
 
 .LogInElement  {
   width: 80%;
-  border: 3px solid yellowgreen;
+  padding: 2%;
   border-radius: 6px;
   font-size: 100%;
+  color: black;
+  border: 2px solid gray;
 }
 
 #loginContainer {

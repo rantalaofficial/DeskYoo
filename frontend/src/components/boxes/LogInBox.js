@@ -26,8 +26,6 @@ const LogInBox = ({su}) => {
   }, [])
 
   useEffect(() => {
-    //TODO Client logging
-    console.log('Register success')
     setLogIn(true)
   }, [registerSuccess])
 

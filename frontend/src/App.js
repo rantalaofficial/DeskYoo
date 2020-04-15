@@ -68,7 +68,7 @@ const App = () => {
     setNotification({message, color})
     setTimeout(() => {
       setNotification({message: null, color})
-    }, 3000)
+    }, 4000)
   }
   
   /*
@@ -89,6 +89,11 @@ const App = () => {
   }, [user])
 
   useEffect(() => {
+    //CONNECTION HANDLING
+    socket.on('disconnect', () => {
+      showNotification("Server disconnected", 'red')
+    })
+
     //ERROR HANDLING
     socket.on('USERERROR', errorText => {
       showNotification(errorText, 'red')

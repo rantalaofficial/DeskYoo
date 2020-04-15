@@ -1,8 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import './App.css'
-import dataHelper from './services/dataApi'
-import userHelper from './services/userApi'
-import errorHelper from './services/errorApi'
 import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
 import LogInBox from './components/boxes/LogInBox'
@@ -13,6 +10,8 @@ import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
 import OpenedChannels from './components/holders/OpenedChannels'
 import Notification from './components/util/Notification'
+
+import socket from './services/connect'
 
 const App = () => {
   const [messages, setMessages] = useState([])
@@ -26,23 +25,24 @@ const App = () => {
   const [notification, setNotification] = useState({message: null, color: 'green'})
 
   const setToThreads = (data) => {
+    //console.log(data)
     setThreads([])
     setMessages([])
-    setOpenedChannel(data[0].parentId)
-    console.log('here')
+    //console.log('here')
     if(data[0].text){
       setThreads(data)
     }
+    setOpenedChannel(data[0].parentId)
   }
 
   const setToMessages = (data) => {
     setMessages([])
-    console.log(data)
+    //console.log(data)
     const openedThread = threads.find(
       (thread) => thread.id===data[0].parentId)
     setOpenedThread(openedThread)
-    console.log(openedThread)
-    console.log('here 2')
+    //console.log(openedThread)
+    //console.log('here 2')
     if(data[0].text){
       setMessages(data)
     }
@@ -81,16 +81,33 @@ const App = () => {
 
   useEffect(() => {
     if(user && !user.username){
-      console.log(user)
-      userHelper.getUserDisplayInfo(user => setUser(user))
+      socket.emit('GETUSERDISPLAYINFO')
 
-      dataHelper.getChannelDisplayInfo((data) => setChannels(data))
+      socket.emit('GETCHANNELSDISPLAYINFO')
     }
+
   }, [user])
 
-  errorHelper.listenError(errorText => showNotification(errorText, 'red'))
+  useEffect(() => {
+    //ERROR HANDLING
+    socket.on('USERERROR', errorText => {
+      showNotification(errorText, 'red')
+    })
 
-  errorHelper.apiTest()
+    socket.on('*',(event, data) => {
+      console.log(`EVENT: ${event}`)
+      console.log(data)
+    })
+
+    //USER LOGIN HANDLING
+    socket.on('USERDISPLAYINFO', user => {
+      setUser(user)
+    })
+
+    socket.on('CHANNELSDISPLAYINFO', data => {
+      setChannels(data)
+    })
+  }, [])
 
   return (
     <div>
@@ -140,8 +157,12 @@ const App = () => {
           openedChannel 
           ?
           <div>
-            <NewThreadBox openedChannel={openedChannel} st={setToThreads}/>
-            <Threads threads={threads}
+            <NewThreadBox
+            openedChannel={openedChannel}
+            st={setToThreads}
+            />
+            <Threads 
+            threads={threads}
             sm={setToMessages} 
             />
           </div>

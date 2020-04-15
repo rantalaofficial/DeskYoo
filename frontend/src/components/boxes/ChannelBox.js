@@ -1,24 +1,18 @@
 import React from 'react'
-import apiHelper from '../../services/dataApi'
 
-const ChannelBox = ({id, name, followers, st}) => (
-    <button onClick={e => handleChannelClick(e, id, st)} className='greenBox channelInfo'>
+import socket from '../../services/connect'
+
+const ChannelBox = ({id, name, followers}) => (
+    <button onClick={e => handleChannelClick(e, id)} className='greenBox channelInfo'>
        #<b>{name}</b><br></br>
-       <span>{followers} 👤</span> 
+       {followers}<span role="img" aria-label='Followers'>👤</span>
     </button>
   )
   
-  const handleChannelClick = (event, id, st) => {
+  const handleChannelClick = (event, id) => {
+    //console.log('Channel click')
     event.preventDefault()
-    console.log(`Channel id ${id}`)
-    apiHelper.getThreadDisplayInfo(id, (data) => {
-      if(data.length!==0){
-        console.log(data)
-        return st(data)
-      }
-
-      st([{parentId: id}])
-    })
+    socket.emit('GETTHREADSDISPLAYINFO', id)
   }
 
 export default ChannelBox

@@ -46,7 +46,7 @@ function addSocketHandles(socket) {
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
             if(err) throw err;
             socket.emit("THREADSDISPLAYINFO", 
-            threads ? threads.map(thread => thread.toJSON()) : []);
+            threads && threads.length>0 ? threads.map(thread => thread.toJSON()) : [{parentId: channelId}]);
         });
     });
 
@@ -59,7 +59,7 @@ function addSocketHandles(socket) {
         Thread.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('-time').exec((err, answers) => {
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", 
-            answers ? answers.map(answer => answer.toJSON()) : [])
+            answers && answers.length>0 ? answers.map(answer => answer.toJSON()) : [{parentId: threadId}])
         });
     });
 

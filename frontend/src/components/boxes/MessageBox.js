@@ -23,7 +23,7 @@ const MessageBox = ({text, likes, location, openedThread}) => {
     <div style={styles} className='yellowBox message'>
         <div class="multilineText">{text}</div>
         <br></br>
-        <span>📍{location}</span>
+        <span role="img" aria-label='Location'>📍</span>{location}
       <div className="messageLikeContainer2">
         <button className="likeButton">▲</button>
         <p id="likeText">{likes}</p>

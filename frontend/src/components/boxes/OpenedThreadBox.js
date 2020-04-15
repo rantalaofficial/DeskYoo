@@ -11,8 +11,8 @@ const OpenedThreadBox = ({openedThread, cm}) => {
     ['#c92e55', ' #c979a0'],
     ['#de2a54', ' #de75aa']]
 
-  const bc=colors[openedThread.color][0]
-  const br=('2px solid').concat(colors[openedThread.color][1])
+  const bc=colors[colorIndex][0]
+  const br=('2px solid').concat(colors[colorIndex][1])
 
 
   const styles = {
@@ -29,7 +29,7 @@ const OpenedThreadBox = ({openedThread, cm}) => {
     <div>
       <button onClick={e => handleOpenedThreadClick(e, cm)}  style={styles} className='message'>
         <span> {openedThread.text} 👤</span><br></br>
-        <span>📍{openedThread.location}</span>
+        <span role="img" aria-label='Location'>📍</span>{openedThread.location}
       </button>
       <div className="messageLikeContainer">
         <button className="likeButton">▲</button>

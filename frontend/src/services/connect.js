@@ -22,7 +22,7 @@ const sendRequest = (event, data) => {
     }
 }
 
-localStorage.debug = 'engine.io-client:socket'
+localStorage.debug = 'socket.io-client:socket'
 
 window.sendRequest=sendRequest
     

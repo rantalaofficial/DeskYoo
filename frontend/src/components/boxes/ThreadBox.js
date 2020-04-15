@@ -1,8 +1,8 @@
 import React from 'react'
-import apiHelper from '../../services/dataApi'
 
-const ThreadBox = ({id, text, likes, location, color, sm}) => {
-  //console.log(`Color${color}`)
+import socket from '../../services/connect'
+
+const ThreadBox = ({id, text, likes, location, color}) => {
 
   const colorIndex = color ? color : 0
 
@@ -33,10 +33,10 @@ const ThreadBox = ({id, text, likes, location, color, sm}) => {
   
     return (
       <div>
-        <button onClick={e => handleThreadClick(e, id, sm)}  style={styles} className='message'>  
-          <div class="multilineText">{text}</div>
+        <button onClick={e => handleThreadClick(e, id)}  style={styles} className='message'>  
+          <div className="multilineText">{text}</div>
           <br></br>
-          <span>📍{location}</span>
+          <span role="img" aria-label='Location'>📍</span>{location}
         </button>
         <div className="messageLikeContainer">
           <button className="likeButton">▲</button>
@@ -47,16 +47,10 @@ const ThreadBox = ({id, text, likes, location, color, sm}) => {
     )
   }
   
-  const handleThreadClick = (event, id, sm) => {
+  const handleThreadClick = (event, id) => {
+    //console.log('thread click')
     event.preventDefault()
-    console.log(`Thread id ${id}`)
-    apiHelper.getAnswersDisplayInfo(id, (data) => {
-      if(data.length!==0){
-        console.log(data)
-        return sm(data)
-      }
-      sm([{parentId: id}])
-    })
+    socket.emit('GETANSWERSDISPLAYINFO', id)
   }
 
 export default ThreadBox

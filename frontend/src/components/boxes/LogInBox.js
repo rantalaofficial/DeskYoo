@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
-import userHelper from '../../services/userApi'
+import React, {useState, useEffect} from 'react'
+
+import socket from '../../services/connect'
 
 const LogInBox = ({su}) => {
   const [logIn, setLogIn] = useState(true)
@@ -7,33 +8,50 @@ const LogInBox = ({su}) => {
   const [password, setPassword] = useState('')
   const [confPassword, setConfpassword] = useState('')
 
+  const [registerSuccess, setRegisterSuccess] = useState(false)
+
+  useEffect(() => {
+    socket.on('LOGINSUCCESS', () => {
+      su(true)
+    })
+
+    socket.on('REGISTERSUCCESS', () => {
+      setRegisterSuccess(true)
+    })
+
+    return function cleanup () {
+      socket.off('LOGINSUCCESS')
+      socket.off('REGISTERSUCCESS')
+    }
+  }, [])
+
+  useEffect(() => {
+    //TODO Client logging
+    console.log('Register success')
+    setLogIn(true)
+  }, [registerSuccess])
+
   const handleLoginSubmit = (event, su) => {
     event.preventDefault()
-      
-    console.log(username, password)
-  
-    userHelper.login([username, password], user => su(user))
+
+    socket.emit('LOGIN', [username, password])
   }
   
   const handleRegisterSubmit = (event) => {
     event.preventDefault()
 
-    console.log(username, password, confPassword)
-    
-    userHelper.register([username, password, confPassword]).then(userId =>{
-        if(userId){
-          console.log(`Register success, ID ${userId}`)
-          this.setLogIn(true)
-        }
-        else{
-          console.log('Register failed')
-        }
-    })
+    if(password===confPassword){
+      socket.emit('REGISTER', [username, password])
+    }
+    else{
+      //CLIENT LOGGING
+      console.log('Password don\'t match')
+    }
   }
   
   return(logIn ?
     <div id="loginContainer">
-      <form id='loginForm' className='yellowBox LogIn' onSubmit={(event) => handleLoginSubmit(event, su)}>
+      <form id='loginForm' className='yellowBox LogIn' onSubmit={handleLoginSubmit}>
         <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
         <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
         <input className='LogInElement' type='submit' value='Login' />

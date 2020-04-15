@@ -36,6 +36,7 @@
   height: 60px;
   background-color: transparent;
   border: none;
+  overflow: hidden;
 }
 
 .sendMessageBtn {

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import socket from '../../services/connect'
 
-const LogInBox = ({su}) => {
+const LogInBox = ({su, showNotification}) => {
   const [logIn, setLogIn] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -32,7 +32,7 @@ const LogInBox = ({su}) => {
     setLogIn(true)
   }, [registerSuccess])
 
-  const handleLoginSubmit = (event, su) => {
+  const handleLoginSubmit = (event) => {
     event.preventDefault()
     document.getElementById('root').style.pointerEvents = 'none'
 
@@ -41,14 +41,17 @@ const LogInBox = ({su}) => {
   
   const handleRegisterSubmit = (event) => {
     event.preventDefault()
-    document.getElementById('root').style.pointerEvents = 'none'
 
-    if(password===confPassword){
+    if(password===confPassword && password.length>4){
+      document.getElementById('root').style.pointerEvents = 'none'
+
       socket.emit('REGISTER', [username, password])
     }
-    else{
-      //CLIENT LOGGING
-      console.log('Password don\'t match')
+    else if(password!==confPassword){
+      showNotification('Passwords don\'t match', 'red')
+    }
+    else if(password.length<5){
+      showNotification('Password too short', 'red')
     }
   }
   

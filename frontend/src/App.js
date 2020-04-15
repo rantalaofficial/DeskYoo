@@ -12,6 +12,7 @@ import OpenedChannels from './components/holders/OpenedChannels'
 import Notification from './components/util/Notification'
 
 import socket from './services/connect'
+import appHandlers from './services/appEvents'
 
 const App = () => {
   const [messages, setMessages] = useState([])
@@ -69,20 +70,16 @@ const App = () => {
     setUser(user)
   }
 
-  const showNotification = (message, color) =>{
+  const setToChannels = (channels) => {
+    setChannels(channels)
+  }
+
+  const showNotification = (message, color) => {
     setNotification({message, color})
     setTimeout(() => {
       setNotification({message: null, color})
     }, 4000)
   }
-  
-  /*
-
-  useEffect( () => {
-    userHelper.login(['Aapooo', '22222222', ], user => setUser(user))
-  },[])
-
-  */
 
   useEffect(() => {
     if(user && !user.username){
@@ -94,39 +91,7 @@ const App = () => {
   }, [user])
 
   useEffect(() => {
-    //CONNECTION HANDLING
-    socket.on('connect_error', function(){
-      showNotification("Cannot connect to server", 'red')
-    });
-
-    socket.on('disconnect', () => {
-      showNotification("Server disconnected", 'red')
-    })
-
-    socket.on("*",function(event, data) {
-      console.log("event: " + event + " data: ");
-      console.log(data)
-    });
-
-    //ERROR HANDLING
-    socket.on('USERERROR', errorText => {
-      document.getElementById('root').style.pointerEvents = 'auto'
-      
-      showNotification(errorText, 'red')
-    })
-
-    //USER LOGIN HANDLING
-    socket.on('USERDISPLAYINFO', user => {
-      document.getElementById('root').style.pointerEvents = 'auto'
-
-      setUser(user)
-    })
-
-    socket.on('CHANNELSDISPLAYINFO', data => {
-      document.getElementById('root').style.pointerEvents = 'auto'
-      
-      setChannels(data)
-    })
+    appHandlers(socket, showNotification, setToUser, setToChannels)
   }, [])
 
   return (
@@ -134,8 +99,11 @@ const App = () => {
       <Header />
       <br></br>
       <Notification message={notification.message} color={notification.color}/>
+      <br></br>
       {!user ? 
-      <LogInBox su={setToUser} />
+      <LogInBox 
+      su={setToUser}
+      showNotification={showNotification} />
       :
       <div className='row'>
         <div id='channelColumn'>
@@ -179,7 +147,7 @@ const App = () => {
           <div>
             <NewThreadBox
             openedChannel={openedChannel}
-            st={setToThreads}
+            showNotification={showNotification}
             />
             <Threads 
             threads={threads}

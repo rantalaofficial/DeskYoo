@@ -7,15 +7,10 @@ const ThreadBox = ({id, text, likes, location, color}) => {
   const colorIndex = color ? color : 0
 
 
-  const colors=[
-    ['#e75656', ' #e70b0b'],
-    ['#d62f2f', ' #d67a7a'],
-    ['#bf1d66', ' #bf68b0'],
-    ['#c92e55', ' #c979a0'],
-    ['#de2a54', ' #de75aa']]
-
-  const bc=colors[colorIndex][0]
-  const br=('2px solid').concat(colors[colorIndex][1])
+  const colors=['#E0BBE4', '#AC91C8', '#D291BC', '#FEC8D8', '#FFDFD3']
+    
+  const br=('2px solid gray')
+  const bc=colors[colorIndex]
 
 
   const styles = {
@@ -28,7 +23,7 @@ const ThreadBox = ({id, text, likes, location, color}) => {
     marginTop: '0%',
     marginLeft: '0%',
     marginRight: '0%',
-    marginBottom: '3%'
+    marginBottom: '1%'
   }
   
     return (

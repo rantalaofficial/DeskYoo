@@ -95,9 +95,18 @@ const App = () => {
 
   useEffect(() => {
     //CONNECTION HANDLING
+    socket.on('connect_error', function(){
+      showNotification("Cannot connect to server", 'red')
+    });
+
     socket.on('disconnect', () => {
       showNotification("Server disconnected", 'red')
     })
+
+    socket.on("*",function(event, data) {
+      console.log("event: " + event + " data: ");
+      console.log(data)
+    });
 
     //ERROR HANDLING
     socket.on('USERERROR', errorText => {

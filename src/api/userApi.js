@@ -2,8 +2,14 @@ const mongoose = require('mongoose')
 const User = require('./models/user');
 
 if(mongoose.connection.readyState == 0) {
-    mongoose.connect('mongodb+srv://DeskYooBackend:VeryGoodPassWord54352@cluster0-n1ait.mongodb.net/MainDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).
-    catch(error => handleError(error));
+    mongoose.connect('mongodb+srv://DeskYooBackend:Sjr8kY8vJbIjCsQU@maincluster-n1ait.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).then(
+        () => {
+            console.log("Database connection state: " + mongoose.connection.readyState);
+        },
+        (err) => {
+            console.log("Database error:" + err)
+        }
+    )
 }
 
 //KEEPS TRACK OF LOGGED USERS {key: socket.id, value user_id}: 

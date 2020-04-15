@@ -51,10 +51,22 @@ const NewThreadBox = ({openedChannel, showNotification}) => {
 
     if(text.split('\n').length>4){
       //PREVENT ADDING MORE THAN 4 LINE BRAKES
-      text=text.substring(0, text.length-1)
+      let textArray=text.split('\n', 4)
+      //console.log(textArray)
+      text = ''
+
+      for(let i = 0; i<textArray.length;i++){
+        text = text.concat(textArray[i])
+        if(i!==textArray.length-1){
+          text=text.concat('\n')
+        }
+      }
+
       document.getElementById('texti').value=text
 
     }
+    //console.log(text)
+
     setYoo(text)
   }
 

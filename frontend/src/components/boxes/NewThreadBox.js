@@ -59,7 +59,7 @@ const NewThreadBox = ({openedChannel, showNotification}) => {
   }
 
   return (
-    <div className="greenBox message">
+    <div className="yellowBox message">
       <form onSubmit={handleYooSend}>
       <textarea className="messageInputTextBox" id='texti' maxLength="300" placeholder='Write your Yoo here and press 🤟 to send!' type='text' onChange={handleTextChange}></textarea>
       <button className="sendMessageBtn" type='submit' value=''>

@@ -18,7 +18,6 @@ const Threads = ({threads, sm}) => {
     }
   })
 
-
   return(
   <div>
     {threads.map(thread =>
@@ -28,6 +27,7 @@ const Threads = ({threads, sm}) => {
       likes={thread.likes}
       location={thread.location}
       color={thread.color}
+      time={thread.time}
       />
     )}
   </div>

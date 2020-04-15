@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './App.css'
+
 import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
 import LogInBox from './components/boxes/LogInBox'
@@ -87,7 +88,6 @@ const App = () => {
 
       socket.emit('GETCHANNELSDISPLAYINFO')
     }
-
   }, [user])
 
   useEffect(() => {

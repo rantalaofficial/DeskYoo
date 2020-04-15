@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 const User = require('./models/user');
 
+const config = require('../util/config')
+
 if(mongoose.connection.readyState == 0) {
-    mongoose.connect('mongodb+srv://DeskYooBackend:Sjr8kY8vJbIjCsQU@maincluster-n1ait.mongodb.net/MainDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}).then(
+    mongoose.connect(config.DBADDRESS, {useNewUrlParser: true, useUnifiedTopology: true}).then(
         () => {
             console.log("Database connection state: " + mongoose.connection.readyState);
         },

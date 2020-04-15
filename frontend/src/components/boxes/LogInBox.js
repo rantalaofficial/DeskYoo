@@ -37,7 +37,7 @@ const LogInBox = ({su, showNotification}) => {
     event.preventDefault()
     document.getElementById('root').style.pointerEvents = 'none'
 
-    socket.emit('LOGIN', [username, sha256(password)])
+    socket.emit('LOGIN', [username, sha256(password+process.env.REACT_APP_SECRET)])
   }
   
   const handleRegisterSubmit = (event) => {
@@ -46,7 +46,7 @@ const LogInBox = ({su, showNotification}) => {
     if(password===confPassword && password.length>4){
       document.getElementById('root').style.pointerEvents = 'none'
 
-      socket.emit('REGISTER', [username, sha256(password)])
+      socket.emit('REGISTER', [username, sha256(password+process.env.REACT_APP_SECRET)])
     }
     else if(password!==confPassword){
       showNotification('Passwords don\'t match', 'red')

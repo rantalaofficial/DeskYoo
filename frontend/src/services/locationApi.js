@@ -6,8 +6,7 @@ const getLocation = async (cb) => {
         //console.log(data.coords.latitude, data.coords.longitude)
         let position = [data.coords.latitude.toString(), data.coords.longitude.toString()]
         const response = await axios
-        .get(`https://api.opencagedata.com/geocode/v1/json?key=1ed54d9bab024ae5a6caea8eb9b76d67&q=${position[0]}+${position[1]}&pretty=1&no_annotations=1`)    
-
+        .get(`${process.env.REACT_APP_LOCATIONAPI}${position[0]}+${position[1]}&pretty=1&no_annotations=1`)
         const result = response.data.results[0] ? response.data.results[0].components : {}
 
         if(result.village){

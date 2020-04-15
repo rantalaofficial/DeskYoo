@@ -8,8 +8,10 @@ const NewThreadBox = ({openedChannel}) => {
   const [location, setLocation] = useState(null)
 
   useEffect(() => {
-    socket.on('ADDTHREADSUCCESS', () => 
-    socket.emit('GETTHREADSDISPLAYINFO', openedChannel))
+    socket.on('ADDTHREADSUCCESS', () => {
+      document.getElementById('root').style.pointerEvents = 'auto'
+      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
+    })
     
     return function cleanup () {
       socket.off('ADDTHREADSUCCESS')
@@ -25,6 +27,7 @@ const NewThreadBox = ({openedChannel}) => {
 
   const handleYooSend = (event) => {
     event.preventDefault()
+    document.getElementById('root').style.pointerEvents = 'none'
 
     if(location && location.length!==0){
       socket.emit('ADDTHREAD', [yoo, location, openedChannel])

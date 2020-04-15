@@ -25,18 +25,23 @@ const App = () => {
   const [notification, setNotification] = useState({message: null, color: 'green'})
 
   const setToThreads = (data) => {
-    //console.log(data)
+    setOpenedChannel(null)
+    setOpenedThread(null)
     setThreads([])
     setMessages([])
+
+    setOpenedChannel(data[0].parentId)
+    //console.log(data)
     //console.log('here')
     if(data[0].text){
       setThreads(data)
     }
-    setOpenedChannel(data[0].parentId)
   }
 
   const setToMessages = (data) => {
+    setOpenedThread(null)
     setMessages([])
+
     //console.log(data)
     const openedThread = threads.find(
       (thread) => thread.id===data[0].parentId)
@@ -101,10 +106,14 @@ const App = () => {
 
     //USER LOGIN HANDLING
     socket.on('USERDISPLAYINFO', user => {
+      document.getElementById('root').style.pointerEvents = 'auto'
+
       setUser(user)
     })
 
     socket.on('CHANNELSDISPLAYINFO', data => {
+      document.getElementById('root').style.pointerEvents = 'auto'
+      
       setChannels(data)
     })
   }, [])

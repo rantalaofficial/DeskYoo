@@ -12,6 +12,8 @@ const ChannelBox = ({id, name, followers}) => (
   const handleChannelClick = (event, id) => {
     //console.log('Channel click')
     event.preventDefault()
+    document.getElementById('root').style.pointerEvents = 'none'
+
     socket.emit('GETTHREADSDISPLAYINFO', id)
   }
 

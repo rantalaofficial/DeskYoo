@@ -6,24 +6,11 @@ const ThreadBox = ({id, text, likes, location, color, time}) => {
 
   const colorIndex = color ? color : 0
 
-
   const colors=['#E0BBE4', '#AC91C8', '#D291BC', '#FEC8D8', '#FFDFD3']
-    
-  const br=('2px solid gray')
-  const bc=colors[colorIndex]
-
 
   const styles = {
-    backgroundColor: bc,
-    border: br,
-    textAlign: 'left',
-    padding: '2%',
-    width: '90%',
-    borderRadius: '10px',
-    marginTop: '0%',
-    marginLeft: '0%',
-    marginRight: '0%',
-    marginBottom: '1%'
+    backgroundColor: colors[colorIndex],
+    border: '2px solid gray',
   }
   
   let timeDifference = (new Date() - time) / 1000;
@@ -39,8 +26,8 @@ const ThreadBox = ({id, text, likes, location, color, time}) => {
   }
 
   return (
-    <div>
-      <button onClick={e => handleThreadClick(e, id)}  style={styles} className='message'>  
+    <div className='message' style={styles}>
+      <button onClick={e => handleThreadClick(e, id)} class="threadButton">  
         <div className="multilineText">{text}</div>
         <br></br>
         <span role="img" aria-label='Location'>{timeText} ago 📍{location}</span>

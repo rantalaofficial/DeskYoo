@@ -10,6 +10,7 @@ socket.onevent = function (packet) {
     onevent.call(this, packet);      // additional call to catch-all
 };
 
+
 const sendRequest = (event, data) => {
     if(event) {
         socket.emit(event, data)

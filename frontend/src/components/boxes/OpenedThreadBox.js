@@ -4,19 +4,10 @@ const OpenedThreadBox = ({openedThread, cm}) => {
   const colorIndex = openedThread.color ? openedThread.color : 0
 
   const colors=['#E0BBE4', '#AC91C8', '#D291BC', '#FEC8D8', '#FFDFD3']
-    
-  const br=('2px solid gray')
-  const bc=colors[colorIndex]
-
 
   const styles = {
-    backgroundColor: bc,
-    border: br,
-    textAlign: 'left',
-    padding: '2%',
-    width: '90%',
-    borderRadius: '10px',
-    margin: '0%'
+    backgroundColor: colors[colorIndex],
+    border: '2px solid gray',
   }
   
   let timeDifference = (new Date() - openedThread.time) / 1000;
@@ -32,8 +23,8 @@ const OpenedThreadBox = ({openedThread, cm}) => {
   }
 
   return (
-    <div>
-      <button onClick={e => handleOpenedThreadClick(e, cm)}  style={styles} className='message'>
+    <div className='message' style={styles}>
+      <button onClick={e => handleOpenedThreadClick(e, cm)} class="threadButton">
       <div className="multilineText">{openedThread.text}</div>
         <br></br>
         <span role="img" aria-label='Location'>{timeText} ago 📍{openedThread.location}</span>

@@ -13,18 +13,17 @@ const MessageBox = ({text, likes, location, openedThread}) => {
   const bc=colors[colorIndex][0]
   const br=('2px solid').concat(colors[colorIndex][1])
   
-  
   const styles = {
     backgroundColor: bc,
     border: br,
   }
   
   return(
-    <div style={styles} className='yellowBox message'>
+    <div style={styles} className='message yellowBox'>
         <div class="multilineText">{text}</div>
         <br></br>
         <span role="img" aria-label='Location'>📍</span>{location}
-      <div className="messageLikeContainer2">
+      <div className="messageLikeContainer">
         <button className="likeButton">▲</button>
         <p id="likeText">{likes}</p>
         <button className="likeButton">▼</button>

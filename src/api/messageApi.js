@@ -71,7 +71,7 @@ function addSocketHandles(socket) {
             return;
         }
 
-        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[1].length === 0 || data[2].length === 0) {
+        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[0].length > 300 || data[1].length === 0 || data[2].length === 0) {
             socket.emit("USERERROR", "Invalid thread data.");
             return;
         }
@@ -107,7 +107,7 @@ function addSocketHandles(socket) {
             return;
         }
 
-        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[1].length === 0 || data[2].length === 0) {
+        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[0].length > 300 || data[1].length === 0 || data[2].length === 0) {
             socket.emit("USERERROR", "Invalid answer data.");
             return;
         }

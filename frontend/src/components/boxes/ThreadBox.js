@@ -43,7 +43,7 @@ const ThreadBox = ({id, text, likes, location, color, time}) => {
       <button onClick={e => handleThreadClick(e, id)}  style={styles} className='message'>  
         <div className="multilineText">{text}</div>
         <br></br>
-  <span role="img" aria-label='Location'>{timeText} ago 📍{location}</span>
+        <span role="img" aria-label='Location'>{timeText} ago 📍{location}</span>
       </button>
       <div className="messageLikeContainer">
         <button className="likeButton">▲</button>

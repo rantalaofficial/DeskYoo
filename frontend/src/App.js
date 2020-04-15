@@ -113,11 +113,6 @@ const App = () => {
       showNotification(errorText, 'red')
     })
 
-    socket.on('*',(event, data) => {
-      console.log(`EVENT: ${event}`)
-      console.log(data)
-    })
-
     //USER LOGIN HANDLING
     socket.on('USERDISPLAYINFO', user => {
       document.getElementById('root').style.pointerEvents = 'auto'

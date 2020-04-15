@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {sha256} from 'js-sha256'
 
 import socket from '../../services/connect'
 
@@ -36,7 +37,7 @@ const LogInBox = ({su, showNotification}) => {
     event.preventDefault()
     document.getElementById('root').style.pointerEvents = 'none'
 
-    socket.emit('LOGIN', [username, password])
+    socket.emit('LOGIN', [username, sha256(password)])
   }
   
   const handleRegisterSubmit = (event) => {
@@ -45,7 +46,7 @@ const LogInBox = ({su, showNotification}) => {
     if(password===confPassword && password.length>4){
       document.getElementById('root').style.pointerEvents = 'none'
 
-      socket.emit('REGISTER', [username, password])
+      socket.emit('REGISTER', [username, sha256(password)])
     }
     else if(password!==confPassword){
       showNotification('Passwords don\'t match', 'red')

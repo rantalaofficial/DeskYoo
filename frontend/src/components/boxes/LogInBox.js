@@ -13,10 +13,13 @@ const LogInBox = ({su}) => {
   useEffect(() => {
     socket.on('LOGINSUCCESS', () => {
       su(true)
+      document.getElementById('root').style.pointerEvents = 'auto'
     })
 
     socket.on('REGISTERSUCCESS', () => {
       setRegisterSuccess(true)
+      document.getElementById('registerForm').reset()
+      document.getElementById('root').style.pointerEvents = 'auto'
     })
 
     return function cleanup () {
@@ -31,12 +34,14 @@ const LogInBox = ({su}) => {
 
   const handleLoginSubmit = (event, su) => {
     event.preventDefault()
+    document.getElementById('root').style.pointerEvents = 'none'
 
     socket.emit('LOGIN', [username, password])
   }
   
   const handleRegisterSubmit = (event) => {
     event.preventDefault()
+    document.getElementById('root').style.pointerEvents = 'none'
 
     if(password===confPassword){
       socket.emit('REGISTER', [username, password])

@@ -8,6 +8,8 @@ const Threads = ({threads, sm}) => {
     socket.on('ANSWERSDISPLAYINFO', data => {
       //console.log(data)
       //console.log('api request: answers')
+      document.getElementById('root').style.pointerEvents = 'auto'
+
       return sm(data)
     })
     

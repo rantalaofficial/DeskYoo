@@ -10,6 +10,8 @@ const OpenedChannels = ({channels, st, ct, openedChannel}) => {
     socket.on('THREADSDISPLAYINFO', data => {
       //console.log(data)
       //console.log('api request: Opened Channels')
+      document.getElementById('root').style.pointerEvents = 'auto'
+
       return st(data)
     })
     

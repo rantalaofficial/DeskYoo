@@ -50,6 +50,8 @@ const ThreadBox = ({id, text, likes, location, color}) => {
   const handleThreadClick = (event, id) => {
     //console.log('thread click')
     event.preventDefault()
+    document.getElementById('root').style.pointerEvents = 'none'
+
     socket.emit('GETANSWERSDISPLAYINFO', id)
   }
 

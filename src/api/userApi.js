@@ -50,13 +50,6 @@ function addSocketHandles(socket) {
         });
     });
 
-    //LOGOUT
-    socket.on('LOGOUT', () => {
-        if(loggedUsers[socket.id] != undefined) {
-            delete loggedUsers[socket.id]
-        }
-    });
-
     socket.on("REGISTER", (data) => {
         if(!Array.isArray(data) || data.length != 2 || data[0].length < 5 || data[1] === undefined) {
             socket.emit("USERERROR", "Register failed.");

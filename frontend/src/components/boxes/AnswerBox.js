@@ -1,21 +1,13 @@
 import React from 'react'
 
-const MessageBox = ({text, likes, location, openedThread}) => {
+const AnswerBox = ({text, likes, location, openedThread}) => {
   const colorIndex = openedThread.color ? openedThread.color : 0
 
-  const colors=[
-    ['#e75656', ' #e70b0b'],
-    ['#d62f2f', ' #d67a7a'],
-    ['#bf1d66', ' #bf68b0'],
-    ['#c92e55', ' #c979a0'],
-    ['#de2a54', ' #de75aa']]
-  
-  const bc=colors[colorIndex][0]
-  const br=('2px solid').concat(colors[colorIndex][1])
-  
+  const colors=['#E0BBE4', '#AC91C8', '#D291BC', '#FEC8D8', '#FFDFD3']
+
   const styles = {
-    backgroundColor: bc,
-    border: br,
+    backgroundColor: colors[colorIndex],
+    border: '2px solid gray',
   }
   
   return(
@@ -32,4 +24,4 @@ const MessageBox = ({text, likes, location, openedThread}) => {
   )
 }
 
-export default MessageBox
+export default AnswerBox

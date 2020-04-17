@@ -5,7 +5,7 @@ import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
 import LogInBox from './components/boxes/LogInBox'
 import OpenedThreadBox from './components/boxes/OpenedThreadBox'
-import Messages from './components/holders/Messages'
+import Answers from './components/holders/Answers'
 import NewThreadBox from './components/boxes/NewThreadBox'
 import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
@@ -16,7 +16,7 @@ import socket from './services/connect'
 import appHandlers from './services/appEvents'
 
 const App = () => {
-  const [messages, setMessages] = useState([])
+  const [answers, setAnswers] = useState([])
   const [openedThread, setOpenedThread] = useState(null)
   const [threads, setThreads] = useState([])
   const [openedChannel, setOpenedChannel] = useState(null)
@@ -30,7 +30,7 @@ const App = () => {
     setOpenedChannel(null)
     setOpenedThread(null)
     setThreads([])
-    setMessages([])
+    setAnswers([])
 
     setOpenedChannel(data[0].parentId)
     //console.log(data)
@@ -42,7 +42,7 @@ const App = () => {
 
   const setToMessages = (data) => {
     setOpenedThread(null)
-    setMessages([])
+    setAnswers([])
 
     //console.log(data)
     const openedThread = threads.find(
@@ -51,7 +51,7 @@ const App = () => {
     //console.log(openedThread)
     //console.log('here 2')
     if(data[0].text){
-      setMessages(data)
+      setAnswers(data)
     }
   }
 
@@ -59,11 +59,11 @@ const App = () => {
     setThreads([])
     setOpenedChannel(null)
     setOpenedThread(null)
-    setMessages([])
+    setAnswers([])
   }
 
-  const closeMessages = () => {
-    setMessages([])
+  const closeAnswers = () => {
+    setAnswers([])
     setOpenedThread(null)
   }
 
@@ -133,10 +133,10 @@ const App = () => {
           <div>
             <OpenedThreadBox 
             openedThread={openedThread}
-            cm={closeMessages}
+            cm={closeAnswers}
             />
-            <Messages
-            messages={messages}
+            <Answers
+            answers={answers}
             openedThread={openedThread} 
             />
             {/*<NewMessageBox />*/}

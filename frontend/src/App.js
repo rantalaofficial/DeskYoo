@@ -83,6 +83,15 @@ const App = () => {
     }, 4000)
   }
 
+  const logOut = () => {
+    setAnswers([])
+    setOpenedThread(null)
+    setThreads([])
+    setOpenedChannel(null)
+    setChannels([])
+    setUser(null)
+  }
+
   useEffect(() => {
     if(user && !user.username){
       socket.emit('GETUSERDISPLAYINFO')
@@ -108,7 +117,7 @@ const App = () => {
       :
       <div className='row'>
         <div id='channelColumn'>
-          {user ? <UserInfo user={user} /> : null}
+          {user ? <UserInfo user={user} logOut={logOut} showNotification={showNotification} /> : null}
           {openedChannel
           ?
           <div>

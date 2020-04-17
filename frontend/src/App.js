@@ -33,12 +33,12 @@ const App = () => {
     setThreads([])
     setAnswers([])
 
-    setOpenedChannel(data[0].parentId)
     //console.log(data)
     //console.log('here')
     if(data[0].text){
       setThreads(data)
     }
+    setOpenedChannel(data[0].parentId)
   }
 
   const setToAnswers = (data) => {
@@ -48,12 +48,12 @@ const App = () => {
     console.log(data)
     const openedThread = threads.find(
       (thread) => thread.id===data[0].parentId)
-    setOpenedThread(openedThread)
     //console.log(openedThread)
     //console.log('here 2')
     if(data[0].text){
       setAnswers(data)
     }
+    setOpenedThread(openedThread)
   }
 
   const closeThreads = () => {

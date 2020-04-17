@@ -26,6 +26,7 @@ const Answers = ({answers, openedThread, sm}) => {
         likes={answer.likes}
         location={answer.location}
         openedThread={openedThread}
+        time={answer.time}
         />
       )}
     </div>

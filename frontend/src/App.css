@@ -135,9 +135,9 @@
   font-size: 90%;
 }
 
-.threadButton {
+.threadButton, .answerButton {
   padding: 0%;
-  width: 95%;
+  width: 90%;
   background-color: transparent;
   border: transparent;
   text-align: left;

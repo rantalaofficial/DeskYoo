@@ -25,7 +25,7 @@ function addSocketHandles(socket) {
     //GETTERS
     socket.on("GETCHANNELSDISPLAYINFO", () => {
         if(!userApi.isLogged(socket)) {
-            socket.emit("USERERROR", "Not logged in");
+            socket.emit("USERNOTLOGGED");
             return;
         }
         Channel.find({}, (err, channels) => {
@@ -36,11 +36,12 @@ function addSocketHandles(socket) {
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
-        if(!channelId || channelId.length === 0) {
+        if(!userApi.isLogged(socket)) {
+            socket.emit("USERNOTLOGGED");
             return;
         }
-        if(!userApi.isLogged(socket)) {
-            socket.emit("USERERROR", "Not logged in");
+
+        if(!channelId || channelId.length === 0) {
             return;
         }
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
@@ -52,7 +53,7 @@ function addSocketHandles(socket) {
 
     socket.on("GETANSWERSDISPLAYINFO", (threadId) => {
         if(!userApi.isLogged(socket)) {
-            socket.emit("USERERROR", "Not logged in");
+            socket.emit("USERNOTLOGGED");
             return;
         }
 
@@ -69,7 +70,7 @@ function addSocketHandles(socket) {
     socket.on("ADDTHREAD", (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERERROR", "Not logged in");
+            socket.emit("USERNOTLOGGED");
             return;
         }
 
@@ -105,7 +106,7 @@ function addSocketHandles(socket) {
     socket.on("ADDANSWER", (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERERROR", "Not logged in");
+            socket.emit("USERNOTLOGGED");
             return;
         }
 

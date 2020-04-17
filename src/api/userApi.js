@@ -85,7 +85,7 @@ function addSocketHandles(socket) {
     socket.on("GETUSERDISPLAYINFO", () => {
         let userId = isLogged(socket)
         if(!userId) {
-            socket.emit("USERERROR", "Not logged in.");
+            socket.emit("USERNOTLOGGED");
             return;
         }
         User.findOne({_id: userId}, (err, user) => {

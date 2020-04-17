@@ -22,6 +22,12 @@ socket.on('connect_error', function(){
   })
 
   //USER LOGIN HANDLING
+  socket.on('USERNOTLOGGED', () => {
+    document.getElementById('root').style.pointerEvents = 'auto'
+
+    showNotification("User logged out.", 'red')
+  });
+
   socket.on('USERDISPLAYINFO', user => {
     document.getElementById('root').style.pointerEvents = 'auto'
 

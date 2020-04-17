@@ -64,7 +64,7 @@ const NewThreadBox = ({openedChannel, showNotification}) => {
       <form onSubmit={handleYooSend}>
       <textarea className="messageInputTextBox" id='texti' maxLength="300" placeholder='Write your Yoo here and press 🤟 to send!' type='text' onChange={handleTextChange}></textarea>
       <button className="sendMessageBtn" type='submit' value=''>
-        <img src="/logo192.png" alt='Send new thread' width='58px;' height='58px'></img>
+        <img className="sendMessageBtnImage" src="/logo192.png" alt='Send new thread'></img>
       </button>
     </form>
     </div>

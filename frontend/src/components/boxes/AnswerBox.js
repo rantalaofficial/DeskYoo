@@ -12,7 +12,7 @@ const AnswerBox = ({text, likes, location, openedThread}) => {
   
   return(
     <div style={styles} className='message yellowBox'>
-        <div class="multilineText">{text}</div>
+        <div className="multilineText">{text}</div>
         <br></br>
         <span role="img" aria-label='Location'>📍</span>{location}
       <div className="messageLikeContainer">

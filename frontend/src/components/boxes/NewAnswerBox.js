@@ -10,11 +10,11 @@ const NewAnswerBox = ({openedThread, showNotification}) => {
   useEffect(() => {
     socket.on('ADDANSWERSUCCESS', () => {
       document.getElementById('root').style.pointerEvents = 'auto'
-      socket.emit('GETTANSWERSDISPLAYINFO', openedThread)
+      socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
     })
     
     return function cleanup () {
-      socket.off('ADDTHREADSUCCESS')
+      socket.off('ADDANSWERSUCCESS')
     }
   }, [])
 
@@ -31,10 +31,10 @@ const NewAnswerBox = ({openedThread, showNotification}) => {
     if(yoo.length>0){
       document.getElementById('root').style.pointerEvents = 'none'
       if(location && location.length!==0){
-        socket.emit('ADDANSWER', [yoo, location, openedThread])
+        socket.emit('ADDANSWER', [yoo, location, openedThread.id])
       }
       else{
-        socket.emit('ADDANSWER', [yoo, 'Unknown', openedThread])
+        socket.emit('ADDANSWER', [yoo, 'Unknown', openedThread.id])
       }
     }
     else{

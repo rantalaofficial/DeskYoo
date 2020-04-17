@@ -139,6 +139,7 @@ const App = () => {
             <Answers
             answers={answers}
             openedThread={openedThread} 
+            sm={setToMessages} 
             />
             <NewAnswerBox
               openedThread={openedThread} 

@@ -24,7 +24,7 @@ const OpenedThreadBox = ({openedThread, cm}) => {
 
   return (
     <div className='message' style={styles}>
-      <button onClick={e => handleOpenedThreadClick(e, cm)} class="threadButton">
+      <button onClick={e => handleOpenedThreadClick(e, cm)} className="threadButton">
       <div className="multilineText">{openedThread.text}</div>
         <br></br>
         <span role="img" aria-label='Location'>{timeText} ago 📍{openedThread.location}</span>

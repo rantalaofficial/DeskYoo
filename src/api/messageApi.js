@@ -56,7 +56,9 @@ function addSocketHandles(socket) {
             return;
         }
 
-        Thread.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('-time').exec((err, answers) => {
+        console.log(threadId)
+
+        Answer.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('-time').exec((err, answers) => {
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", 
             answers && answers.length>0 ? answers.map(answer => answer.toJSON()) : [{parentId: threadId}])

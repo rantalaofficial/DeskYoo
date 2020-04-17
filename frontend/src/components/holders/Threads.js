@@ -10,13 +10,15 @@ const Threads = ({threads, sm}) => {
       //console.log('api request: answers')
       document.getElementById('root').style.pointerEvents = 'auto'
 
+      console.log(data)
+
       return sm(data)
     })
     
     return function cleanup () {
       socket.off('ANSWERSDISPLAYINFO')
     }
-  })
+  }, [])
 
   return(
   <div>

@@ -10,7 +10,7 @@ const Threads = ({threads, sm}) => {
       //console.log('api request: answers')
       document.getElementById('root').style.pointerEvents = 'auto'
 
-      console.log(data)
+      //console.log(data)
 
       return sm(data)
     })

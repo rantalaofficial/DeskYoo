@@ -4,7 +4,7 @@ import locationHelper from '../../services/locationApi'
 import socket from '../../services/connect'
 
 const NewAnswerBox = ({openedThread, showNotification}) => {
-  const [yoo, setYoo] = useState('')
+  const [answerText, setAnswerText] = useState('')
   const [location, setLocation] = useState(null)
 
   useEffect(() => {
@@ -25,23 +25,23 @@ const NewAnswerBox = ({openedThread, showNotification}) => {
     data()
   }, [])
 
-  const handleYooSend = (event) => {
+  const handleAnswerSend = (event) => {
     event.preventDefault()
 
-    if(yoo.length>0){
+    if(answerText.length>0){
       document.getElementById('root').style.pointerEvents = 'none'
       if(location && location.length!==0){
-        socket.emit('ADDANSWER', [yoo, location, openedThread.id])
+        socket.emit('ADDANSWER', [answerText, location, openedThread.id])
       }
       else{
-        socket.emit('ADDANSWER', [yoo, 'Unknown', openedThread.id])
+        socket.emit('ADDANSWER', [answerText, 'Unknown', openedThread.id])
       }
     }
     else{
       showNotification('Yoo can\'t be empty', 'red')
     }
 
-    setYoo('')
+    setAnswerText('')
     document.getElementById('texti').value=''
 
   }
@@ -50,21 +50,21 @@ const NewAnswerBox = ({openedThread, showNotification}) => {
     let text = event.target.value
 
     if(text.split('\n').length>4){
-      document.getElementById('texti').value=yoo
-      text=yoo
+      document.getElementById('texti').value=answerText
+      text=answerText
 
     }
     //console.log(text)
 
-    setYoo(text)
+    setAnswerText(text)
   }
 
   return (
     <div className="yellowBox message">
-      <form onSubmit={handleYooSend}>
+      <form onSubmit={handleAnswerSend}>
       <textarea className="messageInputTextBox" id='texti' maxLength="300" placeholder='Write your answer here and press 🤟 to send!' type='text' onChange={handleTextChange}></textarea>
       <button className="sendMessageBtn" type='submit' value=''>
-        <img src="/logo192.png" alt='Send new answer' width='58px;' height='58px'></img>
+        <img className="sendMessageBtnImage" src="/logo192.png" alt='Send new answer'></img>
       </button>
     </form>
     </div>

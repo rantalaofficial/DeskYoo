@@ -41,11 +41,11 @@ const App = () => {
     }
   }
 
-  const setToMessages = (data) => {
+  const setToAnswers = (data) => {
     setOpenedThread(null)
     setAnswers([])
 
-    //console.log(data)
+    console.log(data)
     const openedThread = threads.find(
       (thread) => thread.id===data[0].parentId)
     setOpenedThread(openedThread)
@@ -139,7 +139,7 @@ const App = () => {
             <Answers
             answers={answers}
             openedThread={openedThread} 
-            sm={setToMessages} 
+            sm={setToAnswers} 
             />
             <NewAnswerBox
               openedThread={openedThread} 
@@ -156,7 +156,7 @@ const App = () => {
             />
             <Threads 
             threads={threads}
-            sm={setToMessages} 
+            sm={setToAnswers} 
             />
           </div>
           :

@@ -6,6 +6,7 @@ import UserInfo from './components/boxes/UserInfo'
 import LogInBox from './components/boxes/LogInBox'
 import OpenedThreadBox from './components/boxes/OpenedThreadBox'
 import Answers from './components/holders/Answers'
+import NewAnswerBox from './components/boxes/NewAnswerBox'
 import NewThreadBox from './components/boxes/NewThreadBox'
 import Threads from './components/holders/Threads'
 import Channels from './components/holders/Channels'
@@ -139,7 +140,10 @@ const App = () => {
             answers={answers}
             openedThread={openedThread} 
             />
-            {/*<NewMessageBox />*/}
+            <NewAnswerBox
+              openedThread={openedThread} 
+              showNotification={showNotification}
+            />
           </div>
           : 
           openedChannel 

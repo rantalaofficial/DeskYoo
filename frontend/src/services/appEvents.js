@@ -33,7 +33,6 @@ socket.on('connect_error', function(){
     
     setChannels(data)
   })
-
 }
 
 export default appHandlers

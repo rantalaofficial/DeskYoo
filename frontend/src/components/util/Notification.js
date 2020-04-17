@@ -9,7 +9,7 @@ const Notification = ({message, color}) => {
     textAlign: "center",
 
     borderStyle: "solid",
-    borderRadius: "5px",
+    borderRadius: "10px",
 
     padding: "10px",
     paddingLeft: "0px",

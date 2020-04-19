@@ -5,11 +5,9 @@ import Header from './components/boxes/Header'
 import UserInfo from './components/boxes/UserInfo'
 import LogInBox from './components/boxes/LogInBox'
 import MessageBox from './components/boxes/MessageBox'
-import Answers from './components/holders/Answers'
 import NewMessageBox from './components/boxes/NewMessageBox'
-import Threads from './components/holders/Threads'
+import Messages from './components/holders/Messages'
 import Channels from './components/holders/Channels'
-import OpenedChannels from './components/holders/OpenedChannels'
 import Notification from './components/util/Notification'
 
 import socket from './services/connect'
@@ -107,7 +105,9 @@ const App = () => {
     <div>
       <Header />
       <br></br>
-      <Notification message={notification.message} color={notification.color}/>
+      <Notification 
+        message={notification.message} 
+        color={notification.color}/>
       <br></br>
       {!user ? 
       <LogInBox 
@@ -116,43 +116,36 @@ const App = () => {
       :
       <div className='row'>
         <div id='channelColumn'>
-          {user ? <UserInfo user={user} logOut={logOut} showNotification={showNotification} /> : null}
-          {openedChannel
-          ?
-          <div>
-            <OpenedChannels 
+          <UserInfo 
+            user={user} 
+            logOut={logOut} 
+            showNotification={showNotification} 
+          />
+          <Channels 
             channels={channels}
             st={setToThreads}
             ct={closeThreads}
             openedChannel={openedChannel} 
-            />
-          </div>
-          :
-          <div>
-            <Channels 
-            channels={channels}
-            st={setToThreads} 
-            />
-          </div>
-          }
+          />
         </div>
         <div id='messageColumn'>
           {openedThread 
           ? 
           <div>
             <MessageBox 
-            text={openedThread.text}
-            likes={openedThread.likes}
-            location={openedThread.location}
-            color={openedThread.color}
-            time={openedThread.time}
-            messageType='OpenedThread'
-            cm={closeAnswers}
+              text={openedThread.text}
+              likes={openedThread.likes}
+              location={openedThread.location}
+              color={openedThread.color}
+              time={openedThread.time}
+              messageType='OpenedThread'
+              cm={closeAnswers}
             />
-            <Answers
-            answers={answers}
-            openedThread={openedThread} 
-            sm={setToAnswers} 
+            <Messages
+              messages={answers}
+              color={openedThread.color}
+              messageType='Answer'
+              sm={setToAnswers} 
             />
             <NewMessageBox
               id={openedThread.id} 
@@ -165,13 +158,14 @@ const App = () => {
           ?
           <div>
             <NewMessageBox
-            id={openedChannel}
-            showNotification={showNotification}
-            messageType='Thread'
+              id={openedChannel}
+              showNotification={showNotification}
+              messageType='Thread'
             />
-            <Threads 
-            threads={threads}
-            sm={setToAnswers} 
+            <Messages 
+              messages={threads}
+              messageType='Thread'
+              sm={setToAnswers} 
             />
           </div>
           :

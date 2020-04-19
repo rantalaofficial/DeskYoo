@@ -3,6 +3,7 @@ import React from 'react'
 import socket from '../../services/connect'
 
 const UserInfo = ({user, logOut, showNotification}) => (
+  user ?
   <div className='yellowBox' id='UserInfo'>
     <p>Username: {user.username}</p>
     <p>{user.score} Yoo Points</p>
@@ -16,6 +17,8 @@ const UserInfo = ({user, logOut, showNotification}) => (
     <br></br>
     <br></br>
   </div>
+  :
+  null
 )
 
 export default UserInfo

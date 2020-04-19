@@ -3,7 +3,7 @@ import ChannelBox from '../boxes/ChannelBox'
 
 import socket from '../../services/connect'
 
-const Channels = ({channels, st}) => {
+const Channels = ({channels, st, ct, openedChannel}) => {
 
   useEffect(() => {
     socket.on('THREADSDISPLAYINFO', data => {
@@ -19,26 +19,22 @@ const Channels = ({channels, st}) => {
     }
   }, [])
 
-  if(channels){
-    return(
-      <div>
-        {channels.map((channel) =>
-          <ChannelBox key={channel.id}
-          id={channel.id} 
-          name={channel.text} 
-          followers={channel.followers}
-          />
-        )}
-      </div>
-    )
-  }
-  else{
-    return(
-      <div>
-
-      </div>
-    )
-  }
+  return(
+    channels 
+    ? 
+    <div>
+      {channels.map((channel) =>
+        <ChannelBox key={channel.id}
+        id={channel.id} 
+        name={channel.text}
+        followers={channel.followers}
+        ct={channel.id!==openedChannel ? null : ct}
+        />
+      )}
+    </div>
+    :
+    null
+  )
 }
 
 export default Channels

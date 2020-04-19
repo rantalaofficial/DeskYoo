@@ -16,7 +16,7 @@ const Messages = ({messages, color, messageType, sm}) => {
     return function cleanup () {
       socket.off('ANSWERSDISPLAYINFO')
     }
-  }, [])
+  }, [sm])
 
   return(
     <div>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import './App.css'
 
 import Header from './components/boxes/Header'
@@ -24,7 +24,7 @@ const App = () => {
 
   const [notification, setNotification] = useState({message: null, color: 'green'})
 
-  const setToThreads = (data) => {
+  const setToThreads = useCallback((data) => {
     setOpenedChannel(null)
     setOpenedThread(null)
     setThreads([])
@@ -36,9 +36,9 @@ const App = () => {
       setThreads(data)
     }
     setOpenedChannel(data[0].parentId)
-  }
+  }, [])
 
-  const setToAnswers = (data) => {
+  const setToAnswers = useCallback((data) => {
     setOpenedThread(null)
     setAnswers([])
 
@@ -51,7 +51,7 @@ const App = () => {
       setAnswers(data)
     }
     setOpenedThread(openedThread)
-  }
+  }, [threads])
 
   const closeThreads = () => {
     setThreads([])
@@ -65,19 +65,12 @@ const App = () => {
     setOpenedThread(null)
   }
 
-  const setToUser = (user) => {
+  const setToUser = useCallback((user) => {
     setUser(user)
-  }
+  }, [])
 
   const setToChannels = (channels) => {
     setChannels(channels)
-  }
-
-  const showNotification = (message, color) => {
-    setNotification({message, color})
-    setTimeout(() => {
-      setNotification({message: null, color})
-    }, 4000)
   }
 
   const logOut = () => {
@@ -87,6 +80,13 @@ const App = () => {
     setOpenedChannel(null)
     setChannels([])
     setUser(null)
+  }
+
+  const showNotification = (message, color) => {
+    setNotification({message, color})
+    setTimeout(() => {
+      setNotification({message: null, color})
+    }, 4000)
   }
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const App = () => {
 
   useEffect(() => {
     appHandlers(socket, showNotification, setToUser, setToChannels)
-  }, [])
+  }, [setToUser])
 
   return (
     <div>

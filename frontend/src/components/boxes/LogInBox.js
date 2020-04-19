@@ -19,7 +19,7 @@ const LogInBox = ({su, showNotification}) => {
 
     socket.on('REGISTERSUCCESS', () => {
       setRegisterSuccess(true)
-      document.getElementById('registerForm').reset()
+      document.getElementById('form').reset()
       document.getElementById('root').style.pointerEvents = 'auto'
     })
 
@@ -27,7 +27,7 @@ const LogInBox = ({su, showNotification}) => {
       socket.off('LOGINSUCCESS')
       socket.off('REGISTERSUCCESS')
     }
-  }, [])
+  }, [su])
 
   useEffect(() => {
     setLogIn(true)
@@ -56,30 +56,21 @@ const LogInBox = ({su, showNotification}) => {
     }
   }
   
-  return(logIn ?
+  return(
     <div id="loginContainer">
-      <form id='loginForm' className='yellowBox LogIn' onSubmit={handleLoginSubmit}>
+      <form id='form' className='yellowBox LogIn' onSubmit={logIn ? handleLoginSubmit : handleRegisterSubmit}>
         <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
         <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
-        <input className='greenBox LogInElement' type='submit' onClick={() => showNotification('Login successful', 'green')} value='Login' />
+        {logIn ? null : <p><input placeholder='Password confirm' className='LogInElement' type='password' onChange={(event) => setConfpassword(event.target.value)}></input></p>}
+        <input className='greenBox LogInElement' type='submit' onClick={() => showNotification(logIn ? 'Login successful' : 'User creation successful', 'green')} value={logIn ? 'Login' : 'Register'} />
       </form>
       <input className='LogInElement' type='button' onClick={() => {
-          setLogIn(false)
-          document.getElementById('loginForm').reset()
-          }} value='Register'></input>
-    </div>
-    : 
-    <div id="loginContainer">
-      <form id='registerForm' className='yellowBox LogIn' onSubmit={handleRegisterSubmit}> 
-        <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
-        <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
-        <p><input placeholder='Password confirm' className='LogInElement' type='password' onChange={(event) => setConfpassword(event.target.value)}></input></p>
-        <input className='greenBox LogInElement' type='submit' onClick={() => showNotification('User creation successful', 'green')} value='Register' />
-      </form>
-      <input className='LogInElement' type='button' onClick={() => {
-        setLogIn(true)
-        document.getElementById('registerForm').reset()
-        }} value='Login'></input>
+          setLogIn(logIn ? false : true)
+          document.getElementById('form').reset()
+          setUsername('')
+          setPassword('')
+          setConfpassword('')
+          }} value={logIn ? 'Register' : 'Login'}></input>
     </div>
   )
 }

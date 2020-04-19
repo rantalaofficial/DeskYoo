@@ -16,7 +16,7 @@ const NewMessageBox = ({id, showNotification, messageType}) => {
     return function cleanup () {
       messageType==='Answer' ? socket.off('ADDANSWERSUCCESS') : socket.off('ADDTHREADSUCCESS')
     }
-  }, [])
+  }, [id, messageType])
 
   useEffect(() => {
     async function data () {

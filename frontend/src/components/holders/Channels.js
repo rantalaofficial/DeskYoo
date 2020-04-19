@@ -17,7 +17,7 @@ const Channels = ({channels, st, ct, openedChannel}) => {
     return function cleanup () {
       socket.off('THREADSDISPLAYINFO')
     }
-  }, [])
+  }, [st])
 
   return(
     channels 

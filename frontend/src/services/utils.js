@@ -15,4 +15,4 @@ let timeDifference = (new Date() - time) / 1000;
   return (timeText)
 }
 
-module.exports = {getTimeText}
+export default {getTimeText}

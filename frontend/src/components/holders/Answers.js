@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import AnswerBox from '../boxes/AnswerBox'
+import MessageBox from '../boxes/MessageBox'
 
 import socket from '../../services/connect'
 
@@ -21,12 +21,13 @@ const Answers = ({answers, openedThread, sm}) => {
   return(
     <div>
       {answers.map((answer, i) =>
-        <AnswerBox key={i} 
+        <MessageBox key={i} 
         text={answer.text} 
         likes={answer.likes}
         location={answer.location}
-        openedThread={openedThread}
+        color={openedThread.color}
         time={answer.time}
+        messageType='Answer'
         />
       )}
     </div>

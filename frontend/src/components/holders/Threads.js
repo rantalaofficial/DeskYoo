@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import ThreadBox from '../boxes/ThreadBox'
+import MessageBox from '../boxes/MessageBox'
 
 import socket from '../../services/connect'
 
@@ -23,13 +23,14 @@ const Threads = ({threads, sm}) => {
   return(
   <div>
     {threads.map(thread =>
-      <ThreadBox key={thread.id}
+      <MessageBox key={thread.id}
       id={thread.id} 
       text={thread.text} 
       likes={thread.likes}
       location={thread.location}
       color={thread.color}
       time={thread.time}
+      messageType='Thread'
       />
     )}
   </div>

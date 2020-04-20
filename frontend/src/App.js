@@ -98,7 +98,7 @@ const App = () => {
   }, [user])
 
   useEffect(() => {
-    appHandlers(socket, showNotification, setToUser, setToChannels)
+    appHandlers(socket, showNotification, setToUser, setToChannels, logOut)
   }, [setToUser])
 
   return (

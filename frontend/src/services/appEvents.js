@@ -1,4 +1,4 @@
-const appHandlers = (socket, showNotification, setUser, setChannels) => {
+const appHandlers = (socket, showNotification, setUser, setChannels, logOut) => {
 
 //CONNECTION HANDLING
 socket.on('connect_error', function(){
@@ -7,6 +7,7 @@ socket.on('connect_error', function(){
 
   socket.on('disconnect', () => {
     showNotification("Server disconnected", 'red')
+    logOut()
   })
 
   socket.on("*",(event, data) => {

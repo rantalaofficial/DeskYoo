@@ -9,7 +9,7 @@ const answerSchema = mongoose.Schema({
 	}],
     location: String,
     time: Number,
-    author: {
+    authorId: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },

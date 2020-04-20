@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const userApi = require('./userApi');
+const utils = require('./utils');
 
 //MESSAGE DATA STRUCTURE
 const Channel = require('./models/channel');
@@ -42,7 +43,7 @@ function addSocketHandles(socket) {
             return;
         }
 
-        if(!channelId || channelId.length === 0) {
+        if(!channelId) {
             return;
         }
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
@@ -59,8 +60,9 @@ function addSocketHandles(socket) {
             return;
         }
 
-        console.log(threadId)
-
+        if(!threadId) {
+            return;
+        }
         Answer.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('time').exec((err, answers) => {
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", 
@@ -76,18 +78,18 @@ function addSocketHandles(socket) {
             return;
         }
 
-        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[0].length > 300 || data[1].length === 0 || data[2].length === 0) {
+        if(!utils.validAPIrequest(data, ["string", "string", "string"])) {
             socket.emit("USERERROR", "Invalid thread data.");
             return;
         }
-        
+
         let text = data[0];
         let location = data[1]
         let parentId = data[2];
 
         const thread = Thread({
             text: text,
-            likes: 0,
+            votes: 0,
             location: location,
             color: randomIntFromInterval(0, 4),
             time: new Date().getTime(),
@@ -105,25 +107,65 @@ function addSocketHandles(socket) {
         });
     });
 
-    socket.on("ADDANSWER", (data) => {
+    socket.on("VOTETHREAD", (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
             socket.emit("USERNOTLOGGED");
             return;
         }
 
-        if(!Array.isArray(data) || data.length != 3 || data[0].length === 0 || data[0].length > 300 || data[1].length === 0 || data[2].length === 0) {
-            socket.emit("USERERROR", "Invalid answer data.");
+        if(!utils.validAPIrequest(data, ["string", "boolean"])) {
+            socket.emit("USERERROR", "Invalid vote data.");
+            return;
+        }
+
+        let threadId = data[0];
+        let positiveVote = data[1];
+
+        Thread.findOne({_id: threadId}, (err, thread) => {
+            if(err || thread === undefined || thread === null) {
+                socket.emit("USERERROR", "Vote failed.");
+                return;
+            }
+            if(userId in thread.voteIds) {
+                socket.emit("USERERROR", "User already voted.");
+                return;
+            }
+
+            (positiveVote) ? thread.votes += 1 : thread.votes -= 1;
+            thread.voteIds.push(userId)
+
+            thread.save((err) => {
+                if(err) {
+                    socket.emit("USERERROR", "Vote failed to save.");
+                    return;
+                }
+                userApi.changeScore(userId, 1);
+                (positiveVote) ? userApi.changeScore(thread.authorId, 2) : userApi.changeScore(thread.authorId, -1);
+                socket.emit("VOTETHREADSUCCESS")
+            });
+        }); 
+    });
+
+    socket.on("ADDANSWER", (data) => {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
+            socket.emit("USERNOTLOGGED");
             return;
         }
         
+        if(!utils.validAPIrequest(data, ["string", "string", "string"])) {
+            socket.emit("USERERROR", "Invalid answer data.");
+            return;
+        }
+
         let text = data[0];
         let location = data[1]
         let parentId = data[2];
 
         const answer = Answer({
             text: text,
-            likes: 0,
+            votes: 0,
             location: location,
             time: new Date().getTime(),
             author: userId,
@@ -139,6 +181,47 @@ function addSocketHandles(socket) {
             userApi.changeScore(userId, 10)
             socket.emit("ADDANSWERSUCCESS")
         });
+    });
+
+    socket.on("VOTEANSWER", (data) => {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
+            socket.emit("USERNOTLOGGED");
+            return;
+        }
+
+        if(!utils.validAPIrequest(data, ["string", "boolean"])) {
+            socket.emit("USERERROR", "Invalid vote data.");
+            return;
+        }
+
+        let answerId = data[0];
+        let positiveVote = data[1];
+
+        Answer.findOne({_id: answerId}, (err, answer) => {
+            if(err || answer === undefined || answer === null) {
+                socket.emit("USERERROR", "Vote failed.");
+                return;
+            }
+            if(userId in answer.voteIds) {
+                socket.emit("USERERROR", "User already voted.");
+                return;
+            }
+
+            (positiveVote) ? answer.votes += 1 : answer.votes -= 1;
+            answer.voteIds.push(userId)
+
+            answer.save((err) => {
+                if(err) {
+                    socket.emit("USERERROR", "Vote failed to save.");
+                    return;
+                }
+
+                userApi.changeScore(userId, 1);
+                (positiveVote) ? userApi.changeScore(answer.authorId, 2) : userApi.changeScore(answer.authorId, -1);
+                socket.emit("VOTEANSWERSUCCESS")
+            });
+        }); 
     });
 }
 

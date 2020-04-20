@@ -3,10 +3,14 @@ const mongoose = require('mongoose');
 const threadSchema = mongoose.Schema({
     text: String,
     votes: Number,
+    voteIds: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     location: String,
     color: Number,
     time: Number,
-    author: {
+    authorId: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },

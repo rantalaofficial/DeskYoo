@@ -134,7 +134,7 @@ const App = () => {
           <div>
             <MessageBox 
               text={openedThread.text}
-              likes={openedThread.likes}
+              votes={openedThread.votes}
               location={openedThread.location}
               color={openedThread.color}
               time={openedThread.time}

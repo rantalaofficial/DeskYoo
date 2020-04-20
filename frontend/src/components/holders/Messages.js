@@ -24,7 +24,7 @@ const Messages = ({messages, color, messageType, sm}) => {
         <MessageBox key={message.id}
         id={message.id} 
         text={message.text} 
-        likes={message.likes}
+        votes={message.votes}
         location={message.location}
         color={messageType==='Answer' ? color : message.color}
         time={message.time}

@@ -4,7 +4,7 @@ import utils from '../../services/utils'
 
 import socket from '../../services/connect'
 
-const MessageBox = ({id, text, likes, location, color, time, messageType, cm}) => {
+const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) => {
   const colorIndex = color ? color : 0
 
   const colors=['#E0BBE4', '#AC91C8', '#D291BC', '#FEC8D8', '#FFDFD3']
@@ -39,7 +39,7 @@ const MessageBox = ({id, text, likes, location, color, time, messageType, cm}) =
       </button>
       <div className="messageLikeContainer">
         <button className="likeButton">▲</button>
-        <p id="likeText">{likes}</p>
+        <p id="likeText">{votes}</p>
         <button className="likeButton">▼</button>
       </div>
     </div>

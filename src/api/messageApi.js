@@ -36,7 +36,8 @@ function addSocketHandles(socket) {
     });
 
     socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
-        if(!userApi.isLogged(socket)) {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
             socket.emit("USERNOTLOGGED");
             return;
         }
@@ -47,12 +48,13 @@ function addSocketHandles(socket) {
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
             if(err) throw err;
             socket.emit("THREADSDISPLAYINFO", 
-            threads && threads.length>0 ? threads.map(thread => thread.toJSON()) : [{parentId: channelId}]);
+            threads && threads.length>0 ? threads.map(thread => thread.toJSON(userId)) : [{parentId: channelId}]);
         });
     });
 
     socket.on("GETANSWERSDISPLAYINFO", (threadId) => {
-        if(!userApi.isLogged(socket)) {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
             socket.emit("USERNOTLOGGED");
             return;
         }
@@ -62,7 +64,7 @@ function addSocketHandles(socket) {
         Answer.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('time').exec((err, answers) => {
             if(err) throw err;
             socket.emit("ANSWERSDISPLAYINFO", 
-            answers && answers.length>0 ? answers.map(answer => answer.toJSON()) : [{parentId: threadId}])
+            answers && answers.length>0 ? answers.map(answer => answer.toJSON(userId)) : [{parentId: threadId}])
         });
     });
 

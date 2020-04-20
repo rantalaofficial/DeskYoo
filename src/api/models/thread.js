@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const threadSchema = mongoose.Schema({
     text: String,
-    likes: Number,
+    votes: Number,
     location: String,
     color: Number,
     time: Number,

@@ -32,16 +32,29 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
 
   return(
     <div className='message' style={styles}>
-      <button onClick={handleClick} className="messageButton">  
-        <div className="multilineText">{text}</div>
-        <br></br>
-        <span role="img" aria-label='Location'>{timeText} ago 📍{location}</span>
-      </button>
-      <div className="messageLikeContainer">
-        <button className="likeButton">▲</button>
-        <p id="likeText">{votes}</p>
-        <button className="likeButton">▼</button>
-      </div>
+      <table className='messageTable'>
+        <tr>
+          <td className='infoCell' rowSpan='2' valign='top'>
+            {text}
+          </td>
+          <td className='voteCell' valign='top'>
+            ▲
+          </td>
+        </tr>
+        <tr>
+          <td className='voteCell'>
+              {votes}
+          </td>
+        </tr>
+        <tr>
+          <td className='infoCell'>
+            <span role="img" aria-label='Location'>{timeText} ago 📍{location} ≡</span>
+          </td>
+          <td className='voteCell'>
+            ▼ 
+          </td>
+        </tr>
+      </table>
     </div>
   )
 }

@@ -25,9 +25,13 @@
   margin: 1%;
 }
 
-.multilineText {
-  white-space: pre-wrap;
-  word-wrap: break-word
+.messageTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
 }
 
 .messageInputTextBox {
@@ -128,40 +132,21 @@
   margin-bottom: 1%;
 
   padding: 1%;
-  padding-right: 0%;
   border-radius: 10px;
 
   width: 95%;
   font-size: 90%;
 }
 
-.messageButton {
-  padding: 0%;
-  width: 90%;
-  background-color: transparent;
-  border: transparent;
-  text-align: left;
+.voteCell {
+  width: auto;
+  text-align: right;
+  padding: 0.5%;
 }
 
-.messageLikeContainer {
-  float: right;
-  margin: 0%;
-  margin-top: -0.5%;
-  width: 3%;
-  min-width: 30px;
-}
-
-.likeButton {
-  width: 60%;
-  margin-left: 20%;
-  font-size: 80%;
-  padding: 0%;
-  border-color: transparent;
-  background-color: transparent;
-}
-#likeText {
-  text-align: center;
-  margin: 0;
+.infoCell {
+  width: 100%;
+  word-break: break-all;
 }
 
 .row:after {

@@ -34,7 +34,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
     <div className='message' style={styles}>
       <table className='messageTable'>
         <tr>
-          <td className='infoCell' rowSpan='2' valign='top'>
+          <td onClick={handleClick} className='infoCell' rowSpan='2' valign='top'>
             {text}
           </td>
           <td className='voteCell' valign='top'>

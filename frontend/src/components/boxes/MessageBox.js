@@ -37,9 +37,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
           <td onClick={handleClick} className='infoCell' rowSpan='2' valign='top'>
             {text}
           </td>
-          <td className='voteCell' valign='top'>
-            ▲
-          </td>
+          <td className='voteCell' valign='top'>▲</td>
         </tr>
         <tr>
           <td className='voteCell'>
@@ -50,9 +48,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
           <td className='infoCell'>
             <span role="img" aria-label='Location'>{timeText} ago 📍{location} ≡</span>
           </td>
-          <td className='voteCell'>
-            ▼ 
-          </td>
+          <td className='voteCell'>▼</td>
         </tr>
       </table>
     </div>

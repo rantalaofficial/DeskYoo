@@ -25,15 +25,6 @@
   margin: 1%;
 }
 
-.messageTable {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid black;
-}
-
 .messageInputTextBox {
   resize: none;
   width: 90%;
@@ -138,14 +129,22 @@ table, th, td {
   font-size: 90%;
 }
 
+.messageTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
 .voteCell {
-  width: auto;
-  text-align: right;
-  padding: 0.5%;
+  width: 3%;
+  text-align: center;
 }
 
 .infoCell {
-  width: 100%;
+  width: 97%;
   word-break: break-all;
 }
 

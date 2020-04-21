@@ -14,15 +14,16 @@ const Notification = ({message, color}) => {
     padding: "10px",
     paddingLeft: "0px",
     paddingRight: "0px",
-    width: "50%",
+    width: "40%",
 
     position: "absolute",
-    left: "25%",
-    right: "25%",
+    left: "30%",
+    right: "30%",
+    top: "120px",
+
+    opacity: "0.7",
   }
   
-    
-    
   if (message === null) {
     return null
   }

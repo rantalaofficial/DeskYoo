@@ -103,12 +103,10 @@ const App = () => {
 
   return (
     <div>
-      <Header />
-      <br></br>
+      <Header/>
       <Notification 
         message={notification.message} 
         color={notification.color}/>
-      <br></br>
       {!user ? 
       <LogInBox 
       su={setToUser}

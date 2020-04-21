@@ -127,9 +127,11 @@ function addSocketHandles(socket) {
                 socket.emit("USERERROR", "Vote failed.");
                 return;
             }
-            if(userId in thread.voteIds) {
-                socket.emit("USERERROR", "User already voted.");
-                return;
+            for(i in thread.voteIds) {
+                if(userId.toString() === thread.voteIds[i].toString()) {
+                    socket.emit("USERERROR", "User already voted.");
+                    return;
+                }
             }
 
             (positiveVote) ? thread.votes += 1 : thread.votes -= 1;
@@ -203,9 +205,11 @@ function addSocketHandles(socket) {
                 socket.emit("USERERROR", "Vote failed.");
                 return;
             }
-            if(userId in answer.voteIds) {
-                socket.emit("USERERROR", "User already voted.");
-                return;
+            for(i in answer.voteIds) {
+                if(userId.toString() === answer.voteIds[i].toString()) {
+                    socket.emit("USERERROR", "User already voted.");
+                    return;
+                }
             }
 
             (positiveVote) ? answer.votes += 1 : answer.votes -= 1;

@@ -46,7 +46,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
         </tr>
         <tr>
           <td className='infoCell'>
-            <span role="img" aria-label='Location'>{timeText} ago 📍{location} ≡</span>
+            <span role="img" aria-label='Location'>{timeText} ago 📍{location} [Options]</span>
           </td>
           <td className='voteCell'>▼</td>
         </tr>

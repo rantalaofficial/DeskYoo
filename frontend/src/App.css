@@ -126,7 +126,8 @@
 }
 
 table, th, td {
-  border: 1px solid black;
+  /*HITBOX DEBUG*/
+  /*border: 1px solid black;*/
 }
 
 .voteCell {

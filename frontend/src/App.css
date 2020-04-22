@@ -123,6 +123,7 @@
 .messageTable {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 table, th, td {
@@ -139,6 +140,9 @@ table, th, td {
   padding-left: 1%;
   width: 97%;
   word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  
 }
 
 .row:after {

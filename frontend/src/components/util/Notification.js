@@ -22,6 +22,7 @@ const Notification = ({message, color}) => {
     top: "120px",
 
     opacity: "0.7",
+    zIndex: "10",
   }
   
   if (message === null) {

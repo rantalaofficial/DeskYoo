@@ -93,7 +93,7 @@ function addSocketHandles(socket) {
             location: location,
             color: randomIntFromInterval(0, 4),
             time: new Date().getTime(),
-            author: userId,
+            authorId: userId,
             parentId: parentId,
         });
 
@@ -163,25 +163,35 @@ function addSocketHandles(socket) {
 
         let threadId = data[0]
 
-        Answer.deleteMany({parentId: threadId}, (err) => {
-            if(err){
-                socket.emit("USERERROR", "Deleting failed.");
-                return;
-            }
-        })
-
-        Thread.findOneAndDelete({_id: threadId}, (err, thread) => {
+        Thread.findOne({_id: threadId}, (err, thread) => {
             if(err) {
                 socket.emit("USERERROR", "Deleting failed.");
                 return;
             }
 
-            if(thread === undefined || thread === null) {
-                socket.emit("USERERROR", "Thread not found");
+            if(thread.authorId === undefined || thread.authorId.toString() !== userId.toString()) {
+                socket.emit("USERERROR", "Not authorized to delete thread.");
                 return;
             }
 
-            socket.emit('DELETETHREADSUCCESS')
+            Answer.deleteMany({parentId: threadId}, (err) => {
+                if(err){
+                    socket.emit("USERERROR", "Deleting failed.");
+                    return;
+                }
+            });
+
+            Thread.findOneAndDelete({_id: threadId}, (err, thread) => {
+                if(err) {
+                    socket.emit("USERERROR", "Deleting failed.");
+                    return;
+                }
+                if(thread === undefined || thread === null) {
+                    socket.emit("USERERROR", "Thread not found");
+                    return;
+                }
+                socket.emit('DELETETHREADSUCCESS')
+            });
         });
     });
 
@@ -206,7 +216,7 @@ function addSocketHandles(socket) {
             votes: 0,
             location: location,
             time: new Date().getTime(),
-            author: userId,
+            authorId: userId,
             parentId: parentId,
         });
 
@@ -278,19 +288,29 @@ function addSocketHandles(socket) {
 
         let answerId = data[0]
 
-        Answer.findOneAndDelete({_id: answerId}, (err, answer) => {
+        Answer.findOne({_id: answerId}, (err, answer) => {
             if(err) {
                 socket.emit("USERERROR", "Deleting failed.");
                 return;
             }
 
-            if(answer === undefined || answer === null) {
-                socket.emit("USERERROR", "Answer not found");
+            if(answer.authorId === undefined || answer.authorId.toString() !== userId.toString()) {
+                socket.emit("USERERROR", "Not authorized to delete answer.");
                 return;
             }
 
-            socket.emit('DELETEANSWERSUCCESS')
-        }); 
+            Answer.findOneAndDelete({_id: answerId}, (err, answer) => {
+                if(err) {
+                    socket.emit("USERERROR", "Deleting failed.");
+                    return;
+                }
+                if(answer === undefined || answer === null) {
+                    socket.emit("USERERROR", "Answer not found");
+                    return;
+                }
+                socket.emit('DELETEANSWERSUCCESS')
+            });
+        });
     });
 }
 

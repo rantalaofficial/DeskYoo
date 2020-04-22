@@ -141,8 +141,7 @@ table, th, td {
   width: 90%;
   word-break: break-all;
   word-wrap: break-word;
-  white-space: pre;
-  
+  white-space: pre-wrap;
 }
 
 .row:after {

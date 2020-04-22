@@ -3,7 +3,7 @@ import MessageBox from '../boxes/MessageBox'
 
 import socket from '../../services/connect'
 
-const Messages = ({openedThread, messages, color, messageType, sm}) => {
+const Messages = ({openedThread, messages, color, messageType, sm, showNotification}) => {
   useEffect(() => {
     socket.on('ANSWERSDISPLAYINFO', data => {
       //console.log(data)
@@ -19,11 +19,17 @@ const Messages = ({openedThread, messages, color, messageType, sm}) => {
 
         socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
       })
+
+      socket.on('DELETEANSWERSUCCESS', () => {
+        socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
+        showNotification('Deleting an answer successful', 'green')
+      })
     }
     
     return function cleanup () {
       socket.off('ANSWERSDISPLAYINFO')
       socket.off('VOTEANSWERSUCCESS')
+      socket.off('DELETEANSWERSUCCESS')
     }
   }, [sm, messageType, openedThread])
 

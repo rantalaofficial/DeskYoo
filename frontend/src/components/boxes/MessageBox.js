@@ -46,7 +46,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
             </td>
           </tr>
           <tr>
-            <td className='infoCell'>
+            <td onClick={(event) => handleDeleteClick(event, messageType, id)} className='infoCell'>
               <span role="img" aria-label='Location'>{timeText} ago 📍{location} [Options]</span>
             </td>
             <td onClick={(event) => handleVote(event, messageType, false, id)} className='voteCell'>▼</td>
@@ -55,6 +55,19 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
       </table>
     </div>
   )
+}
+
+const handleDeleteClick = (event, messageType, id) => {
+  event.preventDefault()
+  document.getElementById('root').style.pointerEvents = 'none'
+
+  if(messageType==='Thread' || messageType==='OpenedThread'){
+    socket.emit('DELETETHREAD', [id])
+  }
+
+  if(messageType==='Answer'){
+    socket.emit('DELETEANSWER', [id])
+  }
 }
 
 const handleVote = (event, messageType, vote, id) => {

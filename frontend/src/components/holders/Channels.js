@@ -3,7 +3,7 @@ import ChannelBox from '../boxes/ChannelBox'
 
 import socket from '../../services/connect'
 
-const Channels = ({channels, st, ct, openedChannel}) => {
+const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
 
   useEffect(() => {
     socket.on('THREADSDISPLAYINFO', data => {
@@ -17,10 +17,16 @@ const Channels = ({channels, st, ct, openedChannel}) => {
     socket.on('VOTETHREADSUCCESS', () => {
       socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
     })
+
+    socket.on('DELETETHREADSUCCESS', () => {
+      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
+      showNotification('Deleting a thread successful', 'green')
+    })
     
     return function cleanup () {
       socket.off('THREADSDISPLAYINFO')
       socket.off('VOTETHREADSUCCESS')
+      socket.off('DELETETHREADSUCCESS')
     }
   }, [st, openedChannel])
 

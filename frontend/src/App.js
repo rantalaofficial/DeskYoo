@@ -127,7 +127,8 @@ const App = () => {
             channels={channels}
             st={setToThreads}
             ct={closeThreads}
-            openedChannel={openedChannel} 
+            openedChannel={openedChannel}
+            showNotification={showNotification}
           />
         </div>
         <div id='messageColumn'>
@@ -149,7 +150,8 @@ const App = () => {
               messages={answers}
               color={openedThread.color}
               messageType='Answer'
-              sm={setToAnswers} 
+              sm={setToAnswers}
+              showNotification={showNotification} 
             />
             <NewMessageBox
               id={openedThread.id} 

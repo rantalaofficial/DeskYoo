@@ -149,6 +149,42 @@ function addSocketHandles(socket) {
         }); 
     });
 
+    socket.on("DELETETHREAD", (data) => {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
+            socket.emit("USERNOTLOGGED");
+            return;
+        }
+
+        if(!utils.validAPIrequest(data, ["string"])) {
+            socket.emit("USERERROR", "Invalid thread data.");
+            return;
+        }
+
+        let threadId = data[0]
+
+        Answer.deleteMany({parentId: threadId}, (err) => {
+            if(err){
+                socket.emit("USERERROR", "Deleting failed.");
+                return;
+            }
+        })
+
+        Thread.findOneAndDelete({_id: threadId}, (err, thread) => {
+            if(err) {
+                socket.emit("USERERROR", "Deleting failed.");
+                return;
+            }
+
+            if(thread === undefined || thread === null) {
+                socket.emit("USERERROR", "Thread not found");
+                return;
+            }
+
+            socket.emit('DELETETHREADSUCCESS')
+        });
+    });
+
     socket.on("ADDANSWER", (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
@@ -225,6 +261,35 @@ function addSocketHandles(socket) {
                 (positiveVote) ? userApi.changeScore(answer.authorId, 2) : userApi.changeScore(answer.authorId, -1);
                 socket.emit("VOTEANSWERSUCCESS")
             });
+        }); 
+    });
+
+    socket.on("DELETEANSWER", (data) => {
+        let userId = userApi.isLogged(socket);
+        if(!userId) {
+            socket.emit("USERNOTLOGGED");
+            return;
+        }
+
+        if(!utils.validAPIrequest(data, ["string"])) {
+            socket.emit("USERERROR", "Invalid answer data.");
+            return;
+        }
+
+        let answerId = data[0]
+
+        Answer.findOneAndDelete({_id: answerId}, (err, answer) => {
+            if(err) {
+                socket.emit("USERERROR", "Deleting failed.");
+                return;
+            }
+
+            if(answer === undefined || answer === null) {
+                socket.emit("USERERROR", "Answer not found");
+                return;
+            }
+
+            socket.emit('DELETEANSWERSUCCESS')
         }); 
     });
 }

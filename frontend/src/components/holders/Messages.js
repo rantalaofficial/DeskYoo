@@ -3,7 +3,7 @@ import MessageBox from '../boxes/MessageBox'
 
 import socket from '../../services/connect'
 
-const Messages = ({messages, color, messageType, sm}) => {
+const Messages = ({openedThread, messages, color, messageType, sm}) => {
   useEffect(() => {
     socket.on('ANSWERSDISPLAYINFO', data => {
       //console.log(data)
@@ -12,11 +12,20 @@ const Messages = ({messages, color, messageType, sm}) => {
 
       return sm(data)
     })
+
+    if(messageType==='Answer'){
+      socket.on('VOTEANSWERSUCCESS', () => {
+        document.getElementById('root').style.pointerEvents = 'auto'
+
+        socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
+      })
+    }
     
     return function cleanup () {
       socket.off('ANSWERSDISPLAYINFO')
+      socket.off('VOTEANSWERSUCCESS')
     }
-  }, [sm])
+  }, [sm, messageType, openedThread])
 
   return(
     <div>

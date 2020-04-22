@@ -33,26 +33,41 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
   return(
     <div className='message' style={styles}>
       <table className='messageTable'>
-        <tr>
-          <td onClick={handleClick} className='infoCell' rowSpan='2' valign='top'>
-            {text}
-          </td>
-          <td className='voteCell' valign='top'>▲</td>
-        </tr>
-        <tr>
-          <td className='voteCell'>
-              {votes}
-          </td>
-        </tr>
-        <tr>
-          <td className='infoCell'>
-            <span role="img" aria-label='Location'>{timeText} ago 📍{location} [Options]</span>
-          </td>
-          <td className='voteCell'>▼</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td onClick={handleClick} className='infoCell' rowSpan='2' valign='top'>
+              {text}
+            </td>
+            <td onClick={(event) => handleVote(event, messageType, true, id)} className='voteCell' valign='top'>▲</td>
+          </tr>
+          <tr>
+            <td className='voteCell'>
+                {votes}
+            </td>
+          </tr>
+          <tr>
+            <td className='infoCell'>
+              <span role="img" aria-label='Location'>{timeText} ago 📍{location} [Options]</span>
+            </td>
+            <td onClick={(event) => handleVote(event, messageType, false, id)} className='voteCell'>▼</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   )
+}
+
+const handleVote = (event, messageType, vote, id) => {
+  event.preventDefault()
+  document.getElementById('root').style.pointerEvents = 'none'
+
+  if(messageType==='Thread' || messageType==='OpenedThread'){
+    socket.emit('VOTETHREAD', [id, vote])
+  }
+
+  if(messageType==='Answer'){
+    socket.emit('VOTEANSWER', [id, vote])
+  }
 }
 
 const handleOpenedThreadClick = (event, cm) => {

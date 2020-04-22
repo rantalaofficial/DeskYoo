@@ -26,7 +26,11 @@ const App = () => {
 
   const setToThreads = useCallback((data) => {
     setOpenedChannel(null)
-    setOpenedThread(null)
+
+    const newOpenedThread = openedThread ? data.find((thread) =>
+      thread.id===openedThread.id) : null
+
+    setOpenedThread(newOpenedThread)
     setThreads([])
     setAnswers([])
 
@@ -36,13 +40,13 @@ const App = () => {
       setThreads(data)
     }
     setOpenedChannel(data[0].parentId)
-  }, [])
+  }, [openedThread])
 
   const setToAnswers = useCallback((data) => {
     setOpenedThread(null)
     setAnswers([])
 
-    console.log(data)
+    //console.log(data)
     const openedThread = threads.find(
       (thread) => thread.id===data[0].parentId)
     //console.log(openedThread)
@@ -130,7 +134,8 @@ const App = () => {
           {openedThread 
           ? 
           <div>
-            <MessageBox 
+            <MessageBox
+              id={openedThread.id}
               text={openedThread.text}
               votes={openedThread.votes}
               location={openedThread.location}
@@ -140,6 +145,7 @@ const App = () => {
               cm={closeAnswers}
             />
             <Messages
+              openedThread={openedThread}
               messages={answers}
               color={openedThread.color}
               messageType='Answer'

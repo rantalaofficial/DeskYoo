@@ -13,11 +13,16 @@ const Channels = ({channels, st, ct, openedChannel}) => {
 
       return st(data)
     })
+
+    socket.on('VOTETHREADSUCCESS', () => {
+      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
+    })
     
     return function cleanup () {
       socket.off('THREADSDISPLAYINFO')
+      socket.off('VOTETHREADSUCCESS')
     }
-  }, [st])
+  }, [st, openedChannel])
 
   return(
     channels 

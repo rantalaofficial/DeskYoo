@@ -61,16 +61,18 @@ const NewMessageBox = ({id, showNotification, messageType}) => {
     <div className="yellowBox message">
       <form onSubmit={handleMessageSend}>
         <table className='messageTable'>
-          <tr>
-            <td className="infoCell">
-              <textarea className="messageInputTextBox" id='texti' maxLength="300" placeholder={messageType==='Answer' ? 'Write your answer here and press 🤟 to send!' : 'Write your Yoo here and press 🤟 to send!'} type='text' onChange={handleTextChange}></textarea>
-            </td>
-            <td>
-              <button className="sendMessageBtn" type='submit' value=''>
-                <img className="sendMessageBtnImage" src="/logo192.png" alt={messageType==='Answer' ? 'Send new answer' : 'Send new thread'}></img>
-              </button>
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td className="infoCell">
+                <textarea className="messageInputTextBox" id='texti' maxLength="300" placeholder={messageType==='Answer' ? 'Write your answer here and press 🤟 to send!' : 'Write your Yoo here and press 🤟 to send!'} type='text' onChange={handleTextChange}></textarea>
+              </td>
+              <td>
+                <button className="sendMessageBtn" type='submit' value=''>
+                  <img className="sendMessageBtnImage" src="/logo192.png" alt={messageType==='Answer' ? 'Send new answer' : 'Send new thread'}></img>
+                </button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </form>
     </div>

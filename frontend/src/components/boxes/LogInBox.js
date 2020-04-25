@@ -24,13 +24,15 @@ const LogInBox = (props) => {
   useEffect(() => {
     socket.on(ApiNames.LoginSuccess, () => {
       dispatch(login())
-      document.getElementById('root').style.pointerEvents = 'auto'
+      dispatch(setNotification({message: 'Login successful', color: 'green'}))
 
       socket.emit(ApiNames.GetUserDisplayInfo)
       socket.emit(ApiNames.GetChannelsDisplayInfo)
     })
 
-    socket.on(ApiNames.registerSuccess, () => {
+    socket.on(ApiNames.RegisterSuccess, () => {
+      dispatch(setNotification({message: 'User creation successful', color: 'green'}))
+
       setLogIn(true)
       document.getElementById('form').reset()
       document.getElementById('root').style.pointerEvents = 'auto'
@@ -38,7 +40,7 @@ const LogInBox = (props) => {
 
     return function cleanup () {
       socket.off(ApiNames.LoginSuccess)
-      socket.off(ApiNames.registerSuccess)
+      socket.off(ApiNames.RegisterSuccess)
     }
   }, [dispatch])
 
@@ -74,7 +76,7 @@ const LogInBox = (props) => {
           <p><input placeholder='Username' className='LogInElement' type='text' onChange={(event) => setUsername(event.target.value)}></input></p>
           <p><input placeholder='Password' className='LogInElement' type='password' onChange={(event) => setPassword(event.target.value)}></input></p>
           {logIn ? null : <p><input placeholder='Password confirm' className='LogInElement' type='password' onChange={(event) => setConfpassword(event.target.value)}></input></p>}
-          <input className='greenBox LogInElement' type='submit' onClick={() => dispatch(setNotification({message: logIn ? 'Login successful' : 'User creation successful', color: 'green'}))} value={logIn ? 'Login' : 'Register'} />
+          <input className='greenBox LogInElement' type='submit' value={logIn ? 'Login' : 'Register'} />
         </form>
         <input className='LogInElement' type='button' onClick={() => {
             setLogIn(logIn ? false : true)

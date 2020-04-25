@@ -52,7 +52,7 @@ const Messages = ({opened, messages, color, messageType}) => {
           socket.emit(messageType==='Thread' ? ApiNames.GetThreadsDisplayInfo : ApiNames.GetAnswersDisplayInfo , opened)
           update()
         }
-      }, 45000)
+      }, 1000)
     }
     update()
 

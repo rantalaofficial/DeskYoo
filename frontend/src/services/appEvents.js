@@ -1,3 +1,5 @@
+import ApiNames from './ApiNames'
+
 const appHandlers = (socket, showNotification, setUser, setChannels, logOut) => {
 
 //CONNECTION HANDLING
@@ -16,26 +18,26 @@ socket.on('connect_error', function(){
   });
 
   //ERROR HANDLING
-  socket.on('USERERROR', errorText => {
+  socket.on(ApiNames.UserError, errorText => {
     document.getElementById('root').style.pointerEvents = 'auto'
     
     showNotification(errorText, 'red')
   })
 
   //USER LOGIN HANDLING
-  socket.on('USERNOTLOGGED', () => {
+  socket.on(ApiNames.UserNotLogged, () => {
     document.getElementById('root').style.pointerEvents = 'auto'
 
     showNotification("User logged out.", 'red')
   });
 
-  socket.on('USERDISPLAYINFO', user => {
+  socket.on(ApiNames.UserDisplayInfo, user => {
     document.getElementById('root').style.pointerEvents = 'auto'
 
     setUser(user)
   })
 
-  socket.on('CHANNELSDISPLAYINFO', data => {
+  socket.on(ApiNames.ChannelsDisplayInfo, data => {
     document.getElementById('root').style.pointerEvents = 'auto'
     
     setChannels(data)

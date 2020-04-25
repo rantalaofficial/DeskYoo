@@ -3,18 +3,20 @@ import locationHelper from '../../services/locationApi'
 
 import socket from '../../services/connect'
 
+import ApiNames from '../../services/ApiNames'
+
 const NewMessageBox = ({id, showNotification, messageType}) => {
   const [messageText, setMessageText] = useState('')
   const [location, setLocation] = useState(null)
 
   useEffect(() => {
-    socket.on(messageType==='Answer' ? 'ADDANSWERSUCCESS' : 'ADDTHREADSUCCESS', () => {
+    socket.on(messageType==='Answer' ? ApiNames.AddAnswerSuccess : ApiNames.AddThreadSuccess, () => {
       document.getElementById('root').style.pointerEvents = 'auto'
-      socket.emit(messageType==='Answer' ? 'GETANSWERSDISPLAYINFO' : 'GETTHREADSDISPLAYINFO', id)
+      socket.emit(messageType==='Answer' ? ApiNames.GetAnswersDisplayInfo : ApiNames.GetThreadsDisplayInfo, id)
     })
     
     return function cleanup () {
-      messageType==='Answer' ? socket.off('ADDANSWERSUCCESS') : socket.off('ADDTHREADSUCCESS')
+      messageType==='Answer' ? socket.off(ApiNames.AddAnswerSuccess) : socket.off(ApiNames.AddThreadSuccess)
     }
   }, [id, messageType])
 
@@ -31,7 +33,7 @@ const NewMessageBox = ({id, showNotification, messageType}) => {
     if(messageText.length>0){
       document.getElementById('root').style.pointerEvents = 'none'
 
-      const handler = messageType==='Answer' ? 'ADDANSWER' : 'ADDTHREAD'
+      const handler = messageType==='Answer' ? ApiNames.AddAnswer : ApiNames.AddThread
 
       socket.emit(handler, [messageText, location && location.length!==0 ? location : 'Unknown', id])
     }

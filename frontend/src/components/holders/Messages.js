@@ -3,9 +3,11 @@ import MessageBox from '../boxes/MessageBox'
 
 import socket from '../../services/connect'
 
+import ApiNames from '../../services/ApiNames'
+
 const Messages = ({openedThread, messages, color, messageType, sm, showNotification}) => {
   useEffect(() => {
-    socket.on('ANSWERSDISPLAYINFO', data => {
+    socket.on(ApiNames.AnswersDisplayInfo, data => {
       //console.log(data)
       //console.log('api request: answers')
       document.getElementById('root').style.pointerEvents = 'auto'
@@ -14,22 +16,22 @@ const Messages = ({openedThread, messages, color, messageType, sm, showNotificat
     })
 
     if(messageType==='Answer'){
-      socket.on('VOTEANSWERSUCCESS', () => {
+      socket.on(ApiNames.VoteAnswerSuccess, () => {
         document.getElementById('root').style.pointerEvents = 'auto'
 
-        socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
+        socket.emit(ApiNames.GetAnswersDisplayInfo, openedThread.id)
       })
 
-      socket.on('DELETEANSWERSUCCESS', () => {
-        socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
-        showNotification('Deleting an answer successful', 'green')
+      socket.on(ApiNames.DeleteAnswerSuccess, () => {
+        socket.emit(ApiNames.GetAnswersDisplayInfo, openedThread.id)
+        showNotification('Answer deleted.', 'green')
       })
     }
     
     return function cleanup () {
-      socket.off('ANSWERSDISPLAYINFO')
-      socket.off('VOTEANSWERSUCCESS')
-      socket.off('DELETEANSWERSUCCESS')
+      socket.off(ApiNames.AnswersDisplayInfo)
+      socket.off(ApiNames.VoteAnswerSuccess)
+      socket.off(ApiNames.DeleteAnswerSuccess)
     }
   }, [sm, messageType, openedThread])
 

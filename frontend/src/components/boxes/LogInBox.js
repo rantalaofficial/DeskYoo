@@ -3,6 +3,8 @@ import {sha256} from 'js-sha256'
 
 import socket from '../../services/connect'
 
+import ApiNames from '../../services/ApiNames'
+
 const LogInBox = ({su, showNotification}) => {
   const [logIn, setLogIn] = useState(true)
   const [username, setUsername] = useState('')
@@ -12,20 +14,20 @@ const LogInBox = ({su, showNotification}) => {
   const [registerSuccess, setRegisterSuccess] = useState(false)
 
   useEffect(() => {
-    socket.on('LOGINSUCCESS', () => {
+    socket.on(ApiNames.LoginSuccess, () => {
       su(true)
       document.getElementById('root').style.pointerEvents = 'auto'
     })
 
-    socket.on('REGISTERSUCCESS', () => {
+    socket.on(ApiNames.registerSuccess, () => {
       setRegisterSuccess(true)
       document.getElementById('form').reset()
       document.getElementById('root').style.pointerEvents = 'auto'
     })
 
     return function cleanup () {
-      socket.off('LOGINSUCCESS')
-      socket.off('REGISTERSUCCESS')
+      socket.off(ApiNames.LoginSuccess)
+      socket.off(ApiNames.registerSuccess)
     }
   }, [su])
 
@@ -37,7 +39,7 @@ const LogInBox = ({su, showNotification}) => {
     event.preventDefault()
     document.getElementById('root').style.pointerEvents = 'none'
 
-    socket.emit('LOGIN', [username, sha256(password+process.env.REACT_APP_SECRET)])
+    socket.emit(ApiNames.Login, [username, sha256(password+process.env.REACT_APP_SECRET)])
   }
   
   const handleRegisterSubmit = (event) => {
@@ -46,7 +48,7 @@ const LogInBox = ({su, showNotification}) => {
     if(password===confPassword && password.length>4){
       document.getElementById('root').style.pointerEvents = 'none'
 
-      socket.emit('REGISTER', [username, sha256(password+process.env.REACT_APP_SECRET)])
+      socket.emit(ApiNames.Register, [username, sha256(password+process.env.REACT_APP_SECRET)])
     }
     else if(password!==confPassword){
       showNotification('Passwords don\'t match', 'red')

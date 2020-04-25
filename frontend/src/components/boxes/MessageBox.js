@@ -4,6 +4,8 @@ import utils from '../../services/utils'
 
 import socket from '../../services/connect'
 
+import ApiNames from '../../services/ApiNames'
+
 const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) => {
   const colorIndex = color ? color : 0
 
@@ -62,11 +64,11 @@ const handleDeleteClick = (event, messageType, id) => {
   document.getElementById('root').style.pointerEvents = 'none'
 
   if(messageType==='Thread' || messageType==='OpenedThread'){
-    socket.emit('DELETETHREAD', [id])
+    socket.emit(ApiNames.DeleteThread, [id])
   }
 
   if(messageType==='Answer'){
-    socket.emit('DELETEANSWER', [id])
+    socket.emit(ApiNames.DeleteAnswer, [id])
   }
 }
 
@@ -75,11 +77,11 @@ const handleVote = (event, messageType, vote, id) => {
   document.getElementById('root').style.pointerEvents = 'none'
 
   if(messageType==='Thread' || messageType==='OpenedThread'){
-    socket.emit('VOTETHREAD', [id, vote])
+    socket.emit(ApiNames.VoteThread, [id, vote])
   }
 
   if(messageType==='Answer'){
-    socket.emit('VOTEANSWER', [id, vote])
+    socket.emit(ApiNames.VoteAnswer, [id, vote])
   }
 }
 
@@ -93,7 +95,7 @@ const handleThreadClick = (event, id) => {
   event.preventDefault()
   document.getElementById('root').style.pointerEvents = 'none'
 
-  socket.emit('GETANSWERSDISPLAYINFO', id)
+  socket.emit(ApiNames.GetAnswersDisplayInfo, id)
 }
 
 export default MessageBox

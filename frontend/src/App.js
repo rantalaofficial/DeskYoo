@@ -12,6 +12,7 @@ import Notification from './components/util/Notification'
 
 import socket from './services/connect'
 import appHandlers from './services/appEvents'
+import ApiNames from './services/ApiNames'
 
 const App = () => {
   const [answers, setAnswers] = useState([])
@@ -95,9 +96,9 @@ const App = () => {
 
   useEffect(() => {
     if(user && !user.username){
-      socket.emit('GETUSERDISPLAYINFO')
+      socket.emit(ApiNames.GetUserDisplayInfo)
 
-      socket.emit('GETCHANNELSDISPLAYINFO')
+      socket.emit(ApiNames.GetChannelsDisplayInfo)
     }
   }, [user])
 

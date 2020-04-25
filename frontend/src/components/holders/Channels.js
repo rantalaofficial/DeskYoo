@@ -3,10 +3,12 @@ import ChannelBox from '../boxes/ChannelBox'
 
 import socket from '../../services/connect'
 
+import ApiNames from '../../services/ApiNames'
+
 const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
 
   useEffect(() => {
-    socket.on('THREADSDISPLAYINFO', data => {
+    socket.on(ApiNames.ThreadsDisplayInfo, data => {
       //console.log(data)
       //console.log('api request: Channels')
       document.getElementById('root').style.pointerEvents = 'auto'
@@ -14,19 +16,19 @@ const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
       return st(data)
     })
 
-    socket.on('VOTETHREADSUCCESS', () => {
-      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
+    socket.on(ApiNames.VoteThreadSuccess, () => {
+      socket.emit(ApiNames.GetThreadsDisplayInfo, openedChannel)
     })
 
-    socket.on('DELETETHREADSUCCESS', () => {
-      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
-      showNotification('Deleting a thread successful', 'green')
+    socket.on(ApiNames.DeleteThreadSuccess, () => {
+      socket.emit(ApiNames.GetThreadsDisplayInfo, openedChannel)
+      showNotification('Thread deleted.', 'green')
     })
     
     return function cleanup () {
-      socket.off('THREADSDISPLAYINFO')
-      socket.off('VOTETHREADSUCCESS')
-      socket.off('DELETETHREADSUCCESS')
+      socket.off(ApiNames.ThreadsDisplayInfo)
+      socket.off(ApiNames.VoteThreadSuccess)
+      socket.off(ApiNames.DeleteThreadSuccess)
     }
   }, [st, openedChannel])
 

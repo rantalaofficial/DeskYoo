@@ -2,6 +2,8 @@ import React from 'react'
 
 import socket from '../../services/connect'
 
+import ApiNames from '../../services/ApiNames'
+
 const ChannelBox = ({id, name, followers, ct}) => {
 
   const handleClick = (event) => {
@@ -23,7 +25,7 @@ const handleChannelClick = (event, id) => {
   event.preventDefault()
   document.getElementById('root').style.pointerEvents = 'none'
 
-  socket.emit('GETTHREADSDISPLAYINFO', id)
+  socket.emit(ApiNames.GetThreadsDisplayInfo, id)
 }
 
 const handleOpenedChannelClick = (event, ct) => {

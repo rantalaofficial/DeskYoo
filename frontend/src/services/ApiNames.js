@@ -45,9 +45,7 @@ const ApiNames = {
     UserDisplayInfo: '',
 }
 
-Object.keys(ApiNames).map((key, index) => {
-    ApiNames[key] = index.toString();
-});
+Object.keys(ApiNames).map((key, index) => ApiNames[key] = index.toString())
 Object.freeze(ApiNames)
 
 export default ApiNames

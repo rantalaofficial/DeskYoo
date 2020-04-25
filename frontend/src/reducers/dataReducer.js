@@ -6,100 +6,40 @@ const initialState = {
   channels: []
 }
 
-export const setChannels = (content) => {
-    return {
-        type: 'SET_CHANNELS',
-        content
-    }
-}
+export const setChannels = (content) => ({type: 'SET_CHANNELS', content})
+export const setThreads = (content) => ({type: 'SET_THREADS', content})
+export const setAnswers = (content) => ({type: 'SET_ANSWERS', content})
+export const closeThreads = () => ({type: 'CLOSE_THREADS'})
+export const closeAnswers = () => ({type: 'CLOSE_ANSWERS'})
+export const logOutData = () => ({type: 'LOGOUTDATA'})
 
-export const setThreads = (content) => {
-    return {
-        type: 'SET_THREADS',
-        content
-    }
-}
-
-export const setAnswers = (content) => {
-    return {
-        type: 'SET_ANSWERS',
-        content
-    }
-}
-
-export const closeThreads = () => {
-    return {
-        type: 'CLOSE_THREADS',
-    }
-}
-
-export const closeAnswers = () => {
-    return {
-        type: 'CLOSE_ANSWERS',
-    }
-}
-
-export const logOutData = () => {
-    return {
-        type: 'LOGOUTDATA',
-    }
-}
 
 const dataReducer = (state = initialState, action) => {
-  const newState = {...state}
   switch (action.type) {
     case 'SET_CHANNELS':
-      newState.channels = action.content
-
-      return newState
+      return {...state, channels: action.content}
 
     case 'SET_THREADS':
-      const newOpenedThread = newState.openedThread ? action.content.find((thread) =>
-        thread.id===newState.openedThread.id) : null
+      const newOpenedThread = state.openedThread ? action.content.find((thread) =>
+        thread.id===state.openedThread.id) : null
 
-      newState.openedThread = newOpenedThread
+      const newThreads = action.content[0].text ? action.content : []
 
-      newState.threads = []
-      newState.answers = []
-
-      //console.log(action.content)
-      //console.log('here')
-      if(action.content[0].text){
-        newState.threads = action.content
-      }
-      newState.openedChannel = action.content[0].parentId
-
-      return newState
+      return {...state, answers: [], openedThread: newOpenedThread, threads: newThreads, openedChannel: action.content[0].parentId}
 
     case 'SET_ANSWERS':
-      newState.answers = []
-    
-      //console.log(action.content)
-      const newOpenedThread2 = newState.threads.find(
+      const newOpenedThread2 = state.threads.find(
         (thread) => thread.id===action.content[0].parentId)
 
-      //console.log(openedThread)
-      //console.log('here 2')
-      if(action.content[0].text){
-        newState.answers = action.content
-      }
-      newState.openedThread = newOpenedThread2
+      const newAnswers = action.content[0].text ? action.content : []
 
-      return newState
+      return {...state, answers: newAnswers, openedThread: newOpenedThread2}
 
     case 'CLOSE_THREADS':
-      newState.threads = []
-      newState.openedChannel = null
-      newState.openedThread = null
-      newState.answers = []
-
-      return newState
+      return {...state, answers: [], openedThread: null, threads: [], openedChannel: null}
 
     case 'CLOSE_ANSWERS':
-      newState.answers = []
-      newState.openedThread = null
-
-      return newState
+      return {...state, answers: [], openedThread: null}
 
     case 'LOGOUTDATA':
       return initialState

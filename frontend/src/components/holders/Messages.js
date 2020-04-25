@@ -49,10 +49,10 @@ const Messages = ({opened, messages, color, messageType}) => {
       setTimeout(() => {
         if(mounted) {
           document.getElementById('root').style.pointerEvents = 'none'
-          socket.emit(messageType==='Thread' ? 'GETTHREADSDISPLAYINFO' : 'GETANSWERSDISPLAYINFO' , opened)
+          socket.emit(messageType==='Thread' ? ApiNames.GetThreadsDisplayInfo : ApiNames.GetAnswersDisplayInfo , opened)
           update()
         }
-      }, 45000)
+      }, 3000)
     }
     update()
 

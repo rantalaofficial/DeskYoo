@@ -3,27 +3,13 @@ const initialState = {
   color : 'green'
 }
 
-export const setNotification = (content) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    content
-  }
-}
-
-export const resetNotification = () => {
-  return {
-    type: 'RESET_NOTIFICATION',
-  }
-}
+export const setNotification = (content) => ({type: 'SET_NOTIFICATION', content})
+export const resetNotification = () => ({type: 'RESET_NOTIFICATION'})
 
 const notificationReducer = (state = initialState, action) => {
-  const newState = {...state}
   switch (action.type) {
     case 'SET_NOTIFICATION':
-      newState.message = action.content.message
-      newState.color = action.content.color
-
-      return newState
+      return {...action.content}
 
     case 'RESET_NOTIFICATION':
       return initialState

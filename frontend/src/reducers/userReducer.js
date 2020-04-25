@@ -7,48 +7,21 @@ const initialState = {
   location: null
 }
 
-export const setUserInfo = (content) => {
-    return {
-        type: 'SET_USERINFO',
-        content
-    }
-}
-
-export const setLocation = (content) => {
-    return {
-        type: 'SET_LOCATION',
-        content
-    }
-}
-
-export const login = () => {
-    return {
-        type: 'LOGIN'
-    }
-}
-
-export const logOut = () => {
-    return {
-        type: 'LOGOUT'
-    }
-}
+export const setUserInfo = (content) => ({type: 'SET_USERINFO', content})
+export const setLocation = (content) => ({type: 'SET_LOCATION', content})
+export const login = () => ({type: 'LOGIN'})
+export const logOut = () => ({type: 'LOGOUT'})
 
 const userReducer = (state = initialState, action) => {
-  const newState = {...state}
   switch (action.type) {
     case 'SET_USERINFO':
-      newState.data = action.content
-
-      return newState
+      return {...state, data: action.content}
 
     case 'SET_LOCATION':
-      newState.location = action.content
-  
-      return newState
+      return {...state, location: action.content}
 
     case 'LOGIN':
-      newState.loggedIn = true
-      return newState
+      return {...state, loggedIn: true}
 
     case 'LOGOUT':
       return initialState

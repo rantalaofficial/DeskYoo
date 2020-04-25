@@ -49,7 +49,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
           </tr>
           <tr>
             <td onClick={(event) => handleDeleteClick(event, messageType, id)} className='infoCell'>
-              <span role="img" aria-label='Location'>{timeText} ago 📍{location} [Options]</span>
+              <span role="img" aria-label='Location'>{timeText} ago 📍{location} [Delete]</span>
             </td>
             <td onClick={(event) => handleVote(event, messageType, false, id)} className='voteCell'>▼</td>
           </tr>

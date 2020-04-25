@@ -3,26 +3,34 @@ import MessageBox from '../boxes/MessageBox'
 
 import socket from '../../services/connect'
 
-const Messages = ({openedThread, messages, color, messageType, sm, showNotification}) => {
+import { useDispatch } from 'react-redux'
+
+import { setAnswers } from '../../reducers/dataReducer'
+
+import { setNotification } from '../../reducers/notificationReducer'
+
+const Messages = ({opened, messages, color, messageType}) => {
+  const dispatch = useDispatch()
+
   useEffect(() => {
     socket.on('ANSWERSDISPLAYINFO', data => {
       //console.log(data)
       //console.log('api request: answers')
       document.getElementById('root').style.pointerEvents = 'auto'
 
-      return sm(data)
+      return dispatch(setAnswers(data))
     })
 
     if(messageType==='Answer'){
       socket.on('VOTEANSWERSUCCESS', () => {
         document.getElementById('root').style.pointerEvents = 'auto'
 
-        socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
+        socket.emit('GETANSWERSDISPLAYINFO', opened)
       })
 
       socket.on('DELETEANSWERSUCCESS', () => {
-        socket.emit('GETANSWERSDISPLAYINFO', openedThread.id)
-        showNotification('Deleting an answer successful', 'green')
+        socket.emit('GETANSWERSDISPLAYINFO', opened)
+        dispatch(setNotification({message: 'Deleting an answer successful', color: 'green'}))
       })
     }
     
@@ -31,7 +39,23 @@ const Messages = ({openedThread, messages, color, messageType, sm, showNotificat
       socket.off('VOTEANSWERSUCCESS')
       socket.off('DELETEANSWERSUCCESS')
     }
-  }, [sm, messageType, openedThread])
+  }, [dispatch, messageType, opened])
+
+  useEffect(() => {
+    let mounted = true
+    function update() {
+      setTimeout(() => {
+        if(mounted) {
+          document.getElementById('root').style.pointerEvents = 'none'
+          socket.emit(messageType==='Thread' ? 'GETTHREADSDISPLAYINFO' : 'GETANSWERSDISPLAYINFO' , opened)
+          update()
+        }
+      }, 45000)
+    }
+    update()
+
+    return () => mounted = false
+  }, [messageType, opened])
 
   return(
     <div>

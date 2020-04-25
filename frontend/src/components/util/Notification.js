@@ -1,6 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const Notification = ({message, color}) => {
+import { useSelector, useDispatch } from 'react-redux'
+
+import { resetNotification } from '../../reducers/notificationReducer'
+
+const Notification = (props) => {
+  const dispatch = useDispatch()
+  const {message, color} = useSelector(state => state.notificationReducer)
+
+  useEffect(() => {
+    if(message) {
+      setTimeout(() => {
+        dispatch(resetNotification())
+      }, 4000)
+    }
+  }, [dispatch, message])
+
   const notificationStyle = {
     color: color,
     background: "white",

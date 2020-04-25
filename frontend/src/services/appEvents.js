@@ -1,44 +1,51 @@
-const appHandlers = (socket, showNotification, setUser, setChannels, logOut) => {
+import { setNotification } from '../reducers/notificationReducer'
 
-//CONNECTION HANDLING
-socket.on('connect_error', function(){
-    showNotification("Cannot connect to server", 'red')
-  });
+import { setUserInfo, logOut } from '../reducers/userReducer'
+
+import { setChannels, logOutData } from '../reducers/dataReducer'
+
+const appHandlers = (socket, dispatch) => {
+
+  //CONNECTION HANDLING
+  socket.on('connect_error', function(){
+    dispatch(setNotification({message: 'Cannot connect to server', color: 'red'}))
+  })
 
   socket.on('disconnect', () => {
-    showNotification("Server disconnected", 'red')
-    logOut()
+    dispatch(setNotification({message: "Server disconnected", color: 'red'}))
+    dispatch(logOut())
+    dispatch(logOutData())
   })
 
   socket.on("*",(event, data) => {
-    console.log(`EVENT: ${event} DATA: `);
+    console.log(`EVENT: ${event} DATA: `)
     console.log(data)
-  });
+  })
 
   //ERROR HANDLING
   socket.on('USERERROR', errorText => {
     document.getElementById('root').style.pointerEvents = 'auto'
     
-    showNotification(errorText, 'red')
+    dispatch(setNotification({message: errorText, color: 'red'}))
   })
 
   //USER LOGIN HANDLING
   socket.on('USERNOTLOGGED', () => {
     document.getElementById('root').style.pointerEvents = 'auto'
 
-    showNotification("User logged out.", 'red')
+    dispatch(setNotification({message: "User logged out.", color: 'red'}))
   });
 
   socket.on('USERDISPLAYINFO', user => {
     document.getElementById('root').style.pointerEvents = 'auto'
 
-    setUser(user)
+    dispatch(setUserInfo(user))
   })
 
   socket.on('CHANNELSDISPLAYINFO', data => {
     document.getElementById('root').style.pointerEvents = 'auto'
     
-    setChannels(data)
+    dispatch(setChannels(data))
   })
 }
 

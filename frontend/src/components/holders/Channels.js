@@ -3,7 +3,19 @@ import ChannelBox from '../boxes/ChannelBox'
 
 import socket from '../../services/connect'
 
-const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
+import { useSelector, useDispatch } from 'react-redux'
+
+import { setNotification } from '../../reducers/notificationReducer'
+
+import { setThreads, closeThreads } from '../../reducers/dataReducer'
+
+const Channels = (props) => {
+
+  const channels = useSelector(state => state.dataReducer.channels)
+
+  const openedChannel = useSelector(state => state.dataReducer.openedChannel)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     socket.on('THREADSDISPLAYINFO', data => {
@@ -11,7 +23,7 @@ const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
       //console.log('api request: Channels')
       document.getElementById('root').style.pointerEvents = 'auto'
 
-      return st(data)
+      return dispatch(setThreads(data))
     })
 
     socket.on('VOTETHREADSUCCESS', () => {
@@ -20,7 +32,7 @@ const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
 
     socket.on('DELETETHREADSUCCESS', () => {
       socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
-      showNotification('Deleting a thread successful', 'green')
+      dispatch(setNotification({message: 'Deleting a thread successful', color: 'green'}))
     })
     
     return function cleanup () {
@@ -28,23 +40,19 @@ const Channels = ({channels, st, ct, openedChannel, showNotification}) => {
       socket.off('VOTETHREADSUCCESS')
       socket.off('DELETETHREADSUCCESS')
     }
-  }, [st, openedChannel])
+  }, [dispatch, openedChannel])
 
   return(
-    channels 
-    ? 
     <div>
       {channels.map((channel) =>
         <ChannelBox key={channel.id}
         id={channel.id} 
         name={channel.text}
         followers={channel.followers}
-        ct={channel.id!==openedChannel ? null : ct}
+        ct={channel.id!==openedChannel ? null : () => dispatch(closeThreads())}
         />
       )}
     </div>
-    :
-    null
   )
 }
 

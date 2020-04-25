@@ -1,11 +1,17 @@
 import React, {useState, useEffect} from 'react'
-import locationHelper from '../../services/locationApi'
 
 import socket from '../../services/connect'
 
-const NewMessageBox = ({id, showNotification, messageType}) => {
+import { useSelector, useDispatch } from 'react-redux'
+
+import { setNotification } from '../../reducers/notificationReducer'
+
+const NewMessageBox = ({id, messageType}) => {
   const [messageText, setMessageText] = useState('')
-  const [location, setLocation] = useState(null)
+
+  const location = useSelector(state => state.userReducer.location)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     socket.on(messageType==='Answer' ? 'ADDANSWERSUCCESS' : 'ADDTHREADSUCCESS', () => {
@@ -18,13 +24,6 @@ const NewMessageBox = ({id, showNotification, messageType}) => {
     }
   }, [id, messageType])
 
-  useEffect(() => {
-    async function data () {
-      locationHelper.getLocation((data) => setLocation(data))
-    }
-    data()
-  }, [])
-
   const handleMessageSend = (event) => {
     event.preventDefault()
 
@@ -36,7 +35,7 @@ const NewMessageBox = ({id, showNotification, messageType}) => {
       socket.emit(handler, [messageText, location && location.length!==0 ? location : 'Unknown', id])
     }
     else{
-      showNotification('Yoo can\'t be empty', 'red')
+      dispatch(setNotification({message: 'Yoo can\'t be empty', color: 'red'}))
     }
 
     setMessageText('')

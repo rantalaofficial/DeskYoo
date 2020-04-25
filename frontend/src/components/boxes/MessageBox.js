@@ -4,7 +4,13 @@ import utils from '../../services/utils'
 
 import socket from '../../services/connect'
 
-const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) => {
+import { useDispatch } from 'react-redux'
+
+import { closeAnswers } from '../../reducers/dataReducer'
+
+const MessageBox = ({id, text, votes, location, color, time, messageType}) => {
+  const dispatch = useDispatch()
+
   const colorIndex = color ? color : 0
 
   const colors=['#E0BBE4', '#AC91C8', '#D291BC', '#FEC8D8', '#FFDFD3']
@@ -26,7 +32,7 @@ const MessageBox = ({id, text, votes, location, color, time, messageType, cm}) =
     }
 
     if(messageType==='OpenedThread'){
-      return handleOpenedThreadClick(event, cm)
+      return handleOpenedThreadClick(event, dispatch)
     }
   }
 
@@ -83,9 +89,9 @@ const handleVote = (event, messageType, vote, id) => {
   }
 }
 
-const handleOpenedThreadClick = (event, cm) => {
+const handleOpenedThreadClick = (event, dispatch) => {
   event.preventDefault()
-  cm()
+  dispatch(closeAnswers())
 }
 
 const handleThreadClick = (event, id) => {

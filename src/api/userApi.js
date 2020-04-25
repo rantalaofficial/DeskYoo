@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const User = require('./models/user');
 
+const ApiNames = require('./ApiNames');
+
 const config = require('../util/config')
 
 if(mongoose.connection.readyState == 0) {
@@ -29,46 +31,46 @@ function addSocketHandles(socket) {
         }
     });
 
-    socket.on("LOGIN", (data) => {
+    socket.on(ApiNames.Login, (data) => {
         if(!Array.isArray(data) || data.length != 2 || data[0] === undefined || data[1] === undefined) {
-            socket.emit("USERERROR", "Login failed.");
+            socket.emit(ApiNames.UserError, "Login failed.");
             return;
         }
 
         if(isLogged(socket)) {
-            socket.emit("USERERROR", "Already logged in.");
+            socket.emit(ApiNames.UserError, "Already logged in.");
             return;
         }
 
         User.findOne({username: data[0], passwordHash: data[1]}, (err, user) => {
             if(err || user === null) {
-                socket.emit("USERERROR", "Login failed.");
+                socket.emit(ApiNames.UserError, "Login failed.");
                 return;
             }
             loggedUsers[socket.id] = user._id;
-            socket.emit("LOGINSUCCESS")
+            socket.emit(ApiNames.LoginSuccess)
         });
     });
 
     //LOGOUT
-    socket.on('LOGOUT', () => {
+    socket.on(ApiNames.Logout, () => {
         if(loggedUsers[socket.id] != undefined) {
             delete loggedUsers[socket.id]
         }
     });
 
-    socket.on("REGISTER", (data) => {
+    socket.on(ApiNames.Register, (data) => {
         if(!Array.isArray(data) || data.length != 2 || data[0].length < 5 || data[1] === undefined) {
-            socket.emit("USERERROR", "Register failed.");
+            socket.emit(ApiNames.UserError, "Register failed.");
             return;
         }
         //CHECKS THAT NO OTHER USER EXISTS WITH SAME NAME
         User.exists({username: data[0]}, (err, result) => {
             if(err) {
-                socket.emit("USERERROR", "Register failed.");
+                socket.emit(ApiNames.UserError, "Register failed.");
                 return;
             } else if(result == true) {
-                socket.emit("USERERROR", "Username already in use.")
+                socket.emit(ApiNames.UserError, "Username already in use.")
                 return;
             }
 
@@ -80,23 +82,23 @@ function addSocketHandles(socket) {
     
             user.save((err) => {
                 if(err) {
-                    socket.emit("USERERROR", "Register failed.");
+                    socket.emit(ApiNames.UserError, "Register failed.");
                     return;
                 }
-                socket.emit("REGISTERSUCCESS")
+                socket.emit(ApiNames.RegisterSuccess)
             });
         });
     })
 
     //USER GETTER API
-    socket.on("GETUSERDISPLAYINFO", () => {
+    socket.on(ApiNames.GetUserDisplayInfo, () => {
         let userId = isLogged(socket)
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
         User.findOne({_id: userId}, (err, user) => {
-            socket.emit("USERDISPLAYINFO", {username: user.username, score: user.score})
+            socket.emit(ApiNames.UserDisplayInfo, {username: user.username, score: user.score})
         })
     });
 }

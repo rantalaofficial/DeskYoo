@@ -9,6 +9,8 @@ import { login } from '../../reducers/userReducer'
 
 import { setNotification } from '../../reducers/notificationReducer'
 
+import ApiNames from '../../services/ApiNames'
+
 const LogInBox = (props) => {
   const [logIn, setLogIn] = useState(true)
   const [username, setUsername] = useState('')
@@ -20,23 +22,23 @@ const LogInBox = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    socket.on('LOGINSUCCESS', () => {
+    socket.on(ApiNames.LoginSuccess, () => {
       dispatch(login())
       document.getElementById('root').style.pointerEvents = 'auto'
 
-      socket.emit('GETUSERDISPLAYINFO')
-      socket.emit('GETCHANNELSDISPLAYINFO')
+      socket.emit(ApiNames.GetUserDisplayInfo)
+      socket.emit(ApiNames.GetChannelsDisplayInfo)
     })
 
-    socket.on('REGISTERSUCCESS', () => {
+    socket.on(ApiNames.registerSuccess, () => {
       setLogIn(true)
       document.getElementById('form').reset()
       document.getElementById('root').style.pointerEvents = 'auto'
     })
 
     return function cleanup () {
-      socket.off('LOGINSUCCESS')
-      socket.off('REGISTERSUCCESS')
+      socket.off(ApiNames.LoginSuccess)
+      socket.off(ApiNames.registerSuccess)
     }
   }, [dispatch])
 
@@ -44,7 +46,7 @@ const LogInBox = (props) => {
     event.preventDefault()
     document.getElementById('root').style.pointerEvents = 'none'
 
-    socket.emit('LOGIN', [username, sha256(password+process.env.REACT_APP_SECRET)])
+    socket.emit(ApiNames.Login, [username, sha256(password+process.env.REACT_APP_SECRET)])
   }
   
   const handleRegisterSubmit = (event) => {
@@ -53,7 +55,7 @@ const LogInBox = (props) => {
     if(password===confPassword && password.length>4){
       document.getElementById('root').style.pointerEvents = 'none'
 
-      socket.emit('REGISTER', [username, sha256(password+process.env.REACT_APP_SECRET)])
+      socket.emit(ApiNames.Register, [username, sha256(password+process.env.REACT_APP_SECRET)])
     }
     else if(password!==confPassword){
       dispatch(setNotification({message: 'Passwords don\'t match', color: 'red'}))

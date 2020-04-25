@@ -9,6 +9,8 @@ import { setNotification } from '../../reducers/notificationReducer'
 
 import { setThreads, closeThreads } from '../../reducers/dataReducer'
 
+import ApiNames from '../../services/ApiNames'
+
 const Channels = (props) => {
 
   const channels = useSelector(state => state.dataReducer.channels)
@@ -18,7 +20,7 @@ const Channels = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    socket.on('THREADSDISPLAYINFO', data => {
+    socket.on(ApiNames.ThreadsDisplayInfo, data => {
       //console.log(data)
       //console.log('api request: Channels')
       document.getElementById('root').style.pointerEvents = 'auto'
@@ -26,19 +28,19 @@ const Channels = (props) => {
       return dispatch(setThreads(data))
     })
 
-    socket.on('VOTETHREADSUCCESS', () => {
-      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
+    socket.on(ApiNames.VoteThreadSuccess, () => {
+      socket.emit(ApiNames.GetThreadsDisplayInfo, openedChannel)
     })
 
-    socket.on('DELETETHREADSUCCESS', () => {
-      socket.emit('GETTHREADSDISPLAYINFO', openedChannel)
-      dispatch(setNotification({message: 'Deleting a thread successful', color: 'green'}))
+    socket.on(ApiNames.DeleteThreadSuccess, () => {
+      socket.emit(ApiNames.GetThreadsDisplayInfo, openedChannel)
+      dispatch(setNotification({message: 'Thread deleted.', color: 'green'}))
     })
     
     return function cleanup () {
-      socket.off('THREADSDISPLAYINFO')
-      socket.off('VOTETHREADSUCCESS')
-      socket.off('DELETETHREADSUCCESS')
+      socket.off(ApiNames.ThreadsDisplayInfo)
+      socket.off(ApiNames.VoteThreadSuccess)
+      socket.off(ApiNames.DeleteThreadSuccess)
     }
   }, [dispatch, openedChannel])
 

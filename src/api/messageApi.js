@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const userApi = require('./userApi');
+const ApiNames = require('./ApiNames');
 const utils = require('./utils');
 
 //MESSAGE DATA STRUCTURE
@@ -24,22 +25,22 @@ Channel.countDocuments({}, (err, count) => {
 
 function addSocketHandles(socket) {
     //GETTERS
-    socket.on("GETCHANNELSDISPLAYINFO", () => {
+    socket.on(ApiNames.GetChannelsDisplayInfo, () => {
         if(!userApi.isLogged(socket)) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
         Channel.find({}, (err, channels) => {
             if(err) throw err;
-            socket.emit("CHANNELSDISPLAYINFO", 
+            socket.emit(ApiNames.ChannelsDisplayInfo, 
             channels ? channels.map(channel => channel.toJSON()) : []);
         });
     });
 
-    socket.on("GETTHREADSDISPLAYINFO", (channelId) => {
+    socket.on(ApiNames.GetThreadsDisplayInfo, (channelId) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
@@ -48,15 +49,15 @@ function addSocketHandles(socket) {
         }
         Thread.find({parentId: mongoose.Types.ObjectId(channelId)}).sort('-time').exec((err, threads) => {
             if(err) throw err;
-            socket.emit("THREADSDISPLAYINFO", 
+            socket.emit(ApiNames.ThreadsDisplayInfo, 
             threads && threads.length>0 ? threads.map(thread => thread.toJSON(userId)) : [{parentId: channelId}]);
         });
     });
 
-    socket.on("GETANSWERSDISPLAYINFO", (threadId) => {
+    socket.on(ApiNames.GetAnswersDisplayInfo, (threadId) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
@@ -65,21 +66,21 @@ function addSocketHandles(socket) {
         }
         Answer.find({parentId: mongoose.Types.ObjectId(threadId)}).sort('time').exec((err, answers) => {
             if(err) throw err;
-            socket.emit("ANSWERSDISPLAYINFO", 
+            socket.emit(ApiNames.AnswersDisplayInfo, 
             answers && answers.length>0 ? answers.map(answer => answer.toJSON(userId)) : [{parentId: threadId}])
         });
     });
 
     //ADDERS
-    socket.on("ADDTHREAD", (data) => {
+    socket.on(ApiNames.AddThread, (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
         if(!utils.validAPIrequest(data, ["string", "string", "string"])) {
-            socket.emit("USERERROR", "Invalid thread data.");
+            socket.emit(ApiNames.UserError, "Invalid thread data.");
             return;
         }
 
@@ -99,23 +100,23 @@ function addSocketHandles(socket) {
 
         thread.save((err) => {
             if(err) {
-                socket.emit("USERERROR", "Add thread failed to save.");
+                socket.emit(ApiNames.UserError, "Add thread failed to save.");
                 return;
             }
             userApi.changeScore(userId, 10)
-            socket.emit("ADDTHREADSUCCESS")
+            socket.emit(ApiNames.AddThreadSuccess)
         });
     });
 
-    socket.on("VOTETHREAD", (data) => {
+    socket.on(ApiNames.VoteThread, (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
         if(!utils.validAPIrequest(data, ["string", "boolean"])) {
-            socket.emit("USERERROR", "Invalid vote data.");
+            socket.emit(ApiNames.UserError, "Invalid vote data.");
             return;
         }
 
@@ -124,12 +125,12 @@ function addSocketHandles(socket) {
 
         Thread.findOne({_id: threadId}, (err, thread) => {
             if(err || thread === undefined || thread === null) {
-                socket.emit("USERERROR", "Vote failed.");
+                socket.emit(ApiNames.UserError, "Vote failed.");
                 return;
             }
             for(i in thread.voteIds) {
                 if(userId.toString() === thread.voteIds[i].toString()) {
-                    socket.emit("USERERROR", "User already voted.");
+                    socket.emit(ApiNames.UserError, "User already voted.");
                     return;
                 }
             }
@@ -139,25 +140,25 @@ function addSocketHandles(socket) {
 
             thread.save((err) => {
                 if(err) {
-                    socket.emit("USERERROR", "Vote failed to save.");
+                    socket.emit(ApiNames.UserError, "Vote failed to save.");
                     return;
                 }
                 userApi.changeScore(userId, 1);
                 (positiveVote) ? userApi.changeScore(thread.authorId, 2) : userApi.changeScore(thread.authorId, -1);
-                socket.emit("VOTETHREADSUCCESS")
+                socket.emit(ApiNames.VoteThreadSuccess)
             });
         }); 
     });
 
-    socket.on("DELETETHREAD", (data) => {
+    socket.on(ApiNames.DeleteThread, (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
         if(!utils.validAPIrequest(data, ["string"])) {
-            socket.emit("USERERROR", "Invalid thread data.");
+            socket.emit(ApiNames.UserError, "Invalid thread data.");
             return;
         }
 
@@ -165,45 +166,45 @@ function addSocketHandles(socket) {
 
         Thread.findOne({_id: threadId}, (err, thread) => {
             if(err) {
-                socket.emit("USERERROR", "Deleting failed.");
+                socket.emit(ApiNames.UserError, "Deleting failed.");
                 return;
             }
 
             if(thread.authorId === undefined || thread.authorId.toString() !== userId.toString()) {
-                socket.emit("USERERROR", "Not authorized to delete thread.");
+                socket.emit(ApiNames.UserError, "Not authorized to delete thread.");
                 return;
             }
 
             Answer.deleteMany({parentId: threadId}, (err) => {
                 if(err){
-                    socket.emit("USERERROR", "Deleting failed.");
+                    socket.emit(ApiNames.UserError, "Deleting failed.");
                     return;
                 }
             });
 
             Thread.findOneAndDelete({_id: threadId}, (err, thread) => {
                 if(err) {
-                    socket.emit("USERERROR", "Deleting failed.");
+                    socket.emit(ApiNames.UserError, "Deleting failed.");
                     return;
                 }
                 if(thread === undefined || thread === null) {
-                    socket.emit("USERERROR", "Thread not found");
+                    socket.emit(ApiNames.UserError, "Thread not found");
                     return;
                 }
-                socket.emit('DELETETHREADSUCCESS')
+                socket.emit(ApiNames.DeleteThreadSuccess)
             });
         });
     });
 
-    socket.on("ADDANSWER", (data) => {
+    socket.on(ApiNames.AddAnswer, (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
         
         if(!utils.validAPIrequest(data, ["string", "string", "string"])) {
-            socket.emit("USERERROR", "Invalid answer data.");
+            socket.emit(ApiNames.UserError, "Invalid answer data.");
             return;
         }
 
@@ -222,24 +223,24 @@ function addSocketHandles(socket) {
 
         answer.save((err) => {
             if(err) {
-                socket.emit("USERERROR", "Add answer failed to save.");
+                socket.emit(ApiNames.UserError, "Add answer failed to save.");
                 return;
             }
 
             userApi.changeScore(userId, 10)
-            socket.emit("ADDANSWERSUCCESS")
+            socket.emit(ApiNames.AddAnswerSuccess)
         });
     });
 
-    socket.on("VOTEANSWER", (data) => {
+    socket.on(ApiNames.VoteAnswer, (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
         if(!utils.validAPIrequest(data, ["string", "boolean"])) {
-            socket.emit("USERERROR", "Invalid vote data.");
+            socket.emit(ApiNames.UserError, "Invalid vote data.");
             return;
         }
 
@@ -248,12 +249,12 @@ function addSocketHandles(socket) {
 
         Answer.findOne({_id: answerId}, (err, answer) => {
             if(err || answer === undefined || answer === null) {
-                socket.emit("USERERROR", "Vote failed.");
+                socket.emit(ApiNames.UserError, "Vote failed.");
                 return;
             }
             for(i in answer.voteIds) {
                 if(userId.toString() === answer.voteIds[i].toString()) {
-                    socket.emit("USERERROR", "User already voted.");
+                    socket.emit(ApiNames.UserError, "User already voted.");
                     return;
                 }
             }
@@ -263,26 +264,26 @@ function addSocketHandles(socket) {
 
             answer.save((err) => {
                 if(err) {
-                    socket.emit("USERERROR", "Vote failed to save.");
+                    socket.emit(ApiNames.UserError, "Vote failed to save.");
                     return;
                 }
 
                 userApi.changeScore(userId, 1);
                 (positiveVote) ? userApi.changeScore(answer.authorId, 2) : userApi.changeScore(answer.authorId, -1);
-                socket.emit("VOTEANSWERSUCCESS")
+                socket.emit(ApiNames.VoteAnswerSuccess)
             });
         }); 
     });
 
-    socket.on("DELETEANSWER", (data) => {
+    socket.on(ApiNames.DeleteAnswer, (data) => {
         let userId = userApi.isLogged(socket);
         if(!userId) {
-            socket.emit("USERNOTLOGGED");
+            socket.emit(ApiNames.UserNotLogged);
             return;
         }
 
         if(!utils.validAPIrequest(data, ["string"])) {
-            socket.emit("USERERROR", "Invalid answer data.");
+            socket.emit(ApiNames.UserError, "Invalid answer data.");
             return;
         }
 
@@ -290,25 +291,25 @@ function addSocketHandles(socket) {
 
         Answer.findOne({_id: answerId}, (err, answer) => {
             if(err) {
-                socket.emit("USERERROR", "Deleting failed.");
+                socket.emit(ApiNames.UserError, "Deleting failed.");
                 return;
             }
 
             if(answer.authorId === undefined || answer.authorId.toString() !== userId.toString()) {
-                socket.emit("USERERROR", "Not authorized to delete answer.");
+                socket.emit(ApiNames.UserError, "Not authorized to delete answer.");
                 return;
             }
 
             Answer.findOneAndDelete({_id: answerId}, (err, answer) => {
                 if(err) {
-                    socket.emit("USERERROR", "Deleting failed.");
+                    socket.emit(ApiNames.UserError, "Deleting failed.");
                     return;
                 }
                 if(answer === undefined || answer === null) {
-                    socket.emit("USERERROR", "Answer not found");
+                    socket.emit(ApiNames.UserError, "Answer not found");
                     return;
                 }
-                socket.emit('DELETEANSWERSUCCESS')
+                socket.emit(ApiNames.DeleteAnswerSuccess)
             });
         });
     });

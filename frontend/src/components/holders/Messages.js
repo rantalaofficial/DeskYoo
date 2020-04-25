@@ -9,11 +9,13 @@ import { setAnswers } from '../../reducers/dataReducer'
 
 import { setNotification } from '../../reducers/notificationReducer'
 
+import ApiNames from '../../services/ApiNames'
+
 const Messages = ({opened, messages, color, messageType}) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    socket.on('ANSWERSDISPLAYINFO', data => {
+    socket.on(ApiNames.AnswersDisplayInfo, data => {
       //console.log(data)
       //console.log('api request: answers')
       document.getElementById('root').style.pointerEvents = 'auto'
@@ -22,22 +24,22 @@ const Messages = ({opened, messages, color, messageType}) => {
     })
 
     if(messageType==='Answer'){
-      socket.on('VOTEANSWERSUCCESS', () => {
+      socket.on(ApiNames.VoteAnswerSuccess, () => {
         document.getElementById('root').style.pointerEvents = 'auto'
 
-        socket.emit('GETANSWERSDISPLAYINFO', opened)
+        socket.emit(ApiNames.GetAnswersDisplayInfo, opened)
       })
 
-      socket.on('DELETEANSWERSUCCESS', () => {
-        socket.emit('GETANSWERSDISPLAYINFO', opened)
-        dispatch(setNotification({message: 'Deleting an answer successful', color: 'green'}))
+      socket.on(ApiNames.DeleteAnswerSuccess, () => {
+        socket.emit(ApiNames.GetAnswersDisplayInfo, opened)
+        dispatch(setNotification({message: 'Answer deleted.', color: 'green'}))
       })
     }
     
     return function cleanup () {
-      socket.off('ANSWERSDISPLAYINFO')
-      socket.off('VOTEANSWERSUCCESS')
-      socket.off('DELETEANSWERSUCCESS')
+      socket.off(ApiNames.AnswersDisplayInfo)
+      socket.off(ApiNames.VoteAnswerSuccess)
+      socket.off(ApiNames.DeleteAnswerSuccess)
     }
   }, [dispatch, messageType, opened])
 

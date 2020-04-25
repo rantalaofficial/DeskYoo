@@ -10,7 +10,6 @@ import ContentBlock from './components/blocks/ContentBlock'
 
 import socket from './services/connect'
 import appHandlers from './services/appEvents'
-
 const App = () => {
   const dispatch = useDispatch()
 

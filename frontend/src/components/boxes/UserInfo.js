@@ -10,6 +10,8 @@ import { logOutData } from '../../reducers/dataReducer'
 
 import { setNotification } from '../../reducers/notificationReducer'
 
+import ApiNames from '../../services/ApiNames'
+
 const UserInfo = (props) => {
   const user = useSelector(state => state.userReducer)
 
@@ -21,7 +23,7 @@ const UserInfo = (props) => {
       <p>Username: {user.data.username}</p>
       <p>{user.data.score} Yoo Points</p>
       <input style={{backgroundColor: '#F05035', border: '2px solid gray'}} className='LogInElement' type='button' value='Logout' onClick={() => {
-        socket.emit('LOGOUT')
+        socket.emit(ApiNames.Logout)
         dispatch(logOut())
         dispatch(logOutData())
 

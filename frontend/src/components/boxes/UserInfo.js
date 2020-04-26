@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import socket from '../../services/connect'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { logOut } from '../../reducers/userReducer'
+import { setUserInfo, logOut } from '../../reducers/userReducer'
 
 import { logOutData } from '../../reducers/dataReducer'
 
@@ -16,6 +16,14 @@ const UserInfo = (props) => {
   const user = useSelector(state => state.userReducer)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    socket.on(ApiNames.UserDisplayInfo, user => {
+      document.getElementById('root').style.pointerEvents = 'auto'
+  
+      dispatch(setUserInfo(user))
+    })
+  }, [dispatch])
 
   return(
     user.loggedIn ?

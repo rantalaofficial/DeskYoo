@@ -1,6 +1,6 @@
 import { setNotification } from '../reducers/notificationReducer'
-import { setUserInfo, logOut } from '../reducers/userReducer'
-import { setChannels, logOutData } from '../reducers/dataReducer'
+import { logOut } from '../reducers/userReducer'
+import { logOutData } from '../reducers/dataReducer'
 
 import ApiNames from './ApiNames'
 
@@ -35,18 +35,6 @@ const appHandlers = (socket, dispatch) => {
 
     dispatch(setNotification({message: "User logged out.", color: 'red'}))
   });
-
-  socket.on(ApiNames.UserDisplayInfo, user => {
-    document.getElementById('root').style.pointerEvents = 'auto'
-
-    dispatch(setUserInfo(user))
-  })
-
-  socket.on(ApiNames.ChannelsDisplayInfo, data => {
-    document.getElementById('root').style.pointerEvents = 'auto'
-    
-    dispatch(setChannels(data))
-  })
 }
 
 export default appHandlers

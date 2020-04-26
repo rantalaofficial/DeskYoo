@@ -44,19 +44,12 @@ const Messages = ({opened, messages, color, messageType}) => {
   }, [dispatch, messageType, opened])
 
   useEffect(() => {
-    let mounted = true
-    function update() {
-      setTimeout(() => {
-        if(mounted) {
-          document.getElementById('root').style.pointerEvents = 'none'
-          socket.emit(messageType==='Thread' ? ApiNames.GetThreadsDisplayInfo : ApiNames.GetAnswersDisplayInfo , opened)
-          update()
-        }
-      }, 1000)
-    }
-    update()
+    const interval = setInterval(() => {
+      document.getElementById('root').style.pointerEvents = 'none'
+      socket.emit(messageType==='Thread' ? ApiNames.GetThreadsDisplayInfo : ApiNames.GetAnswersDisplayInfo , opened)
+    }, 45000)
 
-    return () => mounted = false
+    return () => clearInterval(interval)
   }, [messageType, opened])
 
   return(

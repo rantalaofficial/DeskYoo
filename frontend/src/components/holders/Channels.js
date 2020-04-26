@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { setNotification } from '../../reducers/notificationReducer'
 
-import { setThreads, closeThreads } from '../../reducers/dataReducer'
+import { setChannels, setThreads, closeThreads } from '../../reducers/dataReducer'
 
 import ApiNames from '../../services/ApiNames'
 
@@ -28,6 +28,12 @@ const Channels = (props) => {
       return dispatch(setThreads(data))
     })
 
+    socket.on(ApiNames.ChannelsDisplayInfo, data => {
+      document.getElementById('root').style.pointerEvents = 'auto'
+      
+      return dispatch(setChannels(data))
+    })
+
     socket.on(ApiNames.VoteThreadSuccess, () => {
       socket.emit(ApiNames.GetThreadsDisplayInfo, openedChannel)
     })
@@ -43,6 +49,16 @@ const Channels = (props) => {
       socket.off(ApiNames.DeleteThreadSuccess)
     }
   }, [dispatch, openedChannel])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('click')
+      document.getElementById('root').style.pointerEvents = 'none'
+      socket.emit(ApiNames.GetChannelsDisplayInfo)
+    }, 120000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return(
     <div>

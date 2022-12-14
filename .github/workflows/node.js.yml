@@ -22,17 +22,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      env:
-        CI: false
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: src/package-lock.json
+    - run: npm install
+      working-directory: ./frontend
     - run: npm run build
       working-directory: ./frontend
     - run: npm run test
       working-directory: ./frontend
+    - run: npm install
+      working-directory: ./src
     - run: npm run build:ui
       working-directory: ./src
     - run: npm run build --if-present

@@ -15,4 +15,6 @@ let timeDifference = (new Date() - time) / 1000;
   return (timeText)
 }
 
-export default {getTimeText}
+const toExport = {getTimeText}
+
+export default toExport

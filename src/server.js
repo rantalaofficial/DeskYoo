@@ -1,8 +1,9 @@
 const express = require('express');
 const socket = require('socket.io');
+const config = require('./util/config')
 
 //APP SETUP
-const serverPort = 8080;
+const serverPort = config.PORT || 8080;
 const app = express();
 const server = app.listen(serverPort, () => {
 	console.log("Server started on port " + serverPort)
@@ -13,7 +14,13 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.static('public'));
-const io = socket(server)
+const io = socket(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      credentials: false,
+    }
+  })
 
 const userApi = require('./api/userApi');
 const messageApi = require('./api/messageApi');

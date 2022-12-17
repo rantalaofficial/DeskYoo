@@ -13,3 +13,4 @@ jobs:
       - uses: akheron/dependabot-cron-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          auto-merge: major

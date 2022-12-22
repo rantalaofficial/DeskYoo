@@ -1,6 +1,8 @@
 import openSocket from "socket.io-client"
 
-const socket = openSocket(`${window.location.hostname}:8080`)
+const socket = openSocket(`${window.location.hostname}`, {
+  withCredentials: false
+})
 
 let onevent = socket.onevent;
 socket.onevent = function (packet) {

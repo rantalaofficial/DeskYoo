@@ -10,18 +10,18 @@ const Thread = require('./models/thread');
 const Answer = require('./models/answer');
 
 //POPULATE DATA IF NOT FOUND
-Channel.countDocuments({}, (err, count) => {
-    if(err) throw err; else if(count == 0) {
-        const channel1 = new Channel({text: "Main", followers: 2000});
-        const channel2 = new Channel({text: "Kerttuli", followers: 69});
-        const channel3 = new Channel({text: "Tunnustukset", followers: 42000});
-        const channel4 = new Channel({text: "Äijjät", followers: 123});
-        channel1.save()
-        channel2.save()
-        channel3.save()
-        channel4.save()
-    }
-});
+const count = Channel.countDocuments().count().exec()
+
+if(count == 0) {
+    const channel1 = new Channel({text: "Main", followers: 2000});
+    const channel2 = new Channel({text: "Kerttuli", followers: 69});
+    const channel3 = new Channel({text: "Tunnustukset", followers: 42000});
+    const channel4 = new Channel({text: "Äijjät", followers: 123});
+    channel1.save()
+    channel2.save()
+    channel3.save()
+    channel4.save()
+}
 
 function addSocketHandles(socket) {
     //GETTERS

@@ -24,7 +24,7 @@
   "homepage": "https://github.com/UisDangerouz/DeskYoo#readme",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "mongoose": "^8.13.2",
     "socket.io": "^4.8.1"
   },
